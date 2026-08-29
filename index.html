@@ -332,7 +332,7 @@ main{padding:20px 22px 50px;min-width:0}.opponent-banner{background:linear-gradi
 
 
 /* Step 5 — Coverage */
-.cv-toolbar{display:grid;grid-template-columns:repeat(4,minmax(135px,1fr));gap:8px;margin:12px 0}
+.cv-toolbar{display:grid;grid-template-columns:repeat(4,minmax(135px,1fr));gap:8px;margin:6px 0 0}
 .cv-toolbar label{font-size:8px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:900}
 .cv-toolbar select{display:block;width:100%;margin-top:4px;padding:9px;border:1px solid var(--line);border-radius:9px;background:#fff;font-weight:800}
 .cv-toolbar .cv-reset{display:flex;align-items:end}.cv-toolbar .cv-reset button{width:100%;height:38px}
@@ -361,6 +361,12 @@ main{padding:20px 22px 50px;min-width:0}.opponent-banner{background:linear-gradi
 @media(max-width:1180px){.cv-kpis{grid-template-columns:repeat(5,1fr)}.cv-span-8,.cv-span-6,.cv-span-4{grid-column:span 12}}
 @media(max-width:760px){.cv-toolbar{grid-template-columns:repeat(2,1fr)}.cv-kpis{grid-template-columns:repeat(3,1fr)}.cv-shells{grid-template-columns:1fr}.cv-zone-grid{grid-template-rows:repeat(4,80px)}}
 @media(max-width:480px){.cv-toolbar{grid-template-columns:1fr}.cv-kpis{grid-template-columns:repeat(2,1fr)}}
+
+.cv-filters-panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px 14px;margin-top:-2px}
+.cv-filters-head{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:950;margin-bottom:4px}
+.cv-filters-panel .cv-toolbar{margin:4px 0 0}
+.cv-filters-panel .cv-reset button{height:40px}
+
 
 
 /* Step 6 — Pressure */
@@ -482,11 +488,477 @@ main{padding:20px 22px 50px;min-width:0}.opponent-banner{background:linear-gradi
 @media(max-width:480px){.sr-toolbar{grid-template-columns:1fr}.sr-kpis{grid-template-columns:repeat(2,1fr)}.sr-response-grid{grid-template-columns:1fr}}
 
 
+
+/* v15 Spatial fixes */
+.rd-poa-field{position:relative;background:linear-gradient(180deg,#156b45,#0d5337);border-radius:14px;padding:42px 12px 14px;color:#fff;overflow:hidden}
+.rd-poa-field:before{content:"";position:absolute;left:12px;right:12px;top:28px;border-top:4px solid #fff}
+.rd-poa-los{position:absolute;top:13px;left:50%;transform:translateX(-50%);background:#102231;border:1px solid #fff;border-radius:999px;padding:3px 9px;font-size:8px;font-weight:950;z-index:2}
+.rd-poa-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.rd-poa-box{border:1px solid rgba(255,255,255,.28);border-radius:10px;background:rgba(3,18,13,.40);padding:9px 5px;text-align:center;min-height:105px;display:flex;flex-direction:column;justify-content:center}
+.rd-poa-box.hot{outline:3px solid var(--gold);background:rgba(86,49,0,.52)}
+.rd-poa-box .lane{font-size:10px;font-weight:950}.rd-poa-box .count{font-size:24px;font-weight:950;margin:3px 0}
+.rd-poa-box .main{font-size:11px;font-weight:950;color:#fff4c8}.rd-poa-box .sub{font-size:8px;margin-top:4px;line-height:1.45}
+.rd-poa-axis{display:flex;justify-content:space-between;font-size:9px;font-weight:900;margin-top:7px;color:#e8f4ec}
+.hm-grid-wrap{min-height:620px;padding:12px}
+.hm-grid{grid-template-columns:repeat(5,1fr)!important;grid-template-rows:repeat(4,1fr)!important;min-height:595px}
+.hm-los{top:75%!important}
+.hm-cell{min-height:145px}
+.hm-axis{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);font-weight:900;margin-top:6px}
+.pr-pressure-wide{grid-column:span 6}
+.pr-rush-narrow{grid-column:span 3}
+.pr-section.pr-pressure-wide .pr-table-wrap table{min-width:690px}
+@media(max-width:1180px){.pr-pressure-wide,.pr-rush-narrow{grid-column:span 12}.rd-poa-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:760px){.hm-grid{min-height:500px}.hm-cell{min-height:120px}.rd-poa-grid{grid-template-columns:repeat(2,1fr)}}
+
+
+/* v16 — football-native visuals */
+
+/* RUN POA */
+.run-field{background:#0d5a3b;border-radius:16px;padding:18px 18px 14px;position:relative;overflow:hidden}
+.run-field:before,.run-field:after{content:"";position:absolute;left:0;right:0;border-top:1px solid rgba(255,255,255,.16)}
+.run-field:before{top:32%}.run-field:after{top:68%}
+.run-offense-label{text-align:center;font-size:9px;font-weight:950;letter-spacing:.08em;color:#dcefe5;margin-bottom:8px}
+.run-los{height:4px;background:#fff;border-radius:5px;margin:0 0 14px;position:relative}
+.run-los span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#0a2030;border:1px solid #fff;border-radius:999px;padding:3px 9px;font-size:8px;font-weight:950;white-space:nowrap}
+.run-front{display:grid;grid-template-columns:52px 1fr 1fr 1fr 1.18fr 1.18fr 1fr 1fr 1fr 52px;align-items:end;gap:5px;position:relative;z-index:2}
+.run-edge{height:112px;border-radius:12px;background:rgba(4,28,19,.55);border:1px solid rgba(255,255,255,.18);display:flex;flex-direction:column;justify-content:center;text-align:center}
+.run-gap{height:130px;border-radius:12px;background:rgba(3,25,17,.62);border:1px solid rgba(255,255,255,.20);display:flex;flex-direction:column;justify-content:center;text-align:center;padding:8px 4px;position:relative}
+.run-gap.hot{outline:3px solid var(--gold);background:rgba(74,54,8,.64)}
+.run-gap .gap-name,.run-edge .gap-name{font-size:10px;font-weight:950;color:#fff}
+.run-gap .gap-count,.run-edge .gap-count{font-size:24px;font-weight:950;color:#fff;margin:2px 0}
+.run-gap .gap-ypp,.run-edge .gap-ypp{font-size:11px;font-weight:950;color:#ffe6a6}
+.run-gap .gap-sub,.run-edge .gap-sub{font-size:8px;line-height:1.35;color:#dcefe5;margin-top:4px}
+.run-linemen{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 15% 0;position:relative;z-index:2}
+.run-ol{height:30px;border-radius:7px;background:#f3f4f6;border:2px solid #d6dae0;color:#0c2232;display:grid;place-items:center;font-size:9px;font-weight:950}
+.run-axis{display:flex;justify-content:space-between;color:#e7f1eb;font-size:9px;font-weight:900;margin-top:8px}
+
+/* PASS HEAT MAPS */
+.pass-field{background:linear-gradient(#eef7f0,#e3f0e7);border:1px solid #cad8ce;border-radius:16px;padding:12px;position:relative;overflow:hidden}
+.pass-field:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0,transparent 69px,rgba(35,93,54,.07) 70px);pointer-events:none}
+.pass-field-grid{display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,130px);gap:2px;position:relative;z-index:2}
+.pass-zone{border:1px solid rgba(40,92,55,.18);background:rgba(255,255,255,.46);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px}
+.pass-zone.hot{outline:none}
+.pass-zone .pz-label{font-size:8px;text-transform:uppercase;font-weight:950;color:#5e6873}
+.pass-zone .pz-main{font-size:22px;font-weight:950;color:var(--maroon);margin:4px 0 2px}
+.pass-zone .pz-sub{font-size:8px;line-height:1.35;color:#334155}
+.pass-los{position:absolute;left:12px;right:12px;top:75%;height:4px;background:#0d2130;z-index:4;border-radius:3px}
+.pass-los span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid #0d2130;border-radius:999px;padding:3px 8px;font-size:8px;font-weight:950;white-space:nowrap}
+.pass-axis{display:flex;justify-content:space-between;font-size:9px;font-weight:900;color:#64748b;margin-top:6px}
+.pass-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:9px;color:#64748b;margin-bottom:8px}
+.pass-legend b{color:#1f2937}
+
+/* pressure table fix */
+.pr-pressure-wide{grid-column:span 7!important}
+.pr-rush-narrow{grid-column:span 5!important}
+.pr-section.pr-pressure-wide .pr-table-wrap{overflow-x:auto}
+.pr-section.pr-pressure-wide table{min-width:820px!important;font-size:9px}
+.pr-section.pr-pressure-wide th,.pr-section.pr-pressure-wide td{padding:7px 6px!important;white-space:nowrap}
+
+@media(max-width:1100px){
+ .run-front{grid-template-columns:repeat(4,1fr)}
+ .run-edge{display:none}
+ .run-linemen{margin:10px 5% 0}
+ .pr-pressure-wide,.pr-rush-narrow{grid-column:span 12!important}
+}
+@media(max-width:760px){
+ .pass-field-grid{grid-template-rows:repeat(4,105px)}
+ .run-front{grid-template-columns:repeat(2,1fr)}
+}
+
+
+/* v17 — gap language + hash intelligence */
+.gap-board{background:#0d5a3b;border-radius:16px;padding:16px 14px 14px;position:relative;overflow:hidden}
+.gap-board:before{content:"";position:absolute;left:14px;right:14px;top:50px;border-top:4px solid #fff}
+.gap-los-label{text-align:center;position:relative;z-index:3;margin-bottom:20px}
+.gap-los-label span{display:inline-block;background:#0b2231;color:#fff;border:1px solid #fff;border-radius:999px;padding:3px 9px;font-size:8px;font-weight:950}
+.gap-lanes{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;position:relative;z-index:2}
+.gap-cell{min-height:142px;background:rgba(3,24,17,.62);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:9px 5px;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.gap-cell.hot{outline:3px solid var(--gold);background:rgba(75,55,8,.62)}
+.gap-cell .gap-title{font-size:14px;font-weight:950;color:#fff}
+.gap-cell .gap-source{font-size:8px;color:#cfe4d7;text-transform:uppercase;margin-bottom:2px}
+.gap-cell .gap-n{font-size:26px;font-weight:950;color:#fff}
+.gap-cell .gap-share{font-size:9px;font-weight:900;color:#dcefe5}
+.gap-cell .gap-ypp{font-size:12px;font-weight:950;color:#ffe49b;margin-top:3px}
+.gap-cell .gap-detail{font-size:8px;color:#e6f0ea;line-height:1.45;margin-top:4px}
+.gap-center{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 20% 0;position:relative;z-index:2}
+.gap-ol{height:30px;background:#f5f6f7;border:2px solid #d4d9de;border-radius:7px;color:#102331;display:grid;place-items:center;font-size:9px;font-weight:950}
+.gap-divider{position:absolute;left:50%;top:72px;bottom:55px;border-left:2px dashed rgba(255,255,255,.36);z-index:1}
+.gap-axis{display:flex;justify-content:space-between;color:#e9f4ed;font-size:9px;font-weight:900;margin-top:8px}
+.hash-quick{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 12px}
+.hash-quick button.active{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+.pass-zone .pz-main{font-size:21px}
+.pass-zone .pz-share{font-size:9px;font-weight:950;color:#7b2532;margin-top:1px}
+.pass-zone .pz-sub{font-size:8px;line-height:1.4}
+.hm-toolbar.hm-more{grid-template-columns:repeat(5,minmax(125px,1fr))}
+@media(max-width:1100px){.gap-lanes{grid-template-columns:repeat(4,1fr)}.gap-center{margin:10px 5% 0}.hm-toolbar.hm-more{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.gap-lanes{grid-template-columns:repeat(2,1fr)}.hm-toolbar.hm-more{grid-template-columns:repeat(2,1fr)}}
+
+
+/* v18 — QB marker + richer pass zone metrics */
+.pass-field{padding-bottom:58px}
+.pass-qb{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);z-index:5;text-align:center}
+.pass-qb-icon{width:34px;height:34px;border-radius:50%;background:#7b2532;color:#fff;border:3px solid #fff;box-shadow:0 0 0 2px #7b2532;display:grid;place-items:center;font-size:10px;font-weight:950;margin:0 auto}
+.pass-qb-label{font-size:8px;font-weight:950;color:#263442;margin-top:4px;letter-spacing:.04em}
+.pass-zone .pz-main{font-size:20px}
+.pass-zone .pz-share{font-size:9px;font-weight:950;color:#7b2532;margin-top:1px}
+.pass-zone .pz-sub{font-size:8px;line-height:1.45}
+.pass-zone .pz-extra{font-size:8px;line-height:1.4;color:#0f3f2c;margin-top:3px;font-weight:800}
+
+
+/* v19 — expandable pass zones */
+.pass-zone{cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
+.pass-zone:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(14,35,27,.10);z-index:3}
+.pass-zone:focus{outline:3px solid var(--gold);outline-offset:-3px}
+.zone-modal{position:fixed;inset:0;background:rgba(5,16,24,.72);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px}
+.zone-modal.hidden{display:none}
+.zone-modal-card{width:min(780px,94vw);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 25px 70px rgba(0,0,0,.35);border:1px solid #d9dee4}
+.zone-modal-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:18px 20px;border-bottom:1px solid #e4e8ec;background:linear-gradient(90deg,#faf7ef,#fff)}
+.zone-modal-head h2{margin:0;color:var(--maroon);font-size:24px}
+.zone-modal-head button{width:38px;height:38px;border-radius:50%;font-size:20px;padding:0}
+.zone-modal-body{padding:18px 20px}
+.zone-modal-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.zone-modal-kpi{border:1px solid #dfe5ea;border-top:4px solid var(--gold);border-radius:11px;padding:12px;background:#fff}
+.zone-modal-kpi span{display:block;font-size:8px;text-transform:uppercase;color:var(--muted);font-weight:950}
+.zone-modal-kpi b{display:block;font-size:22px;color:var(--maroon);margin-top:3px}
+.zone-modal-note{margin-top:12px;padding:10px;border-radius:9px;background:#f6f8fa;font-size:10px;color:#475569}
+@media(max-width:700px){.zone-modal-kpis{grid-template-columns:repeat(2,1fr)}}
+
+
+/* v20 — QB moves with the hash */
+.pass-qb{position:absolute;bottom:10px;transform:translateX(-50%);z-index:5;text-align:center;transition:left .18s ease}
+.pass-qb-icon{width:34px;height:34px;border-radius:50%;background:#7b2532;color:#fff;border:3px solid #fff;box-shadow:0 0 0 2px #7b2532;display:grid;place-items:center;font-size:10px;font-weight:950;margin:0 auto}
+.pass-qb-label{font-size:8px;font-weight:950;color:#263442;margin-top:4px;letter-spacing:.04em}
+
+
+/* v21 Blitz Intelligence test */
+.blitz-intel{margin-top:12px}
+.blitz-origin{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;background:#0d5a3b;border-radius:14px;padding:16px 12px}
+.blitz-origin-card{background:rgba(3,25,17,.6);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:10px 6px;text-align:center;color:#fff}
+.blitz-origin-card b{display:block;font-size:22px}.blitz-origin-card span{display:block;font-size:8px;text-transform:uppercase;font-weight:950}.blitz-origin-card small{font-size:8px;color:#d8e9df}
+.blitz-tables{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.blitz-table{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;overflow:hidden}
+.blitz-table h3{margin:0 0 4px}.blitz-table .sub{font-size:9px;color:var(--muted);margin-bottom:8px}
+.blitz-table-wrap{overflow:auto}.blitz-table table{min-width:720px}
+@media(max-width:1100px){.blitz-tables{grid-template-columns:1fr}.blitz-origin{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:700px){.blitz-origin{grid-template-columns:repeat(2,1fr)}}
+
+
+/* v22 Blitz layout repair */
+.blitz-intel{
+  grid-column:1 / -1 !important;
+  width:100%;
+  min-width:0;
+  display:block;
+  margin-top:14px;
+}
+.blitz-intel > .pr-section{
+  width:100%;
+  grid-column:1 / -1 !important;
+  box-sizing:border-box;
+}
+.blitz-origin{
+  width:100%;
+  box-sizing:border-box;
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:8px;
+  margin-top:10px;
+}
+.blitz-origin-card{
+  min-width:0;
+  min-height:90px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.blitz-tables{
+  width:100%;
+  min-width:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:12px;
+  margin-top:12px;
+}
+.blitz-table{
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+.blitz-table-wrap{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.blitz-table-wrap table{
+  width:100%;
+  min-width:760px;
+}
+.blitz-table[style*="grid-column:1/-1"]{
+  grid-column:1 / -1 !important;
+}
+.blitz-headline{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+  margin:10px 0 2px;
+}
+.blitz-head-kpi{
+  border:1px solid var(--line);
+  border-top:4px solid var(--gold);
+  border-radius:10px;
+  padding:10px 11px;
+  background:#fff;
+}
+.blitz-head-kpi span{
+  display:block;
+  font-size:8px;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:950;
+}
+.blitz-head-kpi b{
+  display:block;
+  color:var(--maroon);
+  font-size:21px;
+  margin-top:2px;
+}
+@media(max-width:1100px){
+  .blitz-origin{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .blitz-tables{grid-template-columns:1fr}
+  .blitz-table[style*="grid-column:1/-1"]{grid-column:auto !important}
+}
+@media(max-width:720px){
+  .blitz-origin{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .blitz-headline{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+
+
+/* v23 Blitz alignment field */
+.blitz-align-wrap{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
+.blitz-field-header h3{margin:0 0 4px}.blitz-field-header .sub{font-size:9px;color:var(--muted);margin-bottom:8px}
+.blitz-align-field{position:relative;min-height:460px;border-radius:16px;padding:12px;background:linear-gradient(180deg,#0f6e49 0%,#0b5f3e 55%,#0a5537 100%);overflow:hidden}
+.blitz-shade{position:absolute;left:1.5%;right:1.5%;height:24%;border:1px solid rgba(255,255,255,.10);border-left:none;border-right:none}
+.blitz-shade-1{top:8%}.blitz-shade-2{top:32%}.blitz-shade-3{top:56%}
+.blitz-los-line{position:absolute;left:2%;right:2%;top:78%;height:3px;background:#f5f7fb;border-radius:999px;box-shadow:0 0 0 2px rgba(8,34,22,.24)}
+.blitz-los-pill{position:absolute;left:50%;top:74.8%;transform:translateX(-50%);background:#12263f;color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:4px 10px;font-size:9px;font-weight:950;letter-spacing:.05em;white-space:nowrap}
+.blitz-side{position:absolute;bottom:8px;font-size:10px;font-weight:950;letter-spacing:.08em;color:#f5f7fb}
+.blitz-side-left{left:12px}.blitz-side-right{right:12px}
+.blitz-player{position:absolute;transform:translate(-50%,-50%);width:110px;min-height:104px;padding:8px 8px 10px;border-radius:14px;box-sizing:border-box;text-align:center;color:#fff;border:1px solid rgba(255,255,255,.16);background:rgba(1,30,19,.45);backdrop-filter:blur(2px);z-index:2}
+.blitz-player.inactive{opacity:.76;background:rgba(4,22,15,.28);color:#e4efe8}
+.blitz-player.active{background:linear-gradient(180deg,rgba(96,18,35,.86) 0%,rgba(140,34,52,.80) 32%,rgba(189,143,17,.26) 100%);border:2px solid var(--gold);box-shadow:0 10px 26px rgba(0,0,0,.24)}
+.blitz-pos{font-size:8px;text-transform:uppercase;font-weight:950;letter-spacing:.08em;color:#dfeee7}
+.blitz-slot{font-size:21px;font-weight:950;line-height:1;margin-top:3px}
+.blitz-name{font-size:11px;font-weight:900;margin-top:5px;line-height:1.15}
+.blitz-role{font-size:8px;text-transform:uppercase;letter-spacing:.05em;color:#e7efe9;margin-top:2px;min-height:16px}
+.blitz-calls{font-size:20px;font-weight:950;line-height:1;margin-top:4px}
+.blitz-share,.blitz-empty{font-size:9px;color:#eef5f0;margin-top:2px}
+.blitz-mini{font-size:8px;color:#f8f2d4;margin-top:3px}
+.blitz-arrow{position:absolute;width:0;border-left:3px solid var(--gold);z-index:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.blitz-arrow::after{content:'';position:absolute;left:-7px;bottom:-1px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:11px solid var(--gold)}
+@media(max-width:1180px){
+  .blitz-align-field{min-height:560px}
+  .blitz-player{width:100px;min-height:100px}
+}
+@media(max-width:820px){
+  .blitz-align-field{min-height:760px}
+  .blitz-player{width:90px;min-height:92px;padding:6px}
+  .blitz-slot{font-size:18px}
+  .blitz-calls{font-size:17px}
+}
+
+
+/* v24 clean blitz field */
+.blitz-align-field.clean{min-height:520px;background:linear-gradient(180deg,#0f6c48 0%,#0c5e3d 100%);border:1px solid rgba(0,0,0,.08)}
+.blitz-align-field.clean:before,.blitz-align-field.clean:after{content:'';position:absolute;left:2%;right:2%;border-top:1px solid rgba(255,255,255,.14)}
+.blitz-align-field.clean:before{top:30%}.blitz-align-field.clean:after{top:55%}
+.blitz-row-label{position:absolute;left:12px;font-size:8px;font-weight:950;letter-spacing:.09em;color:rgba(255,255,255,.65);z-index:1}
+.blitz-row-label.secondary{top:5%}.blitz-row-label.lbs{top:31%}.blitz-row-label.front{top:57%}
+.blitz-dot{position:absolute;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-sizing:border-box;z-index:3;background:#163e2e;border:2px solid rgba(255,255,255,.28);color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.blitz-dot.inactive{opacity:.72;background:#1b4735}
+.blitz-dot.active{background:#7b2532;border:4px solid var(--gold);box-shadow:0 7px 18px rgba(0,0,0,.28)}
+.blitz-dot .bd-role{font-size:10px;font-weight:950;line-height:1}
+.blitz-dot .bd-num{font-size:19px;font-weight:950;line-height:1.05;margin-top:2px}
+.blitz-dot .bd-name{position:absolute;top:77px;left:50%;transform:translateX(-50%);width:118px;color:#163126;background:rgba(255,255,255,.95);border-radius:7px;padding:3px 5px;font-size:8px;font-weight:850;line-height:1.15;border:1px solid #dfe7e2;white-space:normal}
+.blitz-dot.inactive .bd-name{display:none}
+.blitz-dot .bd-share{position:absolute;top:100px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:950;color:#fff;white-space:nowrap}
+.blitz-arrow-clean{position:absolute;width:0;border-left:3px solid var(--gold);z-index:2;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+.blitz-arrow-clean:after{content:'';position:absolute;left:-7px;bottom:-1px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:11px solid var(--gold)}
+.blitz-field-key{display:flex;gap:18px;flex-wrap:wrap;margin-top:8px;font-size:9px;color:var(--muted)}
+.key-dot{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:4px}.key-dot.base{background:#1b4735}.key-dot.hot{background:#7b2532;border:2px solid var(--gold)}
+@media(max-width:1050px){.blitz-dot{width:64px;height:64px}.blitz-dot .bd-name{width:102px;top:69px}.blitz-dot .bd-share{top:91px}.blitz-align-field.clean{min-height:560px}}
+
+
+/* v27 exact 11-man blitz field */
+.blitz-align-field.clean{min-height:500px}
+.blitz-dot{width:68px;height:68px}
+.blitz-dot .bd-name{width:112px;top:73px}
+.blitz-dot .bd-share{top:96px}
+
+
+/* v29 Hash Intelligence */
+.hr-toolbar{display:grid;grid-template-columns:repeat(5,minmax(135px,1fr));gap:8px;margin:10px 0 12px}
+.hr-toolbar label{font-size:8px;text-transform:uppercase;font-weight:950;color:var(--muted)}
+.hr-toolbar select{display:block;width:100%;margin-top:3px}
+.hr-reset{display:flex;align-items:end}.hr-reset button{width:100%;height:36px}
+.hr-hash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 14px}
+.hr-hash-card{background:#fff;border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:12px;padding:12px}
+.hr-hash-card h3{margin:0;color:var(--maroon);font-size:18px}.hr-hash-card .sample{font-size:9px;color:var(--muted);margin-top:2px}
+.hr-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px}
+.hr-mini{background:#f7f9fb;border:1px solid #e1e6eb;border-radius:8px;padding:7px}
+.hr-mini span{display:block;font-size:7px;text-transform:uppercase;font-weight:950;color:var(--muted)}
+.hr-mini b{display:block;font-size:15px;color:var(--maroon);margin-top:2px}
+.hr-section{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;margin-top:12px;min-width:0}
+.hr-section h3{margin:0 0 3px}.hr-sub{font-size:9px;color:var(--muted);margin-bottom:8px}
+.hr-table-wrap{overflow:auto;width:100%;-webkit-overflow-scrolling:touch}
+.hr-table-wrap table{min-width:1120px;width:100%}
+.hr-table-wrap th,.hr-table-wrap td{white-space:nowrap}
+.hr-core table{min-width:930px}
+.hr-passrun{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hr-legend{font-size:9px;color:var(--muted);padding:9px 10px;background:#f7f9fb;border:1px solid #e3e8ed;border-radius:9px;margin:8px 0}
+@media(max-width:1050px){.hr-toolbar{grid-template-columns:repeat(3,1fr)}.hr-hash-grid{grid-template-columns:1fr}.hr-passrun{grid-template-columns:1fr}}
+@media(max-width:700px){.hr-toolbar{grid-template-columns:repeat(2,1fr)}.hr-mini-grid{grid-template-columns:repeat(2,1fr)}}
+
+
+/* v30 richer defensive player profiles */
+.pi-profile-tabs{display:flex;gap:7px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+.pi-profile-tabs button{padding:8px 11px;border-radius:8px;font-size:9px;font-weight:900}
+.pi-profile-tabs button.active{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+.pi-top-games{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pi-game-card{border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:12px;padding:12px;background:#fff}
+.pi-game-card .rank{font-size:8px;text-transform:uppercase;color:var(--muted);font-weight:950}
+.pi-game-card h4{margin:3px 0 2px;font-size:17px;color:var(--maroon)}
+.pi-game-card .date{font-size:9px;color:var(--muted)}
+.pi-game-score{font-size:22px;font-weight:950;color:#0d2434;margin:7px 0}
+.pi-game-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.pi-game-mini div{background:#f6f8fa;border:1px solid #e2e6ea;border-radius:7px;padding:6px}
+.pi-game-mini span{display:block;font-size:7px;color:var(--muted);text-transform:uppercase;font-weight:950}
+.pi-game-mini b{display:block;font-size:13px;color:var(--maroon);margin-top:2px}
+.pi-role-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pi-role-card{border:1px solid var(--line);border-radius:10px;padding:9px;background:#f8fafb}
+.pi-role-card span{display:block;font-size:7px;color:var(--muted);text-transform:uppercase;font-weight:950}
+.pi-role-card b{display:block;font-size:17px;color:var(--maroon);margin-top:2px}
+.pi-game-log-wrap{overflow:auto}
+.pi-game-log-wrap table{min-width:1050px}
+.pi-profile-note{font-size:9px;color:var(--muted);padding:9px 10px;background:#f7f9fb;border:1px solid #e1e7ec;border-radius:8px;margin-top:8px}
+@media(max-width:1000px){.pi-top-games{grid-template-columns:1fr}.pi-role-grid{grid-template-columns:repeat(2,1fr)}}
+
+
+/* v31 simple hash filters on existing reports */
+.report-hash-filter{display:flex;justify-content:flex-start;margin:8px 0 12px}
+.report-hash-filter label{width:220px;font-size:8px;text-transform:uppercase;font-weight:950;color:var(--muted)}
+.report-hash-filter select{display:block;width:100%;margin-top:3px}
+
+
+/* v32 Football Reports */
+.mt-report{margin:12px 0}.mt-report .table-wrap{overflow:auto}.mt-report table{min-width:1050px}
+.route-report{margin-top:12px}.route-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.route-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;min-width:0}
+.route-card h3{margin:0 0 3px}.route-card .sub{font-size:9px;color:var(--muted);margin-bottom:8px}
+.route-card .table-wrap{overflow:auto}.route-card table{min-width:900px}
+.form-perf{margin-top:12px}.form-perf .table-wrap{overflow:auto}.form-perf table{min-width:1350px}
+@media(max-width:1050px){.route-grid{grid-template-columns:1fr}}
+
+
+/* v34 Leaders tab */
+.leaders-page-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.leader-board{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0}
+.leader-board h3{margin:0 0 4px}.leader-board .sub{font-size:9px;color:var(--muted);margin-bottom:8px}
+.leader-entry{display:grid;grid-template-columns:28px 58px minmax(0,1fr) auto;gap:9px;align-items:center;padding:9px 5px;border-top:1px solid #e6eaee;cursor:pointer;border-radius:8px}
+.leader-entry:hover{background:#f7f9fb}
+.leader-rank{font-size:18px;font-weight:950;color:var(--maroon);text-align:center}
+.leader-headshot{width:54px;height:54px;border-radius:9px;overflow:hidden;background:#e9edf1;border:1px solid #d8dde2;position:relative}
+.leader-headshot img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.leader-headshot .initials{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:950;color:#fff;background:var(--maroon)}
+.leader-info{min-width:0}.leader-name{font-size:12px;font-weight:950;color:#172536;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.leader-meta{font-size:8px;color:var(--muted);margin-top:2px}.leader-sub{font-size:9px;color:#344454;margin-top:4px}
+.leader-value{text-align:right}.leader-value b{display:block;font-size:22px;color:var(--maroon)}.leader-value span{display:block;font-size:7px;text-transform:uppercase;font-weight:950;color:var(--muted)}
+.leaders-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.leaders-summary .card{margin:0}
+@media(max-width:1100px){.leaders-page-grid{grid-template-columns:1fr}.leaders-summary{grid-template-columns:1fr}}
+
+
+/* v35 ULM Formation Performance */
+.fm-toolbar{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:8px;margin:10px 0 12px}
+.fm-toolbar label{font-size:8px;text-transform:uppercase;font-weight:950;color:var(--muted)}.fm-toolbar select{display:block;width:100%;margin-top:3px}
+.fm-reset{display:flex;align-items:end}.fm-reset button{width:100%;height:36px}
+.fm-summary{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px}.fm-kpi{background:#fff;border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:10px;padding:10px}
+.fm-kpi span{display:block;font-size:7px;text-transform:uppercase;color:var(--muted);font-weight:950}.fm-kpi b{display:block;font-size:20px;color:var(--maroon);margin-top:2px}
+.fm-table-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px}.fm-table-wrap{overflow:auto}.fm-table-wrap table{min-width:1500px;width:100%}
+.fm-ulm-name{font-weight:950;color:var(--maroon)}.fm-pff-source{font-size:8px;color:var(--muted);display:block;margin-top:2px}
+.fm-note{font-size:9px;color:var(--muted);background:#f7f9fb;border:1px solid #e2e7eb;border-radius:8px;padding:9px;margin:8px 0 12px}
+@media(max-width:1050px){.fm-toolbar{grid-template-columns:repeat(3,1fr)}.fm-summary{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.fm-toolbar{grid-template-columns:repeat(2,1fr)}.fm-summary{grid-template-columns:repeat(2,1fr)}}
+
+
+/* v37 structure trim + weighted pass heat map */
+.sr-keep-full{grid-column:1/-1!important;min-width:0}
+.sr-keep-full .sr-table-wrap{overflow-x:auto;width:100%}
+.sr-keep-full table{width:100%;min-width:760px;font-size:9px}
+.sr-keep-full th,.sr-keep-full td{white-space:nowrap;padding:7px 8px!important}
+
+.hm-weight-select{display:flex;align-items:end;gap:8px;margin:0 0 10px}
+.hm-weight-select label{font-size:8px;text-transform:uppercase;font-weight:950;color:var(--muted);width:220px}
+.hm-weight-select select{display:block;width:100%;margin-top:3px}
+.pass-zone{transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+.pass-zone.weighted{border-color:rgba(111,24,39,.20)}
+.pass-zone .pz-context{font-size:7px;line-height:1.3;color:#596775;margin-top:3px;font-weight:800}
+.pass-zone .pz-context b{color:#263746}
+.heat-scale{display:flex;align-items:center;gap:8px;margin:7px 0 10px;font-size:8px;color:var(--muted);font-weight:800}
+.heat-scale-bar{height:9px;flex:1;max-width:220px;border-radius:999px;background:linear-gradient(90deg,rgba(111,24,39,.04),rgba(111,24,39,.62));border:1px solid rgba(111,24,39,.12)}
+
+
+.hm-panel{min-width:0}
+.hm-table-wrap{width:100%;overflow-x:auto}
+.hm-table-wrap table{width:100%;min-width:690px;font-size:8px}
+.hm-table-wrap th,.hm-table-wrap td{white-space:nowrap;padding:6px 6px!important}
+
+
+/* v38 field-zone field + QB run report */
+.st-field-visual{position:relative;height:270px;border:2px solid #c8d7cb;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#1e8c58 0%,#18754b 100%);box-shadow:inset 0 0 0 3px rgba(255,255,255,.08)}
+.st-field-visual:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to right,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 9%,rgba(255,255,255,.015) 9%,rgba(255,255,255,.015) 18%);pointer-events:none}
+.st-field-yardlines{position:absolute;left:5%;right:5%;top:0;bottom:0;display:grid;grid-template-columns:repeat(10,1fr);pointer-events:none;z-index:1}
+.st-field-yardlines i{position:relative;border-right:2px solid rgba(255,255,255,.34)}
+.st-field-yardlines i:after{content:"";position:absolute;left:50%;top:16%;height:10px;border-left:2px solid rgba(255,255,255,.55);box-shadow:0 108px 0 rgba(255,255,255,.55)}
+.st-field-midline{position:absolute;left:50%;top:0;bottom:0;border-left:3px solid rgba(255,255,255,.55);z-index:1}
+.st-field-zone-box{position:absolute;top:18px;bottom:18px;border:1px solid rgba(255,255,255,.32);border-radius:12px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(255,255,255,.78);overflow:hidden;backdrop-filter:blur(2px);z-index:3;box-shadow:0 3px 8px rgba(0,0,0,.08)}
+.st-field-zone-box.hot{outline:3px solid var(--gold);background:#fff6dc}
+.st-field-zone-box span{font-size:7px;font-weight:950;text-transform:uppercase;color:#4b5e54;letter-spacing:.04em}
+.st-field-zone-box b{font-size:23px;color:var(--maroon);line-height:1.05;margin:3px 0}
+.st-field-zone-box small{font-size:8px;line-height:1.45;color:#22343c}
+.st-field-label{position:absolute;bottom:6px;font-size:8px;font-weight:950;color:rgba(255,255,255,.95);letter-spacing:.05em;z-index:3}
+.st-field-label.left{left:9px}.st-field-label.mid{left:50%;transform:translateX(-50%)}.st-field-label.right{right:9px}
+.st-field-endzone{position:absolute;top:0;bottom:0;width:5%;background:linear-gradient(180deg,rgba(111,24,39,.92),rgba(92,18,32,.96));display:flex;align-items:center;justify-content:center;z-index:2;overflow:hidden}
+.st-field-endzone:before{content:"";position:absolute;inset:10px 6px;background:url("ulm_avg_roundel_edge_star.png") center/contain no-repeat;opacity:.22;filter:brightness(1.25)}
+.st-field-endzone:after{content:"ULM";position:relative;color:rgba(255,255,255,.85);font-size:11px;font-weight:1000;letter-spacing:.18em;writing-mode:vertical-rl;text-orientation:mixed}
+.st-field-endzone.left{left:0}.st-field-endzone.left:after{transform:rotate(180deg)}.st-field-endzone.right{right:0}
+.st-field-yardnums{position:absolute;left:5%;right:5%;top:8px;bottom:8px;pointer-events:none;z-index:2}
+.st-field-yardnums span{position:absolute;color:rgba(255,255,255,.62);font-size:16px;font-weight:1000;line-height:1}
+.st-field-yardnums .top{top:6px}.st-field-yardnums .bottom{bottom:6px;transform:rotate(180deg)}
+.st-field-yardnums .n10l{left:8%}.st-field-yardnums .n20l{left:18%}.st-field-yardnums .n30l{left:28%}.st-field-yardnums .n40l{left:38%}.st-field-yardnums .n50{left:49.1%}.st-field-yardnums .n40r{left:58%}.st-field-yardnums .n30r{left:68%}.st-field-yardnums .n20r{left:78%}.st-field-yardnums .n10r{left:88%}
+.st-field-note{font-size:8px;color:var(--muted);margin-top:6px}
+.route-card.route-only{grid-column:1/-1}.route-card.route-only table{min-width:1000px;width:100%}
+.qbr-toolbar{display:grid;grid-template-columns:repeat(2,minmax(160px,240px)) auto;gap:8px;align-items:end;margin:10px 0 12px}
+.qbr-toolbar label{font-size:8px;text-transform:uppercase;font-weight:950;color:var(--muted)}.qbr-toolbar select{display:block;width:100%;margin-top:3px}.qbr-toolbar button{height:36px}
+.qbr-kpis{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:12px}
+.qbr-kpi{background:#fff;border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:10px;padding:10px}
+.qbr-kpi span{display:block;font-size:7px;text-transform:uppercase;font-weight:950;color:var(--muted)}.qbr-kpi b{display:block;font-size:19px;color:var(--maroon);margin-top:2px}
+.qbr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.qbr-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;min-width:0}.qbr-card.full{grid-column:1/-1}
+.qbr-card .table-wrap{overflow:auto}.qbr-card table{width:100%;min-width:820px}.qbr-split{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.qbr-split-card{border:1px solid #dfe5e9;border-radius:11px;padding:11px;background:#f9fbfc}.qbr-split-card h4{margin:0;color:var(--maroon);font-size:16px}.qbr-split-card .big{font-size:26px;font-weight:950;color:#132536}
+.qbr-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:7px}.qbr-mini div{background:#fff;border:1px solid #e3e7ea;border-radius:7px;padding:6px}.qbr-mini span{display:block;font-size:7px;color:var(--muted);text-transform:uppercase;font-weight:950}.qbr-mini b{display:block;font-size:13px;color:var(--maroon)}
+@media(max-width:1050px){.qbr-kpis{grid-template-columns:repeat(4,1fr)}.qbr-grid{grid-template-columns:1fr}}@media(max-width:700px){.qbr-kpis{grid-template-columns:repeat(2,1fr)}.qbr-toolbar{grid-template-columns:1fr}.qbr-split{grid-template-columns:1fr}}
+
+
+/* v39 shared P & 10 filter */
+.report-hash-filter{gap:10px;align-items:end;flex-wrap:wrap}.report-hash-filter>label{width:220px}
+.qbr-toolbar{grid-template-columns:repeat(3,minmax(160px,240px)) auto}
+
 </style>
 </head>
 <body>
 <header><div class="header-inner"><div class="brand"><img src="ulm_avg_roundel_edge_star.png" alt="ULM"><div><div class="kicker">ULM Football</div><h1>Offensive Intelligence</h1><div class="sub">Independent offensive staff workspace · opponent defense · personnel intelligence</div><div id="headerStatus" class="status">Connecting to shared Mississippi State roster…</div></div></div><div class="header-actions"><button id="reloadBtn">Reload Live Roster</button><button id="printBtn">Print / Save PDF</button></div></div></header>
-<div class="shell"><aside><div class="side-title">OFFENSIVE STAFF<div class="side-sub">Mississippi State Week</div></div><button class="nav active" data-page="dashboard">⌂ Dashboard</button><button class="nav" data-page="players">♟ Player Intelligence</button><button class="nav" data-page="personnel">▦ Personnel & Fronts</button><button class="nav" data-page="run">↗ Run Defense</button><button class="nav" data-page="pass">◎ Pass Defense</button><button class="nav" data-page="coverage">◫ Coverage</button><button class="nav" data-page="pressure">✥ Pressure</button><button class="nav" data-page="situations"># Situations</button><button class="nav" data-page="heatmaps">▦ Field Heat Maps</button><button class="nav" data-page="structures">◇ Structure Response</button><button class="nav" data-page="advantage">★ Advantage Theory</button></aside><main><div class="opponent-banner"><div><div class="kicker">2026 Opponent Workspace</div><div class="opp-name">Mississippi State</div><div class="opp-meta">Offensive staff · opponent defense scouting</div></div><div class="live-pill">OFFENSIVE INTELLIGENCE</div></div><div id="app"></div></main></div>
+<div class="shell"><aside><div class="side-title">OFFENSIVE STAFF<div class="side-sub">Mississippi State Week</div></div><button class="nav active" data-page="dashboard">⌂ Dashboard</button><button class="nav" data-page="players">♟ Player Intelligence</button><button class="nav" data-page="leaders">★ Leaders</button><button class="nav" data-page="missedtackles">✕ Missed Tackles</button><button class="nav" data-page="personnel">▦ Personnel & Fronts</button><button class="nav" data-page="run">↗ Run Defense</button><button class="nav" data-page="qbrun">QB Run Success</button><button class="nav" data-page="pass">◎ Pass Defense</button><button class="nav" data-page="coverage">◫ Coverage</button><button class="nav" data-page="pressure">✥ Pressure</button><button class="nav" data-page="situations"># Situations</button><button class="nav" data-page="heatmaps">▦ Field Heat Maps</button><button class="nav" data-page="formations">▤ Formations</button><button class="nav" data-page="structures">◇ Structure Response</button><button class="nav" data-page="advantage">★ Advantage Theory</button></aside><main><div class="opponent-banner"><div><div class="kicker">2026 Opponent Workspace</div><div class="opp-name">Mississippi State</div><div class="opp-meta">Offensive staff · opponent defense scouting</div></div><div class="live-pill">OFFENSIVE INTELLIGENCE</div></div><div id="app"></div></main></div>
 <div id="profileOverlay" class="profile-overlay" onclick="closeFAUProfile()"></div>
 <aside id="fauDrawer" class="fau-drawer" aria-label="Player profile"><div id="fauDrawerBody"></div></aside>
 <div id="printCenterOverlay" class="print-center-overlay" onclick="if(event.target===this)closePrintCenter()">
@@ -556,12 +1028,13 @@ const NOTES_SEASON=2026;
 let cloudNotes={}; let reportQueue=[]; let printProfilesPerPage=4; let customReportItems=[];
 const FILES={
  plays:['play_feed.csv','plays.csv','current.csv'],
+ playerIntel:['player_intelligence.csv'],
  coverage:['coverage.csv','coverage_summary.csv'],
  pressure:['pressure.csv','pressure_summary.csv'],
  fronts:['fronts.csv','front_summary.csv'],
  personnel:['personnel.csv','personnel_summary.csv']
 };
-let roster=[],datasets={},loadState={},page='dashboard',group='ALL',selected=null,facet='overview',freqMode='raw',heatScope='all',heatMetric='attempts',heatCoverage='ALL',heatHash='ALL',heatQB='ALL',portalTab='overview',routeFocus='ALL',runConceptFocus='ALL',runHashF='ALL',runRBSideF='ALL',runPersonnelF='ALL',runFormationF='ALL',dndFilter='ALL',pfPersonnelF='ALL',pfFrontF='ALL',pfDownF='ALL',pfFieldF='ALL',pfBoxF='ALL',rdFrontF='ALL',rdBoxF='ALL',rdPersonnelF='ALL',rdDownF='ALL',rdDistF='ALL',rdFieldF='ALL',rdDirF='ALL',rdGapF='ALL',cvFamilyF='ALL',cvShellF='ALL',cvManZoneF='ALL',cvDownF='ALL',cvDistF='ALL',cvFieldF='ALL',cvHashF='ALL',cvPressureF='ALL',prTypeF='ALL',prRushF='ALL',prDownF='ALL',prDistF='ALL',prFieldF='ALL',prPersonnelF='ALL',prFormationF='ALL',prCoverageF='ALL',stDownF='ALL',stDistF='ALL',stFieldF='ALL',stHashF='ALL',stRP='ALL',stPersonnelF='ALL',stFrontF='ALL',stCoverageF='ALL',hmMetric='targets',hmCoverageF='ALL',hmShellF='ALL',hmPressureF='ALL',hmDownF='ALL',hmHashF='ALL',hmFieldF='ALL',srFormationF='ALL',srPersonnelF='ALL',srMotionF='ALL',srStructureF='ALL',srDownF='ALL',srFieldF='ALL',srHashF='ALL';
+let roster=[],datasets={},loadState={},page='dashboard',group='ALL',selected=null,facet='overview',freqMode='raw',heatScope='all',heatMetric='attempts',heatCoverage='ALL',heatHash='ALL',heatQB='ALL',portalTab='overview',routeFocus='ALL',runConceptFocus='ALL',runHashF='ALL',runRBSideF='ALL',runPersonnelF='ALL',runFormationF='ALL',dndFilter='ALL',dashHashF='ALL',passHashF='ALL',qbRunHashF='ALL',qbRunTypeF='ALL',pfPersonnelF='ALL',pfFrontF='ALL',pfDownF='ALL',pfFieldF='ALL',pfBoxF='ALL',pfHashF='ALL',rdFrontF='ALL',rdBoxF='ALL',rdPersonnelF='ALL',rdDownF='ALL',rdDistF='ALL',rdFieldF='ALL',rdDirF='ALL',rdGapF='ALL',rdHashF='ALL',cvFamilyF='ALL',cvShellF='ALL',cvManZoneF='ALL',cvDownF='ALL',cvDistF='ALL',cvFieldF='ALL',cvHashF='ALL',cvPressureF='ALL',prTypeF='ALL',prRushF='ALL',prDownF='ALL',prDistF='ALL',prFieldF='ALL',prPersonnelF='ALL',prFormationF='ALL',prCoverageF='ALL',prHashF='ALL',stDownF='ALL',stDistF='ALL',stFieldF='ALL',stHashF='ALL',stRP='ALL',stPersonnelF='ALL',stFrontF='ALL',stCoverageF='ALL',hmMetric='ypp',hmCoverageF='ALL',hmShellF='ALL',hmPressureF='ALL',hmDownF='ALL',hmHashF='ALL',hmFieldF='ALL',srFormationF='ALL',srPersonnelF='ALL',srMotionF='ALL',srStructureF='ALL',srDownF='ALL',srFieldF='ALL',srHashF='ALL',fmFormationF='ALL',fmPersonnelF='ALL',fmMotionF='ALL',fmDownF='ALL',fmFieldF='ALL',fmHashF='ALL',hmRelativeF='ALL',hmDepthF='ALL',hmLaneF='ALL',hrRPF='ALL',hrDownF='ALL',hrDistF='ALL',hrFieldF='ALL',hrPersonnelF='ALL';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const num=v=>{let n=parseFloat(String(v??'').replace(/[%,$]/g,''));return Number.isFinite(n)?n:0};
@@ -648,7 +1121,7 @@ function playsForPlayer(value){
  );
 }
 function avg(arr){return arr.length?arr.reduce((a,b)=>a+num(b),0)/arr.length:0}
-function dataStatus(){let labels={plays:'Play Feed',qb:'QB',receiving:'Receiving',routes:'Routes',dropbacks:'Dropbacks',passOverall:'Pass Overall',pressure:'Pressure',runConcepts:'Run Concepts',runDirections:'Run Direction',runBlocking:'Run Block',passBlocking:'Pass Block',formations:'Formations',personnel:'Personnel'};return `<div class="data-status">${Object.entries(labels).map(([k,l])=>`<span class="data-chip ${loadState[k]?.ok?'ok':'bad'}">${loadState[k]?.ok?'✓':'×'} ${l}${loadState[k]?.ok?` · ${loadState[k].n}`:''}</span>`).join('')}</div>`}
+function dataStatus(){let labels={plays:'Play Feed',qb:'QB',receiving:'Receiving',routes:'Routes',dropbacks:'Dropbacks',passOverall:'Pass Overall',pressure:'Pressure',runConcepts:'Run Concepts',runDirections:'Point of Attack',runBlocking:'Run Block',passBlocking:'Pass Block',formations:'Formations',personnel:'Personnel'};return `<div class="data-status">${Object.entries(labels).map(([k,l])=>`<span class="data-chip ${loadState[k]?.ok?'ok':'bad'}">${loadState[k]?.ok?'✓':'×'} ${l}${loadState[k]?.ok?` · ${loadState[k].n}`:''}</span>`).join('')}</div>`}
 function metric(label,val,sub=''){return `<div class="metric"><span>${esc(label)}</span><b>${esc(value(val))}</b>${sub?`<div class="subtle">${esc(sub)}</div>`:''}</div>`}
 function detail(label,val){return `<div class="detail"><span>${label}</span><b>${esc(value(val))}</b></div>`}
 function table(headers,rows){return `<div class="table-wrap"><table class="data-table"><thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`}
@@ -699,6 +1172,12 @@ function dndSelect(onchange='setDndFilter(this.value)'){
  return `<label>Down & Distance<select onchange="${onchange}">${dndOptions().map(([v,l])=>`<option value="${v}" ${dndFilter===v?'selected':''}>${l}</option>`).join('')}</select></label>`;
 }
 function dndMatches(r){return dndFilter==='ALL'||dndLabel(r)===dndFilter}
+function p10Rows(rows){return rows.filter(r=>dndLabel(r)==='P & 10')}
+function addP10Breakdown(arr,rows,metricsFn){
+ let a=p10Rows(rows);
+ if(!a.length)return arr;
+ return [{k:'P & 10',...metricsFn(a)},...arr.filter(x=>x.k!=='P & 10')];
+}
 
 function isManCov(c){c=String(c||'').toUpperCase();return c==='COVER 0'||c==='COVER 1'||c==='COVER 2 MAN'||c.includes('2 MAN')}
 function throwRows(){return (datasets.plays||[]).filter(r=>r.pff_RUNPASS==='P' && r.pff_PASSER && (r.pff_PASSDEPTH!==''||r.pff_PASSWIDTH!==''||r.pff_PASSZONE))}
@@ -1574,39 +2053,162 @@ function closeFAUProfile(){
  $('fauDrawer')?.classList.remove('open');
  document.body.style.overflow='';
 }
-function renderFAUDrawer(p){
- let pos=normPos(p.position),s=piStats(p);
- let prod = pos==='DL'
-  ? [detail('Tagged Plays',s.rows),detail('Pressures',s.pressures),detail('Sacks',s.sacks),detail('Tackles',s.tackles),detail('Stops',s.stops)]
-  : pos==='LB'
-  ? [detail('Tagged Plays',s.rows),detail('Tackles',s.tackles),detail('Stops',s.stops),detail('Pressures',s.pressures),detail('Targets',s.targets),detail('INT',s.ints)]
-  : [detail('Tagged Plays',s.rows),detail('Targets',s.targets),detail('Completions',s.comp),detail('Completion %',s.targets?pctText(s.comp,s.targets):'—'),detail('TD Allowed',s.td),detail('INT',s.ints),detail('PBU',s.pbu)];
- $('fauDrawerBody').innerHTML=`<div class="drawer-top"><button class="back" onclick="closeFAUProfile()">← Back</button><div><div class="drawer-player">${esc(p.name)}</div><div class="drawer-pos">${esc(pos)} · Mississippi State</div></div><div class="drawer-spacer"></div>${p.profile?`<button onclick='window.open(${JSON.stringify(p.profile)},"_blank")'>Official Bio ↗</button>`:''}</div>
- <div class="fau-hero"><div class="player-photo">${photo(p)}<div class="player-no">#${esc(p.number||'—')}</div></div><div class="fau-hero-info"><div class="kicker">OFFENSIVE INTELLIGENCE</div><div class="fau-hero-name">${esc(p.name)}</div><div class="fau-hero-pos">${esc(p.position||'')} · #${esc(p.number||'—')}</div><div class="fau-meta">${p.height?esc(p.height):''}${p.weight?` · ${esc(p.weight)} lbs`:''}${p.class?` · ${esc(p.class)}`:''}${p.hometown?`<br>${esc(p.hometown)}`:''}${p.previousSchool?`<br>Previous: ${esc(p.previousSchool)}`:''}</div></div></div>
- <div class="fau-tabs"><button class="fau-tab active">Overview</button><button class="fau-tab" onclick="showSharedNotes()">Coach Notes</button></div>
- <div id="fauPanel" class="fau-panel">
-  <div class="card"><h3>Defensive Production — Charted Sample</h3><div class="detail-grid">${prod.join('')}</div><div class="sample-note">Only explicit defender tags are counted.</div></div>
-  <div class="card"><h3>Roster Identity</h3><div class="detail-grid">${detail('Number',p.number)}${detail('Position',p.position)}${detail('Group',pos)}${detail('Height',p.height)}${detail('Weight',p.weight?`${p.weight} lbs`:'')}${detail('Class',p.class)}${detail('Hometown',p.hometown)}${detail('Previous School',p.previousSchool)}</div></div>
-  <div class="card"><h3>Biography</h3><div class="bio">${esc(p.bio||'Biography has not been enriched in the shared roster yet.')}</div></div>
+
+const PI_OPP_NAMES={
+ 'MSSO':'Southern Miss','AZST':'Arizona State','MSAL':'Alcorn State','ILNO':'Northern Illinois',
+ 'TNUN':'Tennessee','TXAM':'Texas A&M','FLUN':'Florida','TXUN':'Texas','ARUN':'Arkansas',
+ 'GAUN':'Georgia','MOUN':'Missouri','MSUN':'Ole Miss','NCWF':'Wake Forest'
+};
+function piOppName(code){return PI_OPP_NAMES[String(code||'').toUpperCase()]||String(code||'Opponent')}
+function piGameKey(r){return String(firstField(r,['pff_GAMEID'])||'')||`${firstField(r,['pff_GAMEDATE'])||''}-${firstField(r,['pff_OFFTEAM'])||''}`}
+function piPlayerEventRows(p){
+ return dashboardPlayRows().filter(r=>piTagged(r,p,[
+  'pff_TACKLE','pff_TACKLEASSIST','pff_STOP','pff_SACK','pff_QBPRESSURE',
+  'pff_INTERCEPTION','pff_PASSBREAKUP','pff_FORCEDFUMBLE','pff_MISSEDTACKLE'
+ ]));
+}
+function piGameStats(p){
+ if(!piHasVerifiedHistoricalIdentity(p))return [];
+ let pos=normPos(p.position),map={};
+ piPlayerEventRows(p).forEach(r=>{
+   let key=piGameKey(r);
+   if(!map[key])map[key]={
+     key,date:firstField(r,['pff_GAMEDATE'])||'',opp:piOppName(firstField(r,['pff_OFFTEAM'])),
+     tagged:0,tkl:0,ast:0,stop:0,pressure:0,sack:0,int:0,pbu:0,ff:0,mt:0
+   };
+   let g=map[key];g.tagged++;
+   if(piTagged(r,p,['pff_TACKLE']))g.tkl++;
+   if(piTagged(r,p,['pff_TACKLEASSIST']))g.ast++;
+   if(piTagged(r,p,['pff_STOP']))g.stop++;
+   if(piTagged(r,p,['pff_QBPRESSURE']))g.pressure++;
+   if(piTagged(r,p,['pff_SACK']))g.sack++;
+   if(piTagged(r,p,['pff_INTERCEPTION']))g.int++;
+   if(piTagged(r,p,['pff_PASSBREAKUP']))g.pbu++;
+   if(piTagged(r,p,['pff_FORCEDFUMBLE']))g.ff++;
+   if(piTagged(r,p,['pff_MISSEDTACKLE']))g.mt++;
+ });
+ return Object.values(map).map(g=>{
+   let production=g.tkl+g.ast+g.stop+g.pressure+g.sack+g.int+g.pbu+g.ff;
+   return {...g,production};
+ }).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+}
+function piTopGames(p){return piGameStats(p).slice().sort((a,b)=>b.production-a.production||b.sack-a.sack||b.int-a.int||b.pbu-a.pbu||b.stop-a.stop).slice(0,3)}
+function piGameCard(g,i){
+ return `<div class="pi-game-card"><div class="rank">#${i+1} Top Game</div><h4>vs ${esc(g.opp)}</h4><div class="date">${esc(g.date)}</div>
+ <div class="pi-game-score">${g.production} charted production events</div>
+ <div class="pi-game-mini">
+  <div><span>Tackles</span><b>${g.tkl}</b></div><div><span>Stops</span><b>${g.stop}</b></div><div><span>Pressures</span><b>${g.pressure}</b></div>
+  <div><span>Sacks</span><b>${g.sack}</b></div><div><span>INT</span><b>${g.int}</b></div><div><span>PBU</span><b>${g.pbu}</b></div>
+ </div></div>`;
+}
+function piTopGamesPanel(p){
+ let games=piTopGames(p);
+ return `<div class="card"><h3>Top 3 Games — Charted Production</h3>
+  <div class="pi-profile-note">No custom score. These are the three games with the most explicit charted production events for the player. The actual football numbers are shown below.</div>
+  <div class="pi-top-games">${games.length?games.map(piGameCard).join(''):'<div class="empty">No per-game defender events matched this player.</div>'}</div>
  </div>`;
 }
-window.showSharedNotes=()=>{let p=roster.find(x=>x.name===selected);if(!p)return;let panel=$('fauPanel');if(panel){panel.innerHTML=coachNotesFAU(p)}};
+function piGameLogPanel(p){
+ let games=piGameStats(p).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ return `<div class="card"><h3>Game-by-Game Production</h3><div class="pi-game-log-wrap">${games.length?table(
+  ['Date','Opponent','Tagged Events','Tkl','Ast','Stops','Press','Sacks','INT','PBU','FF','Missed'],
+  games.map(g=>[esc(g.date),esc(g.opp),g.tagged,g.tkl,g.ast,g.stop,g.pressure,g.sack,g.int,g.pbu,g.ff,g.mt])
+ ):'<div class="empty">No game log matched this player.</div>'}</div>
+ <div class="pi-profile-note">“Tagged Events” is not snap count. It is the number of plays on which this player appears in one of the explicit defender-event fields available in the play feed.</div></div>`;
+}
+function piDeploymentPanel(p){
+ let s=piSummaryByVerifiedName(p);
+ if(!s)return `<div class="card"><h3>Deployment / Alignment</h3><div class="empty">No PFF player-summary deployment row matched this player.</div></div>`;
+ let vals=[
+  ['DL',s.DL],['IDL',s.IDL],['EDGE',s.EDGE],['BOX',s.BOX],['ILB',s.ILB],['OLB',s.OLB],
+  ['SS',s.SS],['FS',s.FS],['SCB',s.SCB],['CB',s.CB],
+  ['Man %',s.MAN_PCT],['Zone %',s.ZONE_PCT],['Press %',s.PRESS_PCT],
+  ['0 Tech',s.TECH_0],['1 Tech',s.TECH_1],['2/2i',num(s.TECH_2)+num(s.TECH_2I)],['3 Tech',s.TECH_3],
+  ['4/4i',num(s.TECH_4)+num(s.TECH_4I)],['5 Tech',s.TECH_5],['6/6i',num(s.TECH_6)+num(s.TECH_6I)],['7 Tech',s.TECH_7],['9 Tech',s.TECH_9]
+ ].filter(([l,v])=>nonEmpty(v)&&String(v)!=='0');
+ return `<div class="card"><h3>Deployment / Alignment</h3><div class="pi-role-grid">${vals.length?vals.map(([l,v])=>`<div class="pi-role-card"><span>${esc(l)}</span><b>${esc(value(v))}</b></div>`).join(''):'<div class="empty">No alignment distribution was available.</div>'}</div></div>`;
+}
+function piSkillPanel(p){
+ let s=piSummaryByVerifiedName(p);
+ if(!s)return '';
+ let pos=normPos(p.position),vals=[];
+ if(pos==='DL'||pos==='LB'){
+   vals=[['DEF Grade',s.DEF_GRD],['Run Grade',s.RUND_GRD],['Rush Grade',s.PRSH_GRD],['Pressures',s.TPR],['Sacks',s.SK],['Hits',s.HT],['Hurries',s.HU],['PR Win %',s.PR_WIN_PCT],['Pressure %',s.PRESSURE_PCT],['Run Stops',s.STOP],['Missed Tkl',s.MT]];
+   if(pos==='LB')vals.push(['Cov Grade',s.COV_GRD],['Targets',s.CTGT],['Yds Allowed',s.PASS_YDS_ALLOWED]);
+ }else{
+   vals=[['Cov Grade',s.COV_GRD],['Targets',s.CTGT],['Completions',s.REC_ALLOWED],['Comp %',s.COMP_PCT_ALLOWED],['Yds Allowed',s.PASS_YDS_ALLOWED],['TD Allowed',s.TD_ALLOWED],['INT',s.INT],['PBU',s.PBU],['Rating Allowed',s.RTG_ALLOWED],['Man %',s.MAN_PCT],['Zone %',s.ZONE_PCT],['Missed Tkl',s.MT]];
+ }
+ vals=vals.filter(([l,v])=>nonEmpty(v));
+ return `<div class="card"><h3>Season Skill Profile</h3><div class="detail-grid">${vals.map(([l,v])=>detail(l,v)).join('')}</div></div>`;
+}
+function piProfilePanel(p,tab){
+ if(!piHasVerifiedHistoricalIdentity(p)&&tab!=='notes'){
+   return `<div class="card"><h3>Historical Production</h3><div class="empty"><b>No verified 2025 charted data for ${esc(p.name)}.</b><br>This current-roster player does not directly match a player name in the 2025 historical dataset. The app will not attach another player's statistics based only on jersey number.</div></div>
+   <div class="card"><h3>Roster Identity</h3><div class="detail-grid">${detail('Number',p.number)}${detail('Position',p.position)}${detail('Height',p.height)}${detail('Weight',p.weight?`${p.weight} lbs`:'')}${detail('Class',p.class)}${detail('Hometown',p.hometown)}${detail('Previous School',p.previousSchool)}</div></div>`;
+ }
+ if(tab==='topgames')return piTopGamesPanel(p);
+ if(tab==='gamelog')return piGameLogPanel(p);
+ if(tab==='deployment')return piDeploymentPanel(p)+piSkillPanel(p);
+ if(tab==='notes')return coachNotesFAU(p);
+ let pos=normPos(p.position),s=piStats(p);
+ let prod = pos==='DL'
+  ? [detail('Tagged Plays',s.rows),detail('Pressures',s.pressures),detail('Sacks',s.sacks),detail('Tackles',s.tackles),detail('Stops',s.stops),detail('DEF Grade',s.defGrade||'—'),detail('Rush Grade',s.rushGrade||'—'),detail('PR Win %',s.prWin||'—')]
+  : pos==='LB'
+  ? [detail('Tagged Plays',s.rows),detail('Tackles',s.tackles),detail('Stops',s.stops),detail('Pressures',s.pressures),detail('Targets',s.targets),detail('INT',s.ints),detail('DEF Grade',s.defGrade||'—'),detail('Run Grade',s.runGrade||'—'),detail('Cov Grade',s.covGrade||'—')]
+  : [detail('Tagged Plays',s.rows),detail('Targets',s.targets),detail('Completions',s.comp),detail('Completion %',s.targets?pctText(s.comp,s.targets):'—'),detail('TD Allowed',s.td),detail('INT',s.ints),detail('PBU',s.pbu),detail('Cov Grade',s.covGrade||'—'),detail('Yds Allowed',s.passYds||'—'),detail('Rating Allowed',s.rating||'—'),detail('Man / Zone',s.manPct&&s.zonePct?`${s.manPct} / ${s.zonePct}`:'—')];
+ return `<div class="card"><h3>Defensive Production — Charted Sample</h3><div class="detail-grid">${prod.join('')}</div><div class="sample-note">Only explicit defender tags are counted.</div></div>
+ ${piTopGamesPanel(p)}
+ ${piSkillPanel(p)}
+ <div class="card"><h3>Roster Identity</h3><div class="detail-grid">${detail('Number',p.number)}${detail('Position',p.position)}${detail('Group',pos)}${detail('Height',p.height)}${detail('Weight',p.weight?`${p.weight} lbs`:'')}${detail('Class',p.class)}${detail('Hometown',p.hometown)}${detail('Previous School',p.previousSchool)}</div></div>
+ <div class="card"><h3>Biography</h3><div class="bio">${esc(p.bio||'Biography has not been enriched in the shared roster yet.')}</div></div>`;
+}
+window.setPIProfileTab=id=>{portalTab=id;let p=roster.find(x=>x.name===selected);if(p)renderFAUDrawer(p)};
+
+function renderFAUDrawer(p){
+ let pos=normPos(p.position);
+ $('fauDrawerBody').innerHTML=`<div class="drawer-top"><button class="back" onclick="closeFAUProfile()">← Back</button><div><div class="drawer-player">${esc(p.name)}</div><div class="drawer-pos">${esc(pos)} · Mississippi State</div></div><div class="drawer-spacer"></div>${p.profile?`<button onclick='window.open(${JSON.stringify(p.profile)},"_blank")'>Official Bio ↗</button>`:''}</div>
+ <div class="fau-hero"><div class="player-photo">${photo(p)}<div class="player-no">#${esc(p.number||'—')}</div></div><div class="fau-hero-info"><div class="kicker">OFFENSIVE INTELLIGENCE</div><div class="fau-hero-name">${esc(p.name)}</div><div class="fau-hero-pos">${esc(p.position||'')} · #${esc(p.number||'—')}</div><div class="fau-meta">${p.height?esc(p.height):''}${p.weight?` · ${esc(p.weight)} lbs`:''}${p.class?` · ${esc(p.class)}`:''}${p.hometown?`<br>${esc(p.hometown)}`:''}${p.previousSchool?`<br>Previous: ${esc(p.previousSchool)}`:''}</div></div></div>
+ <div class="pi-profile-tabs">
+   <button class="${portalTab==='overview'?'active':''}" onclick="setPIProfileTab('overview')">Overview</button>
+   <button class="${portalTab==='topgames'?'active':''}" onclick="setPIProfileTab('topgames')">Top 3 Games</button>
+   <button class="${portalTab==='gamelog'?'active':''}" onclick="setPIProfileTab('gamelog')">Game Log</button>
+   <button class="${portalTab==='deployment'?'active':''}" onclick="setPIProfileTab('deployment')">Deployment</button>
+   <button class="${portalTab==='notes'?'active':''}" onclick="setPIProfileTab('notes')">Coach Notes</button>
+ </div>
+ <div id="fauPanel" class="fau-panel">${piProfilePanel(p,portalTab)}</div>`;
+}
+window.showSharedNotes=()=>{portalTab='notes';let p=roster.find(x=>x.name===selected);if(p)renderFAUDrawer(p)};
 window.setPortalTab=id=>{portalTab=id;let p=roster.find(x=>x.name===selected);if(p)renderFAUDrawer(p)};
 window.setRouteFocus=r=>{routeFocus=r;let p=roster.find(x=>x.name===selected);if(p)renderFAUDrawer(p)};
 window.openFAUProfile=openFAUProfile;window.openPlayerIndex=openPlayerIndex;window.closeFAUProfile=closeFAUProfile;
 
+
+function mtRowsForPlayer(p){return dashboardPlayRows().filter(r=>piTagged(r,p,['pff_MISSEDTACKLE']))}
+function mtReportRows(players){
+ return players.map(p=>{
+   let s=piStats(p),mrows=mtRowsForPlayer(p);
+   let run=mrows.filter(r=>['R','RUN'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())).length;
+   let pass=mrows.filter(r=>['P','PASS'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())).length;
+   let gains=mrows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
+   let expl=gains.filter(x=>x>=15).length,opp=num(s.tackles)+num(s.mt);
+   return {p,mt:num(s.mt),tkl:num(s.tackles),opp,mtPct:opp?100*num(s.mt)/opp:0,run,pass,expl,ypp:mrows.length?avg(gains):0,med:mrows.length?calcMedian(gains):0};
+ }).filter(x=>x.mt>0).sort((a,b)=>b.mt-a.mt||b.mtPct-a.mtPct);
+}
+function missedTackleReport(players){
+ let rows=mtReportRows(players),total=rows.reduce((n,x)=>n+x.mt,0);
+ return `<div class="card mt-report"><h3>Missed Tackle Report</h3>
+ <div class="sample-note">MT and tackle totals come from the PFF player summary. Run/pass split and play results come from explicit <code>pff_MISSEDTACKLE</code> tags. MT% = MT / (Tackles + MT).</div>
+ <div class="table-wrap">${rows.length?table(
+   ['Player','Pos','MT','Team MT Share','Tackles','Tackle Opps','MT %','Run MT','Pass MT','Explosive Plays on MT','YPP on MT Plays','Median'],
+   rows.map(x=>[esc(x.p.name),esc(x.p.position),x.mt,pctText(x.mt,total),x.tkl,x.opp,`${x.mtPct.toFixed(1)}%`,x.run,x.pass,x.expl,fmt(x.ypp,2),fmt(x.med,1)])
+ ):'<div class="empty">No missed-tackle data is available.</div>'}</div></div>`;
+}
+
 function playersPage(){
  let all=offenseRoster(),list=filteredPlayers(),posCounts={};
  all.forEach(p=>posCounts[normPos(p.position)]=(posCounts[normPos(p.position)]||0)+1);
- let dl=all.filter(p=>normPos(p.position)==='DL'),lb=all.filter(p=>normPos(p.position)==='LB'),db=all.filter(p=>normPos(p.position)==='DB');
- let rush=piLeaderboard(dl.concat(lb),'rush'),tackle=piLeaderboard(all,'tackle'),coverage=piLeaderboard(db.concat(lb),'coverage');
  return `<div class="page-title"><h2>Player Intelligence</h2><p>Shared opponent player profiles for the offensive staff, with defensive production added only when the play feed explicitly identifies the defender.</p></div>
- <div class="notice card"><b>Shared Player Intelligence remains intact.</b> Roster, photos, bios and staff notes still come from the common player source. The production layer below is opponent-specific and does not infer missing defender identities.</div>
- <div class="pi-leaders">
-   ${piLeaderCard('Pass-Rush Leaders',rush,'rush')}
-   ${piLeaderCard('Tackle Leaders',tackle,'tackle')}
-   ${piLeaderCard('Coverage Usage',coverage,'coverage')}
- </div>
+ <div class="notice card"><b>Historical identity is name-verified.</b> A current player receives 2025 production only when his name directly matches the historical player data. Jersey number is used to locate play-feed events only after that identity match is established.</div>
  <div class="toolbar"><input id="playerSearch" placeholder="Search name, number, hometown or previous school" oninput="render()"><select id="playerSort" onchange="render()"><option value="number">Sort: number</option><option value="name">Sort: name</option><option value="position">Sort: position</option></select><div></div><div></div></div>
  <div class="position-tabs">${positionGroups().map(([id,l])=>`<button class="${group===id?'active':''}" onclick="setGroup('${id}')">${l}${id!=='ALL'&&posCounts[id]!=null?` (${posCounts[id]})`:''}</button>`).join('')}</div>
  <div class="kpis"><div class="kpi"><span>Defensive Players</span><b>${all.length}</b><small>shared 2026 roster</small></div><div class="kpi"><span>Current View</span><b>${list.length}</b><small>${group==='ALL'?'All defense':group}</small></div><div class="kpi"><span>Shared Source</span><b>LIVE</b><small>one roster for every intel app</small></div><div class="kpi"><span>Advantage Data</span><b>Later</b><small>optional sampled layer</small></div></div>
@@ -1628,28 +2230,23 @@ function dashboardPlayRows(){
 function dashboardStats(rows){
  let gains=[],run=[],pass=[],att=0,comp=0,sacks=0,ints=0,td=0,blitz=0,pressure=0;
  rows.forEach(r=>{
-   let gain=num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained']));
-   gains.push(gain);
+   let gain=num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])); gains.push(gain);
    let rp=String(firstField(r,['pff_RUNPASS','RUNPASS','run_pass','play_type'])||'').toUpperCase();
-   if(rp==='R'||rp==='RUN')run.push(gain);
-   if(rp==='P'||rp==='PASS')pass.push(gain);
+   if(rp==='R'||rp==='RUN')run.push(gain); if(rp==='P'||rp==='PASS')pass.push(gain);
    let result=String(firstField(r,['pff_PASSRESULT','PASSRESULT','pass_result'])||'').toUpperCase();
    if(['COMPLETE','INCOMPLETE','INTERCEPTION','THROWN AWAY','HIT AS THREW','BATTED PASS'].includes(result))att++;
    if(result==='COMPLETE')comp++;
-   if(result==='SACK')sacks++;
-   if(result==='INTERCEPTION'||nonEmpty(firstField(r,['pff_INTERCEPTION','INTERCEPTION'])))ints++;
-   if(nonEmpty(firstField(r,['pff_TOUCHDOWN','TOUCHDOWN','TD'])))td++;
-   let bz=String(firstField(r,['pff_BLITZDOG','BLITZ','blitz'])||'').toUpperCase();
-   if(['1','TRUE','YES','Y','BLITZ'].includes(bz))blitz++;
-   let pr=String(firstField(r,['pff_PRESSURE','PRESSURE','pressure'])||'').toUpperCase();
-   if(['1','TRUE','YES','Y','PRESSURE'].includes(pr))pressure++;
+   if(result==='SACK'||nonEmpty(firstField(r,['pff_SACK'])))sacks++;
+   if(result==='INTERCEPTION'||nonEmpty(firstField(r,['pff_INTERCEPTION'])))ints++;
+   if(nonEmpty(firstField(r,['pff_TOUCHDOWN'])))td++;
+   if(pffBool(firstField(r,['pff_BLITZDOG'])))blitz++;
+   if(nonEmpty(firstField(r,['pff_QBPRESSURE'])))pressure++;
  });
- let n=gains.length, expl=gains.filter(x=>x>=15).length, neg=gains.filter(x=>x<=0).length;
- return {
-   n,ypp:n?avg(gains):0,median:n?calcMedian(gains):0,expl,neg,runN:run.length,passN:pass.length,
-   runYpp:run.length?avg(run):0,passYpp:pass.length?avg(pass):0,att,comp,sacks,ints,td,blitz,pressure
- };
+ let n=gains.length,expl=gains.filter(x=>x>=15).length,neg=gains.filter(x=>x<=0).length;
+ return {n,ypp:n?avg(gains):0,median:n?calcMedian(gains):0,expl,neg,runN:run.length,passN:pass.length,
+ runYpp:run.length?avg(run):0,passYpp:pass.length?avg(pass):0,att,comp,sacks,ints,td,blitz,pressure};
 }
+
 function groupCounts(rows,fields,limit=6){
  let g={};
  rows.forEach(r=>{
@@ -1668,45 +2265,45 @@ function dashKpi(label,val,sub=''){
  return `<div class="dash-kpi"><span>${esc(label)}</span><b>${esc(value(val))}</b>${sub?`<small>${esc(sub)}</small>`:''}</div>`;
 }
 function dashboardDataStatus(){
- const labels={plays:'Play Feed',coverage:'Coverage',pressure:'Pressure',fronts:'Fronts',personnel:'Personnel'};
- return `<div class="dash-status">${Object.entries(labels).map(([k,l])=>`<span class="data-chip ${loadState[k]?.ok?'ok':'bad'}">${loadState[k]?.ok?'✓':'○'} ${l}${loadState[k]?.ok?` · ${loadState[k].n}`:' · waiting'}</span>`).join('')}</div>`;
+ const items=[['plays','Play Feed'],['playerIntel','Player Intelligence']];
+ return `<div class="dash-status">${items.map(([k,l])=>`<span class="data-chip ${loadState[k]?.ok?'ok':'bad'}">${loadState[k]?.ok?'✓':'○'} ${l}${loadState[k]?.ok?` · ${loadState[k].n}`:' · waiting'}</span>`).join('')}</div>`;
 }
 
+
+function piSummaryByVerifiedName(p){
+ if(!p||!nonEmpty(p.name))return null;
+ let nm=cleanName(p.name);
+ return (datasets.playerIntel||[]).find(r=>cleanName(r.Name)===nm)||null;
+}
+function piHasVerifiedHistoricalIdentity(p){return !!piSummaryByVerifiedName(p)}
 function piTokenMatchesPlayer(v,p){
  if(!nonEmpty(v)||!p)return false;
+ let summary=piSummaryByVerifiedName(p);
+ if(!summary)return false;
  if(cleanName(v)===cleanName(p.name))return true;
- let pj=jerseyNum(p.number),tj=tokenJersey(v);
- return !!(pj&&tj&&pj===tj);
+ let historicalJersey=jerseyNum(summary['#']),tokenNumber=tokenJersey(v);
+ return !!(historicalJersey&&tokenNumber&&historicalJersey===tokenNumber);
 }
 function piTagged(r,p,fields){return fields.some(k=>piTokenMatchesPlayer(r?.[k],p))}
 function piRowsForPlayer(p){
  return dashboardPlayRows().filter(r=>piTagged(r,p,[
-  'pff_DEFENDER','DEFENDER','defender','pff_PRIMARYDEFENDER','PRIMARY_DEFENDER','primary_defender',
-  'pff_TACKLER','TACKLER','tackler','pff_SACKER','SACKER','sacker',
-  'pff_PRESSURER','PRESSURER','pressurer','pff_TARGETEDDEFENDER','TARGETED_DEFENDER','targeted_defender',
-  'pff_INTERCEPTOR','INTERCEPTOR','interceptor','pff_PBUDEFENDER','PBU_DEFENDER','pbu_defender'
+  'pff_TACKLE','pff_TACKLEASSIST','pff_STOP','pff_SACK','pff_QBPRESSURE',
+  'pff_INTERCEPTION','pff_PASSBREAKUP','pff_FORCEDFUMBLE','pff_MISSEDTACKLE'
  ]));
 }
 function piStats(p){
- let rows=piRowsForPlayer(p),tackles=0,stops=0,sacks=0,pressures=0,targets=0,comp=0,ints=0,td=0,pbu=0;
- rows.forEach(r=>{
-  if(piTagged(r,p,['pff_TACKLER','TACKLER','tackler','pff_PRIMARYDEFENDER','PRIMARY_DEFENDER','primary_defender']))tackles++;
-  if(piTagged(r,p,['pff_TFLDEFENDER','TFL_DEFENDER','tfl_defender','pff_STOPDEFENDER','STOP_DEFENDER','stop_defender']))stops++;
-  if(piTagged(r,p,['pff_SACKER','SACKER','sacker']))sacks++;
-  if(piTagged(r,p,['pff_PRESSURER','PRESSURER','pressurer','pff_HURRYDEFENDER','HURRY_DEFENDER','hurry_defender']))pressures++;
-  if(piTagged(r,p,['pff_TARGETEDDEFENDER','TARGETED_DEFENDER','targeted_defender','pff_DEFENDER','DEFENDER','defender'])){
-   let rp=String(firstField(r,['pff_RUNPASS','RUNPASS','run_pass','play_type'])||'').toUpperCase();
-   if(rp==='P'||rp==='PASS'){
-    targets++;
-    let result=String(firstField(r,['pff_PASSRESULT','PASSRESULT','pass_result'])||'').toUpperCase();
-    if(result==='COMPLETE')comp++;
-    if(nonEmpty(firstField(r,['pff_TOUCHDOWN','TOUCHDOWN','TD'])))td++;
-   }
-  }
-  if(piTagged(r,p,['pff_INTERCEPTOR','INTERCEPTOR','interceptor']))ints++;
-  if(piTagged(r,p,['pff_PBUDEFENDER','PBU_DEFENDER','pbu_defender','PASS_BREAKUP_DEFENDER']))pbu++;
- });
- return {rows:rows.length,tackles,stops,sacks,pressures,targets,comp,ints,td,pbu};
+ let summary=piSummaryByVerifiedName(p);
+ if(!summary){
+   return {rows:0,tackles:0,stops:0,sacks:0,pressures:0,targets:0,comp:0,ints:0,td:0,pbu:0,mt:0,source:'No verified 2025 match',verified:false};
+ }
+ return {
+  rows:num(summary.DEF),tackles:num(summary.TKL),stops:num(summary.STOP),sacks:num(summary.SK),pressures:num(summary.TPR),
+  targets:num(summary.CTGT),comp:num(summary.REC_ALLOWED),ints:num(summary.INT),td:num(summary.TD_ALLOWED),pbu:num(summary.PBU),mt:num(summary.MT),
+  defGrade:summary.DEF_GRD||'',runGrade:summary.RUND_GRD||'',rushGrade:summary.PRSH_GRD||'',covGrade:summary.COV_GRD||'',
+  compPct:summary.COMP_PCT_ALLOWED||'',passYds:num(summary.PASS_YDS_ALLOWED),rating:summary.RTG_ALLOWED||'',
+  prWin:summary.PR_WIN_PCT||'',prPct:summary.PRESSURE_PCT||'',zonePct:summary.ZONE_PCT||'',manPct:summary.MAN_PCT||'',
+  source:'Verified 2025 name match',verified:true
+ };
 }
 function piLeaderboard(players,metric,limit=6){
  return players.map(p=>({p,s:piStats(p)})).map(x=>{
@@ -1714,24 +2311,59 @@ function piLeaderboard(players,metric,limit=6){
   return {...x,v};
  }).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,limit);
 }
+
+function leaderHeadshot(p){
+ return `<div class="leader-headshot">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" onerror="this.remove();this.parentElement.innerHTML='<div class=&quot;initials&quot;>${initials(p.name)}</div>'">`:`<div class="initials">${initials(p.name)}</div>`}</div>`;
+}
+function leaderMetricLabel(metric){return metric==='rush'?'Rush Impact':metric==='coverage'?'Targets':'Tackles'}
 function piLeaderCard(title,items,metric){
- return `<div class="pi-leader"><h3>${esc(title)}</h3>${items.length?items.map((x,i)=>{
-  let sub=metric==='rush'?`${x.s.sacks} sacks · ${x.s.pressures} pressures`
-   :metric==='coverage'?`${x.s.comp}/${x.s.targets} comp · ${x.s.ints} INT`
-   :`${x.s.stops} stops`;
-  return `<div class="pi-row"><div class="pi-rank">${i+1}</div><div><div class="pi-name">${esc(x.p.name)}</div><div class="pi-meta">#${esc(x.p.number||'—')} · ${esc(normPos(x.p.position))} · ${esc(sub)}</div></div><div class="pi-val">${x.v}</div></div>`
- }).join(''):'<div class="empty">No explicit player tags in the current play data.</div>'}</div>`;
+ return `<div class="leader-board"><h3>${esc(title)}</h3><div class="sub">${metric==='rush'?'Pressure and sack production':metric==='coverage'?'Most involved defenders in coverage':'Tackle production'}</div>
+ ${items.length?items.map((x,i)=>{
+   let idx=roster.indexOf(x.p);
+   let sub=metric==='rush'?`${x.s.sacks} sacks · ${x.s.pressures} pressures`
+    :metric==='coverage'?`${x.s.comp}/${x.s.targets} completions · ${x.s.ints} INT · ${x.s.pbu} PBU`
+    :`${x.s.stops} stops · ${x.s.mt||0} missed`;
+   return `<div class="leader-entry" role="button" tabindex="0" onclick="openPlayerIndex(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPlayerIndex(${idx})}">
+     <div class="leader-rank">${i+1}</div>${leaderHeadshot(x.p)}
+     <div class="leader-info"><div class="leader-name">${esc(x.p.name)}</div><div class="leader-meta">#${esc(x.p.number||'—')} · ${esc(x.p.position||normPos(x.p.position))}</div><div class="leader-sub">${esc(sub)}</div></div>
+     <div class="leader-value"><b>${x.v}</b><span>${leaderMetricLabel(metric)}</span></div>
+   </div>`;
+ }).join(''):'<div class="empty">No explicit player production is available.</div>'}</div>`;
+}
+function leadersPage(){
+ let all=offenseRoster().filter(piHasVerifiedHistoricalIdentity),dl=all.filter(p=>normPos(p.position)==='DL'),lb=all.filter(p=>normPos(p.position)==='LB'),db=all.filter(p=>normPos(p.position)==='DB');
+ let rush=piLeaderboard(dl.concat(lb),'rush'),tackle=piLeaderboard(all,'tackle'),coverage=piLeaderboard(db.concat(lb),'coverage');
+ return `<div class="page-title"><h2>Defensive Leaders</h2><p>Quick scouting board for the defenders most involved in pass rush, tackling and coverage.</p></div>
+ <div class="leaders-page-grid">
+   ${piLeaderCard('Pass-Rush Leaders',rush,'rush')}
+   ${piLeaderCard('Tackle Leaders',tackle,'tackle')}
+   ${piLeaderCard('Coverage Leaders',coverage,'coverage')}
+ </div>
+ <div class="sample-note" style="margin-top:12px">Headshots are intentionally smaller than the full bio photo. Click any leader to open the full Player Intelligence profile.</div>`;
 }
 
+
+function reportHash(r){return cvHash(r)}
+function reportHashOptions(current){
+ return `<option value="ALL" ${current==='ALL'?'selected':''}>All Hashes</option>
+ <option value="L" ${current==='L'?'selected':''}>Left Hash</option>
+ <option value="C" ${current==='C'?'selected':''}>Middle</option>
+ <option value="R" ${current==='R'?'selected':''}>Right Hash</option>`;
+}
+function setDashHash(v){dashHashF=v;render()}
+function setPassHash(v){passHashF=v;render()}
+
 function dashboardPage(){
- let rows=dashboardPlayRows(),s=dashboardStats(rows),def=offenseRoster();
+ let allRows=dashboardPlayRows(),rows=allRows.filter(r=>(dashHashF==='ALL'||reportHash(r)===dashHashF)&&dndMatches(r)),s=dashboardStats(rows),def=offenseRoster();
  let dl=def.filter(p=>normPos(p.position)==='DL').length,lb=def.filter(p=>normPos(p.position)==='LB').length,db=def.filter(p=>normPos(p.position)==='DB').length;
  let personnel=groupCounts(rows,['pff_OFFPERSONNELBASIC','pff_OFFPERSONNEL','PERSONNEL','personnel']);
- let fronts=groupCounts(rows,['pff_DEFENSIVEFRONT','pff_FRONT','DEF_FRONT','FRONT','front']);
- let coverage=groupCounts(rows,['pff_PASS_COVERAGE_BASIC','pff_COVERAGE','COVERAGE','coverage']);
- let rushCount=groupCounts(rows,['pff_NUMBEROFPASSRUSHERS','pff_PASSRUSHERS','RUSH_COUNT','rush_count']);
+ let fronts=groupCounts(rows,['pff_DEFENSIVE_FRONT_NAME','pff_DEFPERSONNEL']);
+ let passRows=rows.filter(r=>['P','PASS'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase()));
+ let coverage=groupCounts(passRows,['pff_PASS_COVERAGE_BASIC','pff_PASSCOVERAGE']);
+ let rushObj={};passRows.forEach(r=>{let k=pffLeadingCount(firstField(r,['pff_PASSRUSHPLAYERS']));if(k)rushObj[k]=(rushObj[k]||0)+1});let rushCount=Object.entries(rushObj).sort((a,b)=>b[1]-a[1]);
  let has=rows.length>0;
  return `<div class="page-title"><h2>Dashboard</h2><p>Mississippi State defensive scouting overview for the ULM offensive staff.</p></div>
+ <div class="report-hash-filter"><label>Hash<select onchange="setDashHash(this.value)">${reportHashOptions(dashHashF)}</select></label>${dndSelect()}</div>
  ${dashboardDataStatus()}
  ${!has?`<div class="dashboard-empty"><b>Dashboard shell is live. Opponent-defense play data has not been loaded yet.</b>Player Intelligence is already connected to the shared roster. When the first play-feed file is added to <code>Offensive Intelligence / Mississippi State / Current</code>, these cards populate automatically. Nothing here is being estimated or fabricated.</div>`:''}
  <div class="dash-grid">
@@ -1747,8 +2379,8 @@ function dashboardPage(){
        ${dashKpi('Completion %',has&&s.att?pctText(s.comp,s.att):'—',has?`${s.comp}/${s.att}`:'waiting')}
        ${dashKpi('Sack %',has&&s.passN?pctText(s.sacks,s.passN):'—',has?`${s.sacks} sacks`:'waiting')}
        ${dashKpi('INT %',has&&s.att?pctText(s.ints,s.att):'—',has?`${s.ints} INT`:'waiting')}
-       ${dashKpi('Blitz %',has?pctText(s.blitz,s.passN||s.n):'—','when tagged')}
-       ${dashKpi('Pressure %',has?pctText(s.pressure,s.passN||s.n):'—','when tagged')}
+       ${dashKpi('Blitz %',s.passN?pctText(passRows.filter(r=>pffBool(firstField(r,['pff_BLITZDOG']))).length,s.passN):'—','pass plays')}
+       ${dashKpi('Pressure %',s.passN?pctText(passRows.filter(r=>nonEmpty(firstField(r,['pff_QBPRESSURE']))).length,s.passN):'—','pass plays')}
        ${dashKpi('TD Allowed',has?s.td:'—','charted sample')}
      </div>
    </div>
@@ -1771,12 +2403,12 @@ function dashboardPage(){
 
    <div class="dash-card span-6">
      <h3>Coverage Family</h3><div class="dash-sub">Coverage usage from charted pass plays</div>
-     ${rankList(coverage,s.passN||s.n)}
+     ${rankList(coverage,passRows.length)}
    </div>
 
    <div class="dash-card span-6">
      <h3>Rush Count</h3><div class="dash-sub">Number of pass rushers when tagged</div>
-     ${rankList(rushCount,s.passN||s.n)}
+     ${rankList(rushCount,passRows.length)}
    </div>
 
    <div class="dash-card span-12">
@@ -1797,23 +2429,31 @@ function dashboardPage(){
 
 
 function pfField(r,names){return firstField(r,names)}
+
+function pffLeadingCount(v){
+ let m=String(v??'').trim().match(/^(\d+)/);
+ return m?String(parseInt(m[1],10)):'';
+}
+function pffBool(v){
+ let s=String(v??'').trim().toUpperCase();
+ return ['1','TRUE','YES','Y'].includes(s);
+}
+function pffFieldZoneFromGoal(r){
+ let raw=firstField(r,['pff_YARDS_TO_GOAL_LINE','YARDS_TO_GOAL_LINE']);
+ if(!nonEmpty(raw))return '';
+ let ytg=parseFloat(String(raw)); if(!Number.isFinite(ytg))return '';
+ if(ytg>=90)return'Backed Up'; if(ytg>=75)return'Coming Out'; if(ytg>=60)return'Own 26-40';
+ if(ytg>=41)return'Midfield'; if(ytg>=21)return'+40 to +21'; if(ytg>=11)return'Red Zone'; return'Goal-to-Go';
+}
+
 function pfPersonnel(r){return String(pfField(r,['pff_OFFPERSONNELBASIC','pff_OFFPERSONNEL','PERSONNEL','personnel','OFF_PERSONNEL'])||'').trim()}
-function pfFront(r){return String(pfField(r,['pff_DEFENSIVEFRONT','pff_FRONT','DEF_FRONT','FRONT','front','DEFENSIVE_FRONT'])||'').trim()}
-function pfBox(r){let v=pfField(r,['pff_BOXCOUNT','BOX_COUNT','box_count','DEF_BOX','def_box']);return nonEmpty(v)?String(v).trim():''}
+function pfFront(r){return String(pfField(r,['pff_DEFENSIVE_FRONT_NAME','pff_DEFPERSONNEL','pff_DEFFRONT','DEF_FRONT','FRONT','front'])||'').trim()}
+function pfBox(r){let v=pfField(r,['pff_BOXPLAYERS','pff_BOXCOUNT','BOX_COUNT','box_count']);return nonEmpty(v)?(pffLeadingCount(v)||String(v).trim()):''}
 function pfDown(r){let d=Math.round(num(pfField(r,['pff_DOWN','DOWN','down'])));return d>=1&&d<=4?String(d):''}
 function pfFieldZone(r){
- let yd=num(pfField(r,['pff_YARDLINE','YARDLINE','yardline','FIELD_POSITION','field_position']));
- let raw=String(pfField(r,['FIELD_ZONE','field_zone','pff_FIELDZONE'])||'').trim();
- if(raw)return raw;
- if(!Number.isFinite(yd)||yd===0)return '';
- // generic fallback if yardline is distance from own goal line
- if(yd<=10)return'Backed Up';
- if(yd<=25)return'Coming Out';
- if(yd<=40)return'Own 26-40';
- if(yd<=60)return'Midfield';
- if(yd<=80)return'+40 to +21';
- if(yd<=90)return'Red Zone';
- return'Goal-to-Go';
+ let tagged=String(pfField(r,['FIELD_ZONE','field_zone','pff_FIELDZONE'])||'').trim();
+ if(tagged)return tagged;
+ return pffFieldZoneFromGoal(r);
 }
 function pfRows(){
  let rows=dashboardPlayRows();
@@ -1822,7 +2462,9 @@ function pfRows(){
    (pfFrontF==='ALL'||pfFront(r)===pfFrontF) &&
    (pfDownF==='ALL'||pfDown(r)===pfDownF) &&
    (pfFieldF==='ALL'||pfFieldZone(r)===pfFieldF) &&
-   (pfBoxF==='ALL'||pfBox(r)===pfBoxF)
+   (pfBoxF==='ALL'||pfBox(r)===pfBoxF) &&
+   (pfHashF==='ALL'||reportHash(r)===pfHashF) &&
+   dndMatches(r)
  );
 }
 function uniqueVals(rows,fn){
@@ -1877,13 +2519,43 @@ function setPF(key,val){
  if(key==='down')pfDownF=val;
  if(key==='field')pfFieldF=val;
  if(key==='box')pfBoxF=val;
+ if(key==='hash')pfHashF=val;
  render();
 }
-function resetPF(){pfPersonnelF=pfFrontF=pfDownF=pfFieldF=pfBoxF='ALL';render()}
+function resetPF(){pfPersonnelF=pfFrontF=pfDownF=pfFieldF=pfBoxF=pfHashF='ALL';dndFilter='ALL';render()}
+
+function missedTacklesPage(){
+ let all=offenseRoster().filter(piHasVerifiedHistoricalIdentity),rows=mtReportRows(all);
+ let total=rows.reduce((n,x)=>n+x.mt,0),teamTkl=rows.reduce((n,x)=>n+x.tkl,0),opp=rows.reduce((n,x)=>n+x.opp,0);
+ let run=rows.reduce((n,x)=>n+x.run,0),pass=rows.reduce((n,x)=>n+x.pass,0),expl=rows.reduce((n,x)=>n+x.expl,0);
+ let gains=[];all.forEach(pl=>mtRowsForPlayer(pl).forEach(r=>gains.push(num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])))));
+ let ypp=gains.length?avg(gains):0,med=gains.length?calcMedian(gains):0;
+ return `<div class="page-title"><h2>Missed Tackle Report</h2><p>Who is missing tackles, how often, and what happens on those plays.</p></div>
+ <div class="cv-kpis">
+   <div class="cv-kpi"><span>Missed Tackles</span><b>${total}</b></div>
+   <div class="cv-kpi"><span>Tackles</span><b>${teamTkl}</b></div>
+   <div class="cv-kpi"><span>Tackle Opportunities</span><b>${opp}</b></div>
+   <div class="cv-kpi"><span>Team MT %</span><b>${opp?pctText(total,opp):'—'}</b></div>
+   <div class="cv-kpi"><span>Run MT</span><b>${run}</b></div>
+   <div class="cv-kpi"><span>Pass MT</span><b>${pass}</b></div>
+   <div class="cv-kpi"><span>Explosive Plays on MT</span><b>${expl}</b></div>
+   <div class="cv-kpi"><span>YPP on MT Plays</span><b>${gains.length?fmt(ypp,2):'—'}</b></div>
+   <div class="cv-kpi"><span>Median</span><b>${gains.length?fmt(med,1):'—'}</b></div>
+ </div>
+ <div class="card mt-report">
+   <h3>By Defender</h3>
+   <div class="sample-note">MT and tackle totals come from the PFF player summary. Run/pass split and play results come from explicit pff_MISSEDTACKLE tags. MT% = MT / (Tackles + MT).</div>
+   <div class="table-wrap">${rows.length?table(
+     ['Player','Pos','MT','Team MT Share','Tackles','Tackle Opps','MT %','Run MT','Pass MT','Explosive Plays on MT','YPP on MT Plays','Median'],
+     rows.map(x=>[esc(x.p.name),esc(x.p.position),x.mt,pctText(x.mt,total),x.tkl,x.opp,`${x.mtPct.toFixed(1)}%`,x.run,x.pass,x.expl,fmt(x.ypp,2),fmt(x.med,1)])
+   ):'<div class="empty">No missed-tackle data is available.</div>'}</div>
+ </div>`;
+}
+
 function personnelPage(){
  let all=dashboardPlayRows(),rows=pfRows(),s=pfMetrics(rows);
  let personnelVals=uniqueVals(all,pfPersonnel),frontVals=uniqueVals(all,pfFront),downVals=uniqueVals(all,pfDown),fieldVals=uniqueVals(all,pfFieldZone),boxVals=uniqueVals(all,pfBox);
- let personnelB=pfBreakdown(rows,pfPersonnel),frontB=pfBreakdown(rows,pfFront),boxB=pfBreakdown(rows,pfBox),downB=pfBreakdown(rows,pfDown),fieldB=pfBreakdown(rows,pfFieldZone),combos=pfComboBreakdown(rows);
+ let personnelB=pfBreakdown(rows,pfPersonnel),frontB=pfBreakdown(rows,pfFront),boxB=pfBreakdown(rows,pfBox),downB=addP10Breakdown(pfBreakdown(rows,pfDown),rows,pfMetrics),fieldB=pfBreakdown(rows,pfFieldZone),combos=pfComboBreakdown(rows);
  let has=all.length>0;
  return `<div class="page-title"><h2>Personnel & Fronts</h2><p>How Mississippi State structures its defense against offensive personnel, situations and field location.</p></div>
  ${!has?`<div class="pf-empty"><b>No opponent-defense play feed is loaded yet.</b><br>This page is fully built and will populate when <code>play_feed.csv</code>, <code>plays.csv</code>, or <code>current.csv</code> is added to the Offensive Intelligence opponent folder.</div>`:''}
@@ -1894,7 +2566,8 @@ function personnelPage(){
    <label>Down<select onchange="setPF('down',this.value)"><option value="ALL">All Downs</option>${downVals.map(v=>`<option value="${esc(v)}" ${pfDownF===v?'selected':''}>${esc(v)}${v?' Down':''}</option>`).join('')}</select></label>
    <label>Field Zone<select onchange="setPF('field',this.value)"><option value="ALL">All Field Zones</option>${fieldVals.map(v=>`<option ${pfFieldF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Box Count<select onchange="setPF('box',this.value)"><option value="ALL">All Box Counts</option>${boxVals.map(v=>`<option ${pfBoxF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <div class="pf-reset"><button onclick="resetPF()">Reset Filters</button></div>
+   <label>Hash<select onchange="setPF('hash',this.value)">${reportHashOptions(pfHashF)}</select></label>
+   ${dndSelect()}<div class="pf-reset"><button onclick="resetPF()">Reset Filters</button></div>
  </div>
 
  <div class="pf-summary">
@@ -1957,13 +2630,8 @@ function rdRunRowsBase(){
    return rp==='R'||rp==='RUN';
  });
 }
-function rdDirection(r){
- let v=String(firstField(r,['pff_POA','pff_RUNDIRECTION','RUN_DIRECTION','run_direction','DIRECTION','direction'])||'').trim();
- return v;
-}
-function rdGap(r){
- return String(firstField(r,['pff_GAP','RUN_GAP','run_gap','GAP','gap','pff_RUNCONCEPTGAP'])||'').trim();
-}
+function rdDirection(r){return String(firstField(r,['pff_POAACTUAL','pff_POAINTENDED','pff_RBDIRECTION','RUN_DIRECTION'])||'').trim()}
+function rdGap(r){return String(firstField(r,['pff_RUNCONCEPTPRIMARY','pff_RUNCONCEPTSECONDARY','RUN_CONCEPT'])||'').trim()}
 function rdDistanceBucket(r){
  let d=num(firstField(r,['pff_DISTANCE','DISTANCE','distance']));
  if(!d)return '';
@@ -1982,8 +2650,10 @@ function rdRows(){
    (rdDownF==='ALL'||pfDown(r)===rdDownF) &&
    (rdDistF==='ALL'||rdDistanceBucket(r)===rdDistF) &&
    (rdFieldF==='ALL'||pfFieldZone(r)===rdFieldF) &&
+   (rdHashF==='ALL'||reportHash(r)===rdHashF) &&
    (rdDirF==='ALL'||rdDirection(r)===rdDirF) &&
-   (rdGapF==='ALL'||rdGap(r)===rdGapF)
+   (rdGapF==='ALL'||rdGap(r)===rdGapF) &&
+   dndMatches(r)
  );
 }
 function rdMetrics(rows){
@@ -2026,19 +2696,38 @@ function setRD(key,val){
  if(key==='down')rdDownF=val;
  if(key==='dist')rdDistF=val;
  if(key==='field')rdFieldF=val;
+ if(key==='hash')rdHashF=val;
  if(key==='dir')rdDirF=val;
  if(key==='gap')rdGapF=val;
  render();
 }
-function resetRD(){rdFrontF=rdBoxF=rdPersonnelF=rdDownF=rdDistF=rdFieldF=rdDirF=rdGapF='ALL';render()}
+function resetRD(){rdFrontF=rdBoxF=rdPersonnelF=rdDownF=rdDistF=rdFieldF=rdDirF=rdGapF=rdHashF='ALL';dndFilter='ALL';render()}
+
+function rdPoaLane(r){
+ let v=String(rdDirection(r)||'').trim().toUpperCase();
+ return ['LE','LT','LG','ML','MR','RG','RT','RE'].includes(v)?v:'';
+}
+function rdGapNameFromPoa(poa){
+ return {
+   'LE':'D-L','LT':'C-L','LG':'B-L','ML':'A-L',
+   'MR':'A-R','RG':'B-R','RT':'C-R','RE':'D-R'
+ }[poa]||'';
+}
+function rdFootballGapBreakdown(rows){
+ let order=['LE','LT','LG','ML','MR','RG','RT','RE'];
+ let map={};order.forEach(k=>map[k]=[]);
+ rows.forEach(r=>{let k=rdPoaLane(r);if(k)map[k].push(r)});
+ return order.map(k=>({poa:k,gap:rdGapNameFromPoa(k),...rdMetrics(map[k])}));
+}
+
 function runPage(){
  let all=rdRunRowsBase(),rows=rdRows(),s=rdMetrics(rows);
  let fronts=uniqueVals(all,pfFront),boxes=uniqueVals(all,pfBox),pers=uniqueVals(all,pfPersonnel),downs=uniqueVals(all,pfDown),
      dists=uniqueVals(all,rdDistanceBucket),fields=uniqueVals(all,pfFieldZone),dirs=uniqueVals(all,rdDirection),gaps=uniqueVals(all,rdGap);
  let gapB=rdBreakdown(rows,rdGap),dirB=rdBreakdown(rows,rdDirection),frontB=rdBreakdown(rows,pfFront),boxB=rdBreakdown(rows,pfBox),
-     personnelB=rdBreakdown(rows,pfPersonnel),downB=rdBreakdown(rows,pfDown),fieldB=rdBreakdown(rows,pfFieldZone),combos=rdComboRows(rows);
- let gapMap={};gapB.forEach(x=>gapMap[x.k]=x);let maxGap=Math.max(...gapB.map(x=>x.n),1);
- return `<div class="page-title"><h2>Run Defense</h2><p>How Mississippi State is defending the run by front, box count, gap, direction, personnel and situation.</p></div>
+     personnelB=rdBreakdown(rows,pfPersonnel),downB=addP10Breakdown(rdBreakdown(rows,pfDown),rows,rdMetrics),fieldB=rdBreakdown(rows,pfFieldZone),combos=rdComboRows(rows);
+ let gapView=rdFootballGapBreakdown(rows);let maxGapView=Math.max(...gapView.map(x=>x.n),1);let gapMapped=gapView.reduce((n,x)=>n+x.n,0);
+ return `<div class="page-title"><h2>Run Defense</h2><p>How Mississippi State is defending the run by front, box count, run concept, point of attack, personnel and situation.</p></div>
  ${!all.length?`<div class="pf-empty"><b>No charted run plays are loaded yet.</b><br>The Run Defense explorer is built and will populate from the opponent-defense play feed.</div>`:''}
 
  <div class="rd-toolbar">
@@ -2048,9 +2737,10 @@ function runPage(){
    <label>Down<select onchange="setRD('down',this.value)"><option value="ALL">All Downs</option>${downs.map(v=>`<option value="${esc(v)}" ${rdDownF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Distance<select onchange="setRD('dist',this.value)"><option value="ALL">All Distances</option>${dists.map(v=>`<option ${rdDistF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Field Zone<select onchange="setRD('field',this.value)"><option value="ALL">All Field Zones</option>${fields.map(v=>`<option ${rdFieldF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <label>Run Direction<select onchange="setRD('dir',this.value)"><option value="ALL">All Directions</option>${dirs.map(v=>`<option ${rdDirF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <label>Run Gap<select onchange="setRD('gap',this.value)"><option value="ALL">All Gaps</option>${gaps.map(v=>`<option ${rdGapF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <div class="rd-reset"><button onclick="resetRD()">Reset Filters</button></div>
+   <label>Hash<select onchange="setRD('hash',this.value)">${reportHashOptions(rdHashF)}</select></label>
+   <label>Point of Attack<select onchange="setRD('dir',this.value)"><option value="ALL">All Directions</option>${dirs.map(v=>`<option ${rdDirF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Run Concept<select onchange="setRD('gap',this.value)"><option value="ALL">All Concepts</option>${gaps.map(v=>`<option ${rdGapF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   ${dndSelect()}<div class="rd-reset"><button onclick="resetRD()">Reset Filters</button></div>
  </div>
 
  <div class="rd-kpis">
@@ -2066,23 +2756,35 @@ function runPage(){
 
  <div class="rd-grid">
    <div class="rd-section rd-span-12">
-     <h3>Run Gap Field</h3><div class="rd-sub">Frequency and efficiency by tagged run gap. Highest-volume gap is outlined.</div>
-     <div class="rd-field">
-       <div class="rd-los"><span>LINE OF SCRIMMAGE</span></div>
-       <div class="rd-gap-grid">
-         ${gaps.length?gaps.slice(0,8).map(g=>{let x=gapMap[g]||{n:0,ypp:0};return `<div class="rd-gap-box ${x.n===maxGap?'hot':''}"><div class="g">${esc(g)}</div><div class="n">${x.n}</div><div class="y">${x.n?fmt(x.ypp,2):'—'} YPP</div></div>`}).join(''):'<div style="grid-column:1/-1;padding:28px;text-align:center">Run-gap tags not available.</div>'}
+     <h3>Run Gap Map</h3>
+     <div class="rd-sub">Football gap language from the offense's perspective. PFF's POAACTUAL lanes are translated into A/B/C/D gaps so the picture matches how the offense talks.</div>
+     <div class="gap-board">
+       <div class="gap-divider"></div>
+       <div class="gap-los-label"><span>LINE OF SCRIMMAGE</span></div>
+       <div class="gap-lanes">
+         ${gapView.map(x=>`<div class="gap-cell ${x.n===maxGapView&&x.n?'hot':''}">
+           <div class="gap-title">${x.gap}</div>
+           <div class="gap-source">PFF ${x.poa}</div>
+           <div class="gap-n">${x.n}</div>
+           <div class="gap-share">${gapMapped?pctText(x.n,gapMapped):'—'} of mapped runs</div>
+           <div class="gap-ypp">${x.n?fmt(x.ypp,2):'—'} YPP</div>
+           <div class="gap-detail">${x.n?`MED ${fmt(x.med,1)} · EXP ${pctText(x.exp,x.n)}<br>NEG ${pctText(x.neg,x.n)}`:'No sample'}</div>
+         </div>`).join('')}
        </div>
+       <div class="gap-center"><div class="gap-ol">LT</div><div class="gap-ol">LG</div><div class="gap-ol">C</div><div class="gap-ol">RG</div><div class="gap-ol">RT</div></div>
+       <div class="gap-axis"><span>OFFENSE LEFT</span><span>A GAPS MEET AT CENTER</span><span>OFFENSE RIGHT</span></div>
      </div>
+     <div class="sample-note">Translation used: ML/MR → A gaps, LG/RG → B gaps, LT/RT → C gaps, LE/RE → D gaps. Specialty POA tags such as QB scramble, sneak, jet sweep, reverse and kneel are not forced into a gap.</div>
    </div>
 
    <div class="rd-section rd-span-6">
-     <h3>By Run Gap</h3><div class="rd-sub">Gap-level run-defense performance.</div>
-     <div class="rd-table-wrap">${table(['Gap','Plays','Usage','YPP','Median','Expl %','Neg %','TD'],rdTable(gapB,rows.length))}</div>
+     <h3>By Run Concept</h3><div class="rd-sub">Concept-level run-defense performance.</div>
+     <div class="rd-table-wrap">${table(['Concept','Plays','Usage','YPP','Median','Expl %','Neg %','TD'],rdTable(gapB,rows.length))}</div>
    </div>
 
    <div class="rd-section rd-span-6">
-     <h3>By Run Direction</h3><div class="rd-sub">Where offenses are attacking the defense.</div>
-     <div class="rd-table-wrap">${table(['Direction','Plays','Usage','YPP','Median','Expl %','Neg %','TD'],rdTable(dirB,rows.length))}</div>
+     <h3>By PFF Point of Attack</h3><div class="rd-sub">Raw PFF POAACTUAL labels. The gap map above translates the eight core OL/edge lanes into A/B/C/D terminology.</div>
+     <div class="rd-table-wrap">${table(['POA','Plays','Usage','YPP','Median','Expl %','Neg %','TD'],rdTable(dirB,rows.length))}</div>
    </div>
 
    <div class="rd-section rd-span-4">
@@ -2118,7 +2820,100 @@ function runPage(){
  </div>`;
 }
 
-function passPage(){let routes=datasets.routes||[],db=datasets.dropbacks||[];return `<div class="page-title"><h2>Pass Game</h2><p>Route results and dropback-type production.</p></div>${dataStatus()}<div class="card"><h3>Routes / Concepts</h3>${table(['Route','Off %','ATT','COMP%','Yards','YPA','TD','INT','BTT','TWP'],routes.map(r=>[esc(r.ROUTE),r['OFF%'],r.ATT,r['COMP%'],r['PASS YDS'],r['PASS YPA'],r['PASS TD'],r.INT,r.BTT,r.TWP]))}</div><div class="card"><h3>Dropback Type</h3>${table(['Type','Off %','DB','ATT','COMP%','YPA','TD','INT','Sacks','Scrambles'],db.map(r=>[esc(r['Dropback Type']),r['OFF%'],r.DB,r.ATT,r['COMP%'],r['PASS YPA'],r['PASS TD'],r.INT,r.SK,r.SCR]))}</div>`}
+
+function routeName(r){return String(firstField(r,['pff_ROUTE_THROWN'])||'').trim()}
+function routeGroup(r){return String(firstField(r,['pff_PASSROUTETARGETGROUP'])||'').trim()}
+function routeTargetPos(r){return String(firstField(r,['pff_PASSRECEIVERPOSITIONTARGET'])||'').trim()}
+function routeMetrics(rows){
+ let gains=rows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
+ let att=0,comp=0,td=0,ints=0,pbu=0;
+ rows.forEach(r=>{
+   let res=String(firstField(r,['pff_PASSRESULT'])||'').toUpperCase();
+   if(['COMPLETE','INCOMPLETE','INTERCEPTION','THROWN AWAY','HIT AS THREW','BATTED PASS'].includes(res))att++;
+   if(res==='COMPLETE')comp++;
+   if(res==='INTERCEPTION'||nonEmpty(firstField(r,['pff_INTERCEPTION'])))ints++;
+   if(nonEmpty(firstField(r,['pff_TOUCHDOWN'])))td++;
+   if(nonEmpty(firstField(r,['pff_PASSBREAKUP'])))pbu++;
+ });
+ let n=rows.length,exp=gains.filter(x=>x>=15).length,neg=gains.filter(x=>x<=0).length;
+ return {n,ypp:n?avg(gains):0,med:n?calcMedian(gains):0,att,comp,td,ints,pbu,exp,neg};
+}
+function routeBreakdown(rows,fn){
+ let m={};rows.forEach(r=>{let k=fn(r);if(k)(m[k] ||= []).push(r)});
+ return Object.entries(m).map(([k,a])=>({k,...routeMetrics(a)})).sort((a,b)=>b.n-a.n);
+}
+function routeTable(arr,total){
+ return arr.map(x=>[esc(x.k),x.n,pctText(x.n,total),fmt(x.ypp,2),fmt(x.med,1),x.att?pctText(x.comp,x.att):'—',pctText(x.exp,x.n),pctText(x.neg,x.n),x.td,x.ints,x.pbu]);
+}
+
+
+function qbRunType(r){
+ let scr=String(firstField(r,['pff_QBSCRAMBLE'])||'').trim();
+ if(scr)return 'Scramble';
+ let rp=String(firstField(r,['pff_RUNPASS'])||'').trim().toUpperCase();
+ let bc=String(firstField(r,['pff_BALLCARRIER'])||'').trim().toUpperCase();
+ let qb=String(firstField(r,['pff_QB'])||'').trim().toUpperCase();
+ if(rp==='R' && bc && qb && bc===qb)return 'Designed Run';
+ return '';
+}
+function qbRunRowsBase(){return dashboardPlayRows().filter(r=>qbRunType(r))}
+function qbRunRows(){return qbRunRowsBase().filter(r=>(qbRunHashF==='ALL'||cvHash(r)===qbRunHashF)&&(qbRunTypeF==='ALL'||qbRunType(r)===qbRunTypeF)&&dndMatches(r))}
+function qbRunMetrics(rows){
+ let gains=rows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained']))),n=rows.length;
+ let exp=gains.filter(x=>x>=15).length,neg=gains.filter(x=>x<=0).length,td=rows.filter(r=>nonEmpty(firstField(r,['pff_TOUCHDOWN']))).length,fd=rows.filter(r=>pffBool(firstField(r,['pff_FIRST_DOWN_GAINED']))).length;
+ return {n,yards:gains.reduce((a,b)=>a+b,0),ypp:n?avg(gains):0,med:n?calcMedian(gains):0,exp,neg,td,fd};
+}
+function qbRunBreakdown(rows,fn){let m={};rows.forEach(r=>{let k=fn(r)||'Unknown';(m[k] ||= []).push(r)});return Object.entries(m).map(([k,a])=>({k,...qbRunMetrics(a)})).sort((a,b)=>b.n-a.n)}
+function qbRunTable(arr,total){return arr.map(x=>[esc(x.k),x.n,pctText(x.n,total),x.yards,fmt(x.ypp,2),fmt(x.med,1),pctText(x.exp,x.n),pctText(x.neg,x.n),pctText(x.fd,x.n),x.td])}
+function setQBRun(k,v){if(k==='hash')qbRunHashF=v;if(k==='type')qbRunTypeF=v;render()}
+function resetQBRun(){qbRunHashF=qbRunTypeF='ALL';dndFilter='ALL';render()}
+function qbRunSplitCard(type,rows){let a=rows.filter(r=>qbRunType(r)===type),m=qbRunMetrics(a);return `<div class="qbr-split-card"><h4>${type}</h4><div class="big">${m.n} runs</div><div class="qbr-mini"><div><span>YPP</span><b>${m.n?fmt(m.ypp,2):'—'}</b></div><div><span>Median</span><b>${m.n?fmt(m.med,1):'—'}</b></div><div><span>Yards</span><b>${m.yards}</b></div><div><span>Expl %</span><b>${m.n?pctText(m.exp,m.n):'—'}</b></div><div><span>Neg %</span><b>${m.n?pctText(m.neg,m.n):'—'}</b></div><div><span>1D %</span><b>${m.n?pctText(m.fd,m.n):'—'}</b></div></div></div>`}
+function qbRunPage(){
+ let rows=qbRunRows(),m=qbRunMetrics(rows),designedRows=rows.filter(r=>qbRunType(r)==='Designed Run'),byDown=addP10Breakdown(qbRunBreakdown(rows,pfDown),rows,qbRunMetrics),byDist=addP10Breakdown(qbRunBreakdown(rows,rdDistanceBucket),rows,qbRunMetrics),byField=qbRunBreakdown(rows,pfFieldZone),byHash=qbRunBreakdown(rows,cvHash),byConcept=qbRunBreakdown(designedRows,r=>String(firstField(r,['pff_RUNCONCEPTPRIMARY'])||'').trim());
+ return `<div class="page-title"><h2>QB Run Success</h2><p>Designed quarterback runs and scrambles against Mississippi State.</p></div>
+ <div class="qbr-toolbar"><label>Run Type<select onchange="setQBRun('type',this.value)"><option value="ALL" ${qbRunTypeF==='ALL'?'selected':''}>Designed + Scramble</option><option value="Designed Run" ${qbRunTypeF==='Designed Run'?'selected':''}>Designed Run</option><option value="Scramble" ${qbRunTypeF==='Scramble'?'selected':''}>Scramble</option></select></label><label>Hash<select onchange="setQBRun('hash',this.value)">${reportHashOptions(qbRunHashF)}</select></label>${dndSelect()}<button onclick="resetQBRun()">Reset Filters</button></div>
+ <div class="qbr-kpis"><div class="qbr-kpi"><span>QB Runs</span><b>${m.n}</b></div><div class="qbr-kpi"><span>Yards</span><b>${m.yards}</b></div><div class="qbr-kpi"><span>YPP</span><b>${m.n?fmt(m.ypp,2):'—'}</b></div><div class="qbr-kpi"><span>Median</span><b>${m.n?fmt(m.med,1):'—'}</b></div><div class="qbr-kpi"><span>Explosive %</span><b>${m.n?pctText(m.exp,m.n):'—'}</b></div><div class="qbr-kpi"><span>Negative %</span><b>${m.n?pctText(m.neg,m.n):'—'}</b></div><div class="qbr-kpi"><span>1D %</span><b>${m.n?pctText(m.fd,m.n):'—'}</b></div><div class="qbr-kpi"><span>TD</span><b>${m.td}</b></div></div>
+ <div class="qbr-card full"><h3>Designed Run vs Scramble</h3><div class="qbr-split">${qbRunSplitCard('Designed Run',rows)}${qbRunSplitCard('Scramble',rows)}</div></div>
+ <div class="qbr-grid"><div class="qbr-card"><h3>By Down</h3><div class="table-wrap">${table(['Down','Runs','Usage','Yards','YPP','Median','Expl %','Neg %','1D %','TD'],qbRunTable(byDown,rows.length))}</div></div><div class="qbr-card"><h3>By Distance</h3><div class="table-wrap">${table(['Distance','Runs','Usage','Yards','YPP','Median','Expl %','Neg %','1D %','TD'],qbRunTable(byDist,rows.length))}</div></div><div class="qbr-card"><h3>By Field Zone</h3><div class="table-wrap">${table(['Field Zone','Runs','Usage','Yards','YPP','Median','Expl %','Neg %','1D %','TD'],qbRunTable(byField,rows.length))}</div></div><div class="qbr-card"><h3>By Hash</h3><div class="table-wrap">${table(['Hash','Runs','Usage','Yards','YPP','Median','Expl %','Neg %','1D %','TD'],qbRunTable(byHash,rows.length))}</div></div><div class="qbr-card full"><h3>Designed Run Concept</h3><div class="table-wrap">${table(['Concept','Runs','Usage','Yards','YPP','Median','Expl %','Neg %','1D %','TD'],qbRunTable(byConcept,rows.length))}</div></div></div>
+ <div class="sample-note" style="margin-top:10px">Scrambles use explicit pff_QBSCRAMBLE tags. Designed QB runs are run plays where pff_BALLCARRIER exactly matches pff_QB. The Designed Run Concept table contains designed runs only.</div>`;
+}
+
+function passPage(){
+ let all=cvPassRowsBase(),rows=all.filter(r=>(passHashF==='ALL'||reportHash(r)===passHashF)&&dndMatches(r)),s=cvMetrics(rows);
+ let depth=cvBreakdown(rows,cvTargetDepth),side=cvBreakdown(rows,cvTargetSide),shell=cvBreakdown(rows,cvShell),cov=cvBreakdown(rows,cvFamily),routeRows=rows.filter(r=>routeName(r)),routeB=routeBreakdown(routeRows,routeName);
+ let depths=rows.map(r=>firstField(r,['pff_PASSDEPTH'])).filter(nonEmpty).map(num),adot=depths.length?avg(depths):0;
+ let screens=rows.filter(r=>pffBool(firstField(r,['pff_SCREEN']))).length,pa=rows.filter(r=>pffBool(firstField(r,['pff_PLAYACTION']))).length;
+ let deep=rows.filter(r=>nonEmpty(firstField(r,['pff_PASSDEPTH']))&&num(firstField(r,['pff_PASSDEPTH']))>=20).length;
+ let scr=rows.filter(r=>nonEmpty(firstField(r,['pff_QBSCRAMBLE']))).length;
+ let t=(arr)=>arr.map(x=>[esc(x.k),x.n,pctText(x.n,rows.length),fmt(x.ypp,2),fmt(x.med,1),x.att?pctText(x.comp,x.att):'—',pctText(x.exp,x.n),x.td,x.ints]);
+ return `<div class="page-title"><h2>Pass Defense</h2><p>Overall passing profile before drilling into Coverage, Pressure and Field Heat Maps.</p></div>
+ <div class="report-hash-filter"><label>Hash<select onchange="setPassHash(this.value)">${reportHashOptions(passHashF)}</select></label>${dndSelect()}</div>
+ <div class="cv-kpis">
+  <div class="cv-kpi"><span>Pass Plays</span><b>${rows.length}</b></div><div class="cv-kpi"><span>YPP</span><b>${fmt(s.ypp,2)}</b></div>
+  <div class="cv-kpi"><span>Median YPP</span><b>${fmt(s.med,1)}</b></div><div class="cv-kpi"><span>Completion %</span><b>${s.att?pctText(s.comp,s.att):'—'}</b></div>
+  <div class="cv-kpi"><span>aDOT</span><b>${adot?fmt(adot,1):'—'}</b></div><div class="cv-kpi"><span>20+ Air Yards</span><b>${pctText(deep,rows.length)}</b></div>
+  <div class="cv-kpi"><span>Sacks</span><b>${s.sacks}</b></div><div class="cv-kpi"><span>TD / INT</span><b>${s.td} / ${s.ints}</b></div>
+  <div class="cv-kpi"><span>Explosive %</span><b>${pctText(s.exp,s.n)}</b></div>
+ </div>
+ <div class="cv-grid">
+  <div class="cv-section cv-span-6"><h3>Target Depth</h3><div class="cv-table-wrap">${table(['Depth','Plays','Usage','YPP','Median','Comp %','Expl %','TD','INT'],t(depth))}</div></div>
+  <div class="cv-section cv-span-6"><h3>Target Direction</h3><div class="cv-table-wrap">${table(['Side','Plays','Usage','YPP','Median','Comp %','Expl %','TD','INT'],t(side))}</div></div>
+  <div class="cv-section cv-span-6"><h3>By Shell</h3><div class="cv-table-wrap">${table(['Shell','Plays','Usage','YPP','Median','Comp %','Expl %','TD','INT'],t(shell))}</div></div>
+  <div class="cv-section cv-span-6"><h3>By Coverage</h3><div class="cv-table-wrap">${table(['Coverage','Plays','Usage','YPP','Median','Comp %','Expl %','TD','INT'],t(cov))}</div></div>
+  <div class="cv-section cv-span-12"><div class="sr-response-grid">
+   <div class="sr-response"><span>Screen Rate</span><b>${pctText(screens,rows.length)}</b><small>${screens} plays</small></div>
+   <div class="sr-response"><span>Play Action Rate</span><b>${pctText(pa,rows.length)}</b><small>${pa} plays</small></div>
+   <div class="sr-response"><span>Scrambles</span><b>${scr}</b><small>charted QB scrambles</small></div>
+   <div class="sr-response"><span>Pressure Rate</span><b>${pctText(rows.filter(r=>nonEmpty(firstField(r,['pff_QBPRESSURE']))).length,rows.length)}</b><small>actual pressure outcome</small></div>
+  </div></div>
+  <div class="cv-section cv-span-12 route-report">
+    <h3>Route Defense</h3><div class="cv-sub">What routes were targeted and how Mississippi State defended them. Route names come directly from PFF ROUTE_THROWN.</div>
+    <div class="route-grid">
+      <div class="route-card route-only"><h3>By Route</h3><div class="sub">Named targeted routes in the current hash filter.</div><div class="table-wrap">${table(['Route','Targets','Target %','YPT','Median','Comp %','Expl %','Neg %','TD','INT','PBU'],routeTable(routeB,routeRows.length))}</div></div>
+    </div>
+  </div>
+ </div>`;
+}
 
 function cvPassRowsBase(){
  return dashboardPlayRows().filter(r=>{
@@ -2126,14 +2921,15 @@ function cvPassRowsBase(){
    return rp==='P'||rp==='PASS';
  });
 }
-function cvFamily(r){return String(firstField(r,['pff_PASS_COVERAGE_BASIC','pff_COVERAGE','COVERAGE','coverage','COVERAGE_FAMILY'])||'').trim()}
+function cvFamily(r){return String(firstField(r,['pff_PASS_COVERAGE_BASIC','pff_PASSCOVERAGE','COVERAGE','coverage'])||'').trim()}
 function cvShell(r){
- let raw=String(firstField(r,['pff_SHELL','SHELL','shell','PRE_SNAP_SHELL','pre_snap_shell'])||'').trim();
- if(raw)return raw;
+ let shown=String(firstField(r,['pff_MOFOCSHOWN','pff_MOFOCPLAYED'])||'').trim().toUpperCase();
+ if(shown==='O')return'2 High';
+ if(shown==='C')return'1 High';
  let fam=cvFamily(r).toUpperCase();
  if(/COVER\s*0|ZERO/.test(fam))return'0 High';
- if(/COVER\s*1|COVER\s*3|ONE HIGH|1 HIGH/.test(fam))return'1 High';
- if(/COVER\s*2|COVER\s*4|COVER\s*6|TWO HIGH|2 HIGH|QUARTERS|PALMS/.test(fam))return'2 High';
+ if(/COVER\s*1|COVER\s*3/.test(fam))return'1 High';
+ if(/COVER\s*2|COVER\s*4|COVER\s*6|QUARTERS/.test(fam))return'2 High';
  return '';
 }
 function cvManZone(r){
@@ -2146,14 +2942,12 @@ function cvManZone(r){
 }
 function cvHash(r){return String(firstField(r,['pff_HASH','HASH','hash','BALL_HASH','ball_hash'])||'').trim()}
 function cvPressure(r){
- let b=String(firstField(r,['pff_BLITZDOG','BLITZ','blitz'])||'').toUpperCase();
- let p=String(firstField(r,['pff_PRESSURE','PRESSURE','pressure'])||'').toUpperCase();
- if(['1','TRUE','YES','Y','BLITZ'].includes(b))return'Blitz';
- if(['1','TRUE','YES','Y','PRESSURE'].includes(p))return'Pressure';
- return'No Pressure Tag';
+ let blitz=pffBool(firstField(r,['pff_BLITZDOG'])), pressured=nonEmpty(firstField(r,['pff_QBPRESSURE']));
+ if(blitz&&pressured)return'Blitz + Pressure'; if(blitz)return'Blitz, No Pressure';
+ if(pressured)return'Non-Blitz Pressure'; return'No Blitz / No Pressure';
 }
 function cvTargetDepth(r){
- let v=firstField(r,['pff_TARGETDEPTH','TARGET_DEPTH','target_depth','DEPTH','depth','pff_ADOT']);
+ let v=firstField(r,['pff_PASSDEPTH','pff_TARGETDEPTH','TARGET_DEPTH','target_depth']);
  if(!nonEmpty(v))return '';
  let d=num(v);
  if(d<0)return'Behind LOS';
@@ -2162,10 +2956,10 @@ function cvTargetDepth(r){
  return'Deep 20+';
 }
 function cvTargetSide(r){
- let raw=String(firstField(r,['pff_TARGETLOCATION','TARGET_LOCATION','target_location','TARGET_SIDE','target_side'])||'').toUpperCase();
- if(raw.includes('LEFT'))return'Left';
- if(raw.includes('RIGHT'))return'Right';
- if(raw.includes('MIDDLE')||raw.includes('CENTER')||raw.includes('HASH'))return'Middle';
+ let raw=String(firstField(r,['pff_PASSDIRECTION','pff_TARGETLOCATION','TARGET_LOCATION'])||'').trim().toUpperCase();
+ if(raw==='L'||raw.includes('LEFT'))return'Left';
+ if(raw==='R'||raw.includes('RIGHT'))return'Right';
+ if(raw==='M'||raw==='C'||raw.includes('MIDDLE')||raw.includes('CENTER'))return'Middle';
  return '';
 }
 function cvRows(){
@@ -2177,7 +2971,8 @@ function cvRows(){
    (cvDistF==='ALL'||rdDistanceBucket(r)===cvDistF) &&
    (cvFieldF==='ALL'||pfFieldZone(r)===cvFieldF) &&
    (cvHashF==='ALL'||cvHash(r)===cvHashF) &&
-   (cvPressureF==='ALL'||cvPressure(r)===cvPressureF)
+   (cvPressureF==='ALL'||cvPressure(r)===cvPressureF) &&
+   dndMatches(r)
  );
 }
 function cvMetrics(rows){
@@ -2228,29 +3023,19 @@ function setCV(key,val){
  if(key==='down')cvDownF=val;if(key==='dist')cvDistF=val;if(key==='field')cvFieldF=val;
  if(key==='hash')cvHashF=val;if(key==='pressure')cvPressureF=val;render();
 }
-function resetCV(){cvFamilyF=cvShellF=cvManZoneF=cvDownF=cvDistF=cvFieldF=cvHashF=cvPressureF='ALL';render()}
+function resetCV(){cvFamilyF=cvShellF=cvManZoneF=cvDownF=cvDistF=cvFieldF=cvHashF=cvPressureF='ALL';dndFilter='ALL';render()}
 function coveragePage(){
  let all=cvPassRowsBase(),rows=cvRows(),s=cvMetrics(rows);
  let families=uniqueVals(all,cvFamily),shells=uniqueVals(all,cvShell),mzs=uniqueVals(all,cvManZone),downs=uniqueVals(all,pfDown),
      dists=uniqueVals(all,rdDistanceBucket),fields=uniqueVals(all,pfFieldZone),hashes=uniqueVals(all,cvHash),pressures=uniqueVals(all,cvPressure);
  let familyB=cvBreakdown(rows,cvFamily),shellB=cvBreakdown(rows,cvShell),mzB=cvBreakdown(rows,cvManZone),
-     downB=cvBreakdown(rows,pfDown),fieldB=cvBreakdown(rows,pfFieldZone),combo=cvComboRows(rows),heat=cvHeat(rows);
+     downB=addP10Breakdown(cvBreakdown(rows,pfDown),rows,cvMetrics),fieldB=cvBreakdown(rows,pfFieldZone),combo=cvComboRows(rows),heat=cvHeat(rows);
  let shell1=shellB.find(x=>/1 High/i.test(x.k)),shell2=shellB.find(x=>/2 High/i.test(x.k)),shell0=shellB.find(x=>/0 High/i.test(x.k));
  let depthOrder=['Deep 20+','Intermediate 10-19','Short 0-9','Behind LOS'], sideOrder=['Left','Middle','Right'];
  return `<div class="page-title"><h2>Coverage</h2><p>Coverage structure, shell, man/zone and passing results against Mississippi State.</p></div>
  ${!all.length?`<div class="pf-empty"><b>No charted pass plays are loaded yet.</b><br>The Coverage workspace is built and will populate from the opponent-defense play feed.</div>`:''}
 
- <div class="cv-toolbar">
-   <label>Coverage Family<select onchange="setCV('family',this.value)"><option value="ALL">All Coverages</option>${families.map(v=>`<option ${cvFamilyF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <label>Shell<select onchange="setCV('shell',this.value)"><option value="ALL">All Shells</option>${shells.map(v=>`<option ${cvShellF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <label>Man / Zone<select onchange="setCV('mz',this.value)"><option value="ALL">All</option>${mzs.map(v=>`<option ${cvManZoneF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <label>Down<select onchange="setCV('down',this.value)"><option value="ALL">All Downs</option>${downs.map(v=>`<option ${cvDownF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <label>Distance<select onchange="setCV('dist',this.value)"><option value="ALL">All Distances</option>${dists.map(v=>`<option ${cvDistF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <label>Field Zone<select onchange="setCV('field',this.value)"><option value="ALL">All Field Zones</option>${fields.map(v=>`<option ${cvFieldF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <label>Hash<select onchange="setCV('hash',this.value)"><option value="ALL">All Hashes</option>${hashes.map(v=>`<option ${cvHashF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <label>Pressure<select onchange="setCV('pressure',this.value)"><option value="ALL">All Pressure States</option>${pressures.map(v=>`<option ${cvPressureF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <div class="cv-reset"><button onclick="resetCV()">Reset Filters</button></div>
- </div>
+ 
 
  <div class="cv-kpis">
    <div class="cv-kpi"><span>Pass Plays</span><b>${rows.length||'—'}</b></div>
@@ -2284,11 +3069,34 @@ function coveragePage(){
      <div class="cv-table-wrap">${table(['Coverage','Plays','Usage','YPP','Median','Comp %','Expl %','TD','INT'],cvTable(familyB,rows.length))}</div>
    </div>
 
+
+   <div class="cv-span-12">
+     <div class="cv-filters-panel">
+       <div class="cv-filters-head">Coverage Filters</div>
+<div class="cv-toolbar">
+   <label>Coverage Family<select onchange="setCV('family',this.value)"><option value="ALL">All Coverages</option>${families.map(v=>`<option ${cvFamilyF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Shell<select onchange="setCV('shell',this.value)"><option value="ALL">All Shells</option>${shells.map(v=>`<option ${cvShellF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Man / Zone<select onchange="setCV('mz',this.value)"><option value="ALL">All</option>${mzs.map(v=>`<option ${cvManZoneF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Down<select onchange="setCV('down',this.value)"><option value="ALL">All Downs</option>${downs.map(v=>`<option ${cvDownF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Distance<select onchange="setCV('dist',this.value)"><option value="ALL">All Distances</option>${dists.map(v=>`<option ${cvDistF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Field Zone<select onchange="setCV('field',this.value)"><option value="ALL">All Field Zones</option>${fields.map(v=>`<option ${cvFieldF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Hash<select onchange="setCV('hash',this.value)"><option value="ALL">All Hashes</option>${hashes.map(v=>`<option ${cvHashF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Pressure<select onchange="setCV('pressure',this.value)"><option value="ALL">All Pressure States</option>${pressures.map(v=>`<option ${cvPressureF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   ${dndSelect()}<div class="cv-reset"><button onclick="resetCV()">Reset Filters</button></div>
+ </div>
+     </div>
+   </div>
+
    <div class="cv-section cv-span-12">
-     <h3>Target Location</h3><div class="cv-sub">Where offenses are throwing the ball against the filtered coverage sample.</div>
-     <div class="cv-field"><div class="cv-los"><span>LOS</span></div><div class="cv-zone-grid">
-       ${depthOrder.map(d=>sideOrder.map(side=>{let a=heat[d+'||'+side]||[],m=cvMetrics(a);return `<div class="cv-zone"><span>${esc(d)} · ${esc(side)}</span><b>${a.length||0}</b><small>${a.length?`${fmt(m.ypp,1)} YPP · ${m.att?pctText(m.comp,m.att):'—'} CMP`:'No targets'}</small></div>`}).join('')).join('')}
-     </div></div>
+     <h3>Target Location</h3>
+     <div class="cv-sub">20-zone offensive field. Every populated cell shows raw targets, target share, completion %, YPP and median YPP. Click any zone to expand. Click any zone to expand the full detail.</div>
+     <div class="hash-quick">
+       <button class="${cvHashF==='ALL'?'active':''}" onclick="setCV('hash','ALL')">All Hashes</button>
+       <button class="${cvHashF==='L'?'active':''}" onclick="setCV('hash','L')">Left Hash</button>
+       <button class="${cvHashF==='C'?'active':''}" onclick="setCV('hash','C')">Middle</button>
+       <button class="${cvHashF==='R'?'active':''}" onclick="setCV('hash','R')">Right Hash</button>
+     </div>
+     ${spatialFieldHTML(rows,'targets')}
    </div>
 
    <div class="cv-section cv-span-6">
@@ -2334,7 +3142,8 @@ function stRows(){
    (stRP==='ALL'||stRunPass(r)===stRP) &&
    (stPersonnelF==='ALL'||pfPersonnel(r)===stPersonnelF) &&
    (stFrontF==='ALL'||pfFront(r)===stFrontF) &&
-   (stCoverageF==='ALL'||cvFamily(r)===stCoverageF)
+   (stCoverageF==='ALL'||cvFamily(r)===stCoverageF) &&
+   dndMatches(r)
  );
 }
 function stMetrics(rows){
@@ -2364,12 +3173,27 @@ function setST(key,val){
  if(key==='down')stDownF=val;if(key==='dist')stDistF=val;if(key==='field')stFieldF=val;if(key==='hash')stHashF=val;
  if(key==='rp')stRP=val;if(key==='personnel')stPersonnelF=val;if(key==='front')stFrontF=val;if(key==='coverage')stCoverageF=val;render();
 }
-function resetST(){stDownF=stDistF=stFieldF=stHashF=stRP=stPersonnelF=stFrontF=stCoverageF='ALL';render()}
+function resetST(){stDownF=stDistF=stFieldF=stHashF=stRP=stPersonnelF=stFrontF=stCoverageF='ALL';dndFilter='ALL';render()}
+
+const ST_FIELD_ZONE_ORDER=['Backed Up','Coming Out','Own 26-40','Midfield','+40 to +21','Red Zone','Goal-to-Go'];
+function stZoneGeom(name){
+ const map={'Backed Up':{left:5,width:8},'Coming Out':{left:13,width:17},'Own 26-40':{left:30,width:15},'Midfield':{left:45,width:15},'+40 to +21':{left:60,width:17},'Red Zone':{left:77,width:13},'Goal-to-Go':{left:90,width:5}};
+ return map[name]||{left:45,width:10};
+}
+function stFieldVisual(fieldB,maxZone){
+ let map={};fieldB.forEach(x=>map[x.k]=x);
+ let boxes=ST_FIELD_ZONE_ORDER.filter(k=>map[k]).map(k=>{let x=map[k],g=stZoneGeom(k);return `<div class="st-field-zone-box ${x.n===maxZone?'hot':''}" style="left:${g.left}%;width:${g.width}%"><span>${esc(k)}</span><b>${x.n}</b><small>${fmt(x.ypp,1)} YPP<br>${pctText(x.neg,x.n)} Neg<br>${pctText(x.expl,x.n)} Expl</small></div>`}).join('');
+ let nums=['10','20','30','40','50','40','30','20','10'];
+ let cls=['n10l','n20l','n30l','n40l','n50','n40r','n30r','n20r','n10r'];
+ let yardNums=nums.map((n,i)=>`<span class="top ${cls[i]}">${n}</span><span class="bottom ${cls[i]}">${n}</span>`).join('');
+ return `<div class="st-field-visual"><div class="st-field-endzone left"></div><div class="st-field-endzone right"></div><div class="st-field-yardlines">${'<i></i>'.repeat(10)}</div><div class="st-field-yardnums">${yardNums}</div><div class="st-field-midline"></div>${boxes}<span class="st-field-label left">OWN GOAL</span><span class="st-field-label mid">50</span><span class="st-field-label right">OPP GOAL</span></div><div class="st-field-note">Zone widths approximate the yard-line ranges represented by the report buckets across the full field.</div>`;
+}
+
 function situationsPage(){
  let all=dashboardPlayRows(),rows=stRows(),s=stMetrics(rows);
  let downs=uniqueVals(all,pfDown),dists=uniqueVals(all,rdDistanceBucket),fields=uniqueVals(all,pfFieldZone),hashes=uniqueVals(all,cvHash),
      pers=uniqueVals(all,pfPersonnel),fronts=uniqueVals(all,pfFront),covs=uniqueVals(all,cvFamily);
- let downB=stBreakdown(rows,pfDown),distB=stBreakdown(rows,rdDistanceBucket),fieldB=stBreakdown(rows,pfFieldZone),hashB=stBreakdown(rows,cvHash);
+ let downB=addP10Breakdown(stBreakdown(rows,pfDown),rows,stMetrics),distB=addP10Breakdown(stBreakdown(rows,rdDistanceBucket),rows,stMetrics),fieldB=stBreakdown(rows,pfFieldZone),hashB=stBreakdown(rows,cvHash);
  let specials=[
    stSpecialGroup(rows,'1st & 10',r=>pfDown(r)==='1'&&num(firstField(r,['pff_DISTANCE','DISTANCE','distance']))===10),
    stSpecialGroup(rows,'2nd & 1-3',r=>pfDown(r)==='2'&&num(firstField(r,['pff_DISTANCE','DISTANCE','distance']))<=3),
@@ -2394,7 +3218,7 @@ function situationsPage(){
    <label>Personnel<select onchange="setST('personnel',this.value)"><option value="ALL">All Personnel</option>${pers.map(v=>`<option ${stPersonnelF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Front<select onchange="setST('front',this.value)"><option value="ALL">All Fronts</option>${fronts.map(v=>`<option ${stFrontF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Coverage<select onchange="setST('coverage',this.value)"><option value="ALL">All Coverages</option>${covs.map(v=>`<option ${stCoverageF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <div class="st-reset"><button onclick="resetST()">Reset Filters</button></div>
+   ${dndSelect()}<div class="st-reset"><button onclick="resetST()">Reset Filters</button></div>
  </div>
  <div class="st-kpis">
    <div class="st-kpi"><span>Plays</span><b>${rows.length||'—'}</b></div>
@@ -2421,8 +3245,8 @@ function situationsPage(){
      <div class="st-table-wrap">${table(['Distance','Plays','Usage','YPP','Median','Expl %','Neg %','1D %','R/P'],stTable(distB,rows.length))}</div>
    </div>
    <div class="st-section st-span-12">
-     <h3>Field Zone Strip</h3><div class="st-sub">Where the defensive sample is concentrated and how it performs.</div>
-     <div class="st-zone-strip">${fieldB.length?fieldB.map(x=>`<div class="st-zone ${x.n===maxZone?'hot':''}"><span>${esc(x.k)}</span><b>${x.n}</b><small>${fmt(x.ypp,1)} YPP<br>${pctText(x.neg,x.n)} Neg</small></div>`).join(''):'<div class="empty" style="grid-column:1/-1">No field-zone data available.</div>'}</div>
+     <h3>Field Zone Field</h3><div class="st-sub">Where the defensive sample is concentrated and how it performs across the actual field.</div>
+     ${fieldB.length?stFieldVisual(fieldB,maxZone):'<div class="empty">No field-zone data available.</div>'}
    </div>
    <div class="st-section st-span-6">
      <h3>By Field Zone</h3><div class="st-sub">Efficiency, explosives and negatives by field position.</div>
@@ -2436,11 +3260,347 @@ function situationsPage(){
  </div>`;
 }
 
+
+function prPassRowsBase(){return cvPassRowsBase()}
+function prRushCount(r){return pffLeadingCount(firstField(r,['pff_PASSRUSHPLAYERS','pff_NUMBEROFPASSRUSHERS','RUSH_COUNT']))}
+function prType(r){
+ let blitz=pffBool(firstField(r,['pff_BLITZDOG'])), pressured=nonEmpty(firstField(r,['pff_QBPRESSURE']));
+ if(blitz&&pressured)return'Blitz + Pressure'; if(blitz)return'Blitz, No Pressure';
+ if(pressured)return'Non-Blitz Pressure'; return'No Blitz / No Pressure';
+}
+function prFormation(r){return srFormation(r)}
+function prPersonnel(r){return pfPersonnel(r)}
+function prCoverage(r){return cvFamily(r)}
+function prRows(){
+ return prPassRowsBase().filter(r=>
+   (prTypeF==='ALL'||prType(r)===prTypeF) &&
+   (prRushF==='ALL'||prRushCount(r)===prRushF) &&
+   (prDownF==='ALL'||pfDown(r)===prDownF) &&
+   (prDistF==='ALL'||rdDistanceBucket(r)===prDistF) &&
+   (prFieldF==='ALL'||pfFieldZone(r)===prFieldF) &&
+   (prHashF==='ALL'||reportHash(r)===prHashF) &&
+   (prPersonnelF==='ALL'||prPersonnel(r)===prPersonnelF) &&
+   (prFormationF==='ALL'||prFormation(r)===prFormationF) &&
+   (prCoverageF==='ALL'||prCoverage(r)===prCoverageF) &&
+   dndMatches(r)
+ );
+}
+function prMetrics(rows){
+ let gains=rows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
+ let att=0,comp=0,sacks=0,ints=0,td=0,exp=0,neg=0,scr=0,ttt=[];
+ rows.forEach(r=>{
+   let g=num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained']));
+   if(g>=15)exp++; if(g<=0)neg++;
+   let result=String(firstField(r,['pff_PASSRESULT','PASSRESULT','pass_result'])||'').toUpperCase();
+   if(['COMPLETE','INCOMPLETE','INTERCEPTION','THROWN AWAY','HIT AS THREW','BATTED PASS'].includes(result))att++;
+   if(result==='COMPLETE')comp++;
+   if(result==='SACK'||nonEmpty(firstField(r,['pff_SACK'])))sacks++;
+   if(result==='INTERCEPTION'||nonEmpty(firstField(r,['pff_INTERCEPTION'])))ints++;
+   if(nonEmpty(firstField(r,['pff_TOUCHDOWN'])))td++;
+   if(nonEmpty(firstField(r,['pff_QBSCRAMBLE'])))scr++;
+   let tv=firstField(r,['pff_TIMETOTHROW','TTT','time_to_throw']);
+   if(nonEmpty(tv))ttt.push(num(tv));
+ });
+ return {n:rows.length,ypp:rows.length?avg(gains):0,med:rows.length?calcMedian(gains):0,att,comp,sacks,ints,td,exp,neg,scr,ttt:ttt.length?avg(ttt):0};
+}
+function prBreakdown(rows,fn){
+ let m={};rows.forEach(r=>{let k=fn(r)||'Unknown';(m[k] ||= []).push(r)});
+ return Object.entries(m).map(([k,a])=>({k,...prMetrics(a)})).sort((a,b)=>b.n-a.n);
+}
+function prTable(arr,total){
+ return arr.map(x=>[esc(x.k),x.n,pctText(x.n,total),fmt(x.ypp,2),fmt(x.med,1),x.att?pctText(x.comp,x.att):'—',x.sacks,pctText(x.exp,x.n),pctText(x.neg,x.n)]);
+}
+function prComboRows(rows){
+ let m={};
+ rows.forEach(r=>{
+   let t=prType(r)||'Unknown',rush=prRushCount(r)||'Unknown',cov=prCoverage(r)||'Unknown';
+   let k=t+'||'+rush+'||'+cov;(m[k] ||= []).push(r);
+ });
+ return Object.entries(m).map(([k,a])=>{let [type,rush,cov]=k.split('||');return {type,rush,cov,...prMetrics(a)}}).sort((a,b)=>b.n-a.n).slice(0,14);
+}
+function setPR(key,val){
+ if(key==='type')prTypeF=val;if(key==='rush')prRushF=val;if(key==='down')prDownF=val;if(key==='dist')prDistF=val;
+ if(key==='field')prFieldF=val;if(key==='hash')prHashF=val;if(key==='personnel')prPersonnelF=val;if(key==='formation')prFormationF=val;if(key==='coverage')prCoverageF=val;render();
+}
+function resetPR(){prTypeF=prRushF=prDownF=prDistF=prFieldF=prPersonnelF=prFormationF=prCoverageF=prHashF='ALL';dndFilter='ALL';render()}
+
+
+
+function blitzRushers(r){
+ let raw=String(firstField(r,['pff_PASSRUSHPLAYERS'])||'').trim();
+ if(!raw)return[];
+ let parts=raw.split(';').map(x=>x.trim());
+ if(parts.length&&/^\d+$/.test(parts[0]))parts.shift();
+ return parts.map(x=>{
+   let m=x.match(/MSST D(\d{2}) \(([^)]+)\)/);
+   return m?{num:m[1],role:m[2]}:null;
+ }).filter(Boolean);
+}
+function blitzIsFrontRole(role){
+ let s=String(role||'').toUpperCase();
+ return /^(DLT|DRT|NT|NLT|NRT|LE|RE|LEO|REO|DE|DT)$/.test(s);
+}
+function blitzRoleGroup(role){
+ let s=String(role||'').toUpperCase();
+ if(/SCB|CB/.test(s))return'DB';
+ if(/SS|FS|SAF/.test(s))return'Safety';
+ if(/ILB|MLB|LLB|RLB/.test(s))return'ILB';
+ if(/OLB/.test(s))return'OLB';
+ if(/LEO|REO|LE|RE/.test(s))return'Edge';
+ if(/DLT|DRT|NT|NLT|NRT|DT|DL/.test(s))return'DL';
+ return'Other';
+}
+function blitzPlayerName(num){
+ let r=(datasets.playerIntel||[]).find(x=>String(x['#']||'').padStart(2,'0')===String(num).padStart(2,'0'));
+ return r?.Name||`#${num}`;
+}
+function blitzRowsBase(){
+ return prPassRowsBase().filter(r=>pffBool(firstField(r,['pff_BLITZDOG']))&&blitzRushers(r).length);
+}
+function blitzFilteredRows(baseRows){
+ let rows=(baseRows||prRows());
+ return rows.filter(r=>pffBool(firstField(r,['pff_BLITZDOG']))&&blitzRushers(r).length);
+}
+function blitzSpecialRushers(r){return blitzRushers(r).filter(x=>!blitzIsFrontRole(x.role))}
+function blitzPressurePlayers(r){
+ let raw=String(firstField(r,['pff_QBPRESSURE'])||'');
+ return new Set([...raw.matchAll(/MSST D(\d{2})/g)].map(m=>m[1]));
+}
+function blitzSackPlayers(r){
+ let raw=String(firstField(r,['pff_SACK'])||'');
+ return new Set([...raw.matchAll(/MSST D(\d{2})/g)].map(m=>m[1]));
+}
+function blitzPlayMetrics(rows){
+ let gains=rows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN'])));
+ let press=rows.filter(r=>nonEmpty(firstField(r,['pff_QBPRESSURE']))).length;
+ let sacks=rows.filter(r=>nonEmpty(firstField(r,['pff_SACK']))).length;
+ let exp=gains.filter(x=>x>=15).length,neg=gains.filter(x=>x<=0).length;
+ let att=0,comp=0;
+ rows.forEach(r=>{
+   let result=String(firstField(r,['pff_PASSRESULT','PASSRESULT','pass_result'])||'').toUpperCase();
+   if(['COMPLETE','INCOMPLETE','INTERCEPTION','THROWN AWAY','HIT AS THREW','BATTED PASS'].includes(result))att++;
+   if(result==='COMPLETE')comp++;
+ });
+ return {n:rows.length,ypp:rows.length?avg(gains):0,med:rows.length?calcMedian(gains):0,press,sacks,exp,neg,att,comp};
+}
+function blitzPlayerRows(rows){
+ let map={};
+ rows.forEach(r=>{
+   blitzSpecialRushers(r).forEach(x=>{
+     if(!map[x.num])map[x.num]={num:x.num,name:blitzPlayerName(x.num),roles:{},rows:[],playerPress:0,playerSacks:0};
+     map[x.num].rows.push(r);map[x.num].roles[x.role]=(map[x.num].roles[x.role]||0)+1;
+     if(blitzPressurePlayers(r).has(x.num))map[x.num].playerPress++;
+     if(blitzSackPlayers(r).has(x.num))map[x.num].playerSacks++;
+   });
+ });
+ return Object.values(map).map(x=>{
+   let m=blitzPlayMetrics(x.rows),role=Object.entries(x.roles).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+   return {...x,role,...m};
+ }).sort((a,b)=>b.n-a.n);
+}
+function blitzComboRows(rows){
+ let map={};
+ rows.forEach(r=>{
+   let arr=blitzSpecialRushers(r);
+   let names=arr.map(x=>`${blitzPlayerName(x.num)} (#${x.num}, ${x.role})`).sort();
+   let key=names.length?names.join(' + '):'No second-level/DB rusher identified';
+   (map[key] ||= []).push(r);
+ });
+ return Object.entries(map).map(([k,a])=>({k,...blitzPlayMetrics(a)})).sort((a,b)=>b.n-a.n);
+}
+function blitzPositionCombos(rows){
+ let map={};
+ rows.forEach(r=>{
+   let groups=blitzSpecialRushers(r).map(x=>blitzRoleGroup(x.role)).sort();
+   let key=groups.length?groups.join(' + '):'Front only';
+   (map[key] ||= []).push(r);
+ });
+ return Object.entries(map).map(([k,a])=>({k,...blitzPlayMetrics(a)})).sort((a,b)=>b.n-a.n);
+}
+
+
+function blitzRoleSide(role){
+ let s=String(role||'').toUpperCase();
+ if(/^(LCB|SCBL|SCBOL|SCBIL|LOLB|LILB|LEO|LE|NLT|DLT)$/.test(s))return'LEFT';
+ if(/^(RCB|SCBR|SCBOR|SCBIR|ROLB|RILB|REO|RE|DRT|NRT)$/.test(s))return'RIGHT';
+ return'MID';
+}
+function blitzHashMap(hash){
+ let h=String(hash||'').trim().toUpperCase();
+ if(h==='L')return{left:'BOUNDARY',right:'FIELD',hash:'L'};
+ if(h==='R')return{left:'FIELD',right:'BOUNDARY',hash:'R'};
+ return{left:'LEFT',right:'RIGHT',hash:'C'};
+}
+const BLITZ_SLOT_META={
+ 'FC':{label:'FC',title:'Field Corner',x:8,y:16},
+ 'NICKEL':{label:'N',title:'Nickel / Star',x:27,y:22},
+ 'FS':{label:'FS',title:'Free Safety',x:43,y:10},
+ 'SS':{label:'SS',title:'Strong Safety',x:59,y:10},
+ 'BC':{label:'BC',title:'Boundary Corner',x:92,y:16},
+ 'SAM':{label:'SAM',title:'Sam · Field / Strong',x:30,y:42},
+ 'MIKE':{label:'MIKE',title:'Mike',x:50,y:38},
+ 'WILL':{label:'WILL',title:'Will · Boundary / Weak',x:70,y:42},
+ 'FDE':{label:'DE',title:'Field End',x:24,y:67},
+ 'NOSE':{label:'N',title:'Nose',x:50,y:69},
+ 'BDE':{label:'DE',title:'Boundary End',x:76,y:67}
+};
+const BLITZ_SLOT_ORDER=['FC','NICKEL','FS','SS','BC','SAM','MIKE','WILL','FDE','NOSE','BDE'];
+function blitzRoleSlot(role,hash){
+ let s=String(role||'').toUpperCase(),side=blitzRoleSide(s),hm=blitzHashMap(hash);
+ const wide=side==='LEFT'?hm.left:side==='RIGHT'?hm.right:'';
+ if(s==='LCB'||s==='RCB'){
+   if(wide==='FIELD')return'FC';
+   if(wide==='BOUNDARY')return'BC';
+   return side==='LEFT'?'FC':'BC';
+ }
+ if(/^(SCBL|SCBOL|SCBIL|SCBR|SCBOR|SCBIR)$/.test(s))return'NICKEL';
+ if(s==='FS')return'FS';
+ if(s==='SS')return'SS';
+ if(s==='MLB')return'MIKE';
+ if(/^(LOLB|ROLB|LILB|RILB|LLB|RLB)$/.test(s)){
+   if(wide==='FIELD')return'SAM';
+   if(wide==='BOUNDARY')return'WILL';
+   return side==='LEFT'?'SAM':'WILL';
+ }
+ if(/^(LEO|LE|NLT|DLT)$/.test(s)){
+   if(wide==='FIELD')return'FDE';
+   if(wide==='BOUNDARY')return'BDE';
+   return side==='LEFT'?'FDE':'BDE';
+ }
+ if(/^(REO|RE|DRT|NRT)$/.test(s)){
+   if(wide==='FIELD')return'FDE';
+   if(wide==='BOUNDARY')return'BDE';
+   return side==='RIGHT'?'BDE':'FDE';
+ }
+ if(s==='NT')return'NOSE';
+ return'OTHER';
+}
+function blitzSlotSummaries(rows){
+ let map={};
+ BLITZ_SLOT_ORDER.forEach(slot=>map[slot]={slot,rows:[],roles:{},players:{},pressure:0,sacks:0,att:0,comp:0,exp:0,neg:0,gains:[]});
+ rows.forEach(r=>{
+   let gain=num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])),result=String(firstField(r,['pff_PASSRESULT','PASSRESULT','pass_result'])||'').toUpperCase();
+   let pressSet=new Set([...String(firstField(r,['pff_QBPRESSURE'])||'').matchAll(/MSST D(\d{2})/g)].map(m=>m[1]));
+   let sackSet=new Set([...String(firstField(r,['pff_SACK'])||'').matchAll(/MSST D(\d{2})/g)].map(m=>m[1]));
+   let att=['COMPLETE','INCOMPLETE','INTERCEPTION','THROWN AWAY','HIT AS THREW','BATTED PASS'].includes(result)?1:0,comp=result==='COMPLETE'?1:0;
+   let pressurePlay=nonEmpty(firstField(r,['pff_QBPRESSURE']))?1:0,sackPlay=(result==='SACK'||nonEmpty(firstField(r,['pff_SACK'])))?1:0;
+   let hash=cvHash(r);
+   let seen=new Set();
+   blitzSpecialRushers(r).forEach(x=>{
+     let slot=blitzRoleSlot(x.role,hash); if(!map[slot])return;
+     let rec=map[slot],p=(rec.players[x.num] ||= {num:x.num,name:blitzPlayerName(x.num),n:0,pressure:0,sacks:0,roles:{}});
+     p.n++;p.roles[x.role]=(p.roles[x.role]||0)+1;if(pressSet.has(x.num))p.pressure++;if(sackSet.has(x.num))p.sacks++;
+     rec.roles[x.role]=(rec.roles[x.role]||0)+1;
+     if(!seen.has(slot)){
+       seen.add(slot);rec.rows.push(r);rec.gains.push(gain);if(gain>=15)rec.exp++;if(gain<=0)rec.neg++;if(pressurePlay)rec.pressure++;if(sackPlay)rec.sacks++;if(att)rec.att++;if(comp)rec.comp++;
+     }
+   });
+ });
+ return BLITZ_SLOT_ORDER.map(slot=>{
+   let rec=map[slot],topPlayer=Object.values(rec.players).sort((a,b)=>b.n-a.n)[0]||null,topRole=Object.entries(rec.roles).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+   return {...rec,calls:rec.rows.length,ypp:rec.rows.length?avg(rec.gains):0,med:rec.rows.length?calcMedian(rec.gains):0,topPlayer,topRole};
+ });
+}
+
+function blitzArrowHTML(meta){
+ let top=meta.y+4,h=Math.max(7,76-top);
+ return `<div class="blitz-arrow-clean" style="left:${meta.x}%;top:${top}%;height:${h}%"></div>`;
+}
+
+function blitzFieldHTML(slotRows,totalBlitzPlays){
+ let bySlot={};slotRows.forEach(x=>bySlot[x.slot]=x);
+ return `<div class="blitz-align-wrap clean">
+   <div class="blitz-field-header"><h3>Blitz Alignment</h3><div class="sub">11-man 3-3-5 coaching view. Every PFF role is rolled into one of 11 defensive spots after field / boundary is resolved by hash. Gold = actual blitz origin in the filtered sample.</div></div>
+   <div class="blitz-align-field clean">
+     <div class="blitz-row-label secondary">SECONDARY</div>
+     <div class="blitz-row-label lbs">LINEBACKERS</div>
+     <div class="blitz-row-label front">FRONT</div>
+     <div class="blitz-los-line"></div><div class="blitz-los-pill">LINE OF SCRIMMAGE</div>
+     <div class="blitz-side blitz-side-left">FIELD / STRONG</div><div class="blitz-side blitz-side-right">BOUNDARY / WEAK</div>
+     ${BLITZ_SLOT_ORDER.map(slot=>{
+       let meta=BLITZ_SLOT_META[slot],s=bySlot[slot]||{calls:0},active=s.calls>0;
+       let p=s.topPlayer?`${esc(s.topPlayer.name)} (#${s.topPlayer.num})`:'Base alignment';
+       let share=active?pctText(s.calls,totalBlitzPlays):'';
+       return `${active?blitzArrowHTML(meta):''}<div class="blitz-dot ${active?'active':'inactive'}" style="left:${meta.x}%;top:${meta.y}%" title="${esc(meta.title)}">
+         <div class="bd-role">${esc(meta.label)}</div>
+         <div class="bd-num">${active?s.calls:''}</div>
+         <div class="bd-name">${esc(p)}</div>
+         <div class="bd-share">${share}</div>
+       </div>`;
+     }).join('')}
+   </div>
+   <div class="blitz-field-key"><span><i class="key-dot base"></i> Base defensive spot</span><span><i class="key-dot hot"></i> Blitz origin</span><span>Exactly 11 defenders · counts = blitz calls from that coaching spot</span></div>
+ </div>`;
+}
+
+function blitzIntelHTML(filteredBaseRows){
+ let rows=blitzFilteredRows(filteredBaseRows),players=blitzPlayerRows(rows),combos=blitzComboRows(rows),posCombos=blitzPositionCombos(rows),slotRows=blitzSlotSummaries(rows);
+ let pressurePlays=rows.filter(r=>nonEmpty(firstField(r,['pff_QBPRESSURE']))).length;
+ let sackPlays=rows.filter(r=>nonEmpty(firstField(r,['pff_SACK']))).length;
+ let activeSlots=slotRows.filter(x=>x.calls>0);
+ return `<div class="blitz-intel">
+   <div class="pr-section pr-span-12">
+     <h3>Blitz Intelligence</h3>
+     <div class="pr-sub">Built from filtered PFF BLITZDOG plays with PASSRUSHPLAYERS. The field is fixed at 11 defenders in a 3-3-5 shell; PFF left/right roles are normalized to field / boundary before they are rolled into FC, Nickel, Sam, Mike, Will and the three-man front.</div>
+     <div class="blitz-headline">
+       <div class="blitz-head-kpi"><span>Filtered Blitz Calls</span><b>${rows.length}</b></div>
+       <div class="blitz-head-kpi"><span>Pressure Plays</span><b>${pressurePlays}</b></div>
+       <div class="blitz-head-kpi"><span>Pressure Rate</span><b>${pctText(pressurePlays,rows.length)}</b></div>
+       <div class="blitz-head-kpi"><span>Sack Plays</span><b>${sackPlays}</b></div>
+     </div>
+     ${rows.length?blitzFieldHTML(slotRows,rows.length):`<div class="empty">No blitz sample exists for the current pressure filters.</div>`}
+   </div>
+   <div class="blitz-tables">
+     <div class="blitz-table">
+       <h3>Blitz Origins by Coaching Position</h3><div class="sub">Raw calls and results after PFF alignment roles are normalized into the 11 coaching positions shown above.</div>
+       <div class="blitz-table-wrap">${table(['Spot','Top Blitzer','Calls','Call Share','Pressure %','Sacks','YPP','Median','Comp %','Expl %','Neg %'],
+         activeSlots.length?activeSlots.map(x=>[
+           esc(BLITZ_SLOT_META[x.slot]?.title||x.slot),
+           x.topPlayer?`${esc(x.topPlayer.name)} (#${x.topPlayer.num})`:'—',
+           x.calls,
+           pctText(x.calls,rows.length),
+           pctText(x.pressure,x.calls),
+           x.sacks,
+           fmt(x.ypp,2),
+           fmt(x.med,1),
+           x.att?pctText(x.comp,x.att):'—',
+           pctText(x.exp,x.calls),
+           pctText(x.neg,x.calls)
+         ]):[['No blitz origins found','—','—','—','—','—','—','—','—','—','—']]
+       )}</div>
+     </div>
+     <div class="blitz-table">
+       <h3>Second-Level / DB Blitzers</h3><div class="sub">Which individual non-front defenders are showing up as rushers.</div>
+       <div class="blitz-table-wrap">${table(['Player','Primary Role','Blitz Rushes','Share','Player Pressures','Player Sacks','Team YPP','Comp %','Expl %','Neg %'],
+         players.length?players.map(x=>[
+           esc(x.name)+' (#'+x.num+')',esc(x.role),x.n,pctText(x.n,players.reduce((n,p)=>n+p.n,0)),x.playerPress,x.playerSacks,fmt(x.ypp,2),x.att?pctText(x.comp,x.att):'—',pctText(x.exp,x.n),pctText(x.neg,x.n)
+         ]):[['No non-front blitzers found','—','—','—','—','—','—','—','—','—']]
+       )}</div>
+     </div>
+     <div class="blitz-table">
+       <h3>Position Combinations</h3><div class="sub">Position groups entering the rush together on the same call.</div>
+       <div class="blitz-table-wrap">${table(['Combination','Calls','Call Share','Pressure %','Sacks','YPP','Median','Comp %','Expl %','Neg %'],
+         posCombos.length?posCombos.map(x=>[esc(x.k),x.n,pctText(x.n,rows.length),pctText(x.press,x.n),x.sacks,fmt(x.ypp,2),fmt(x.med,1),x.att?pctText(x.comp,x.att):'—',pctText(x.exp,x.n),pctText(x.neg,x.n)]):[['No combo data available','—','—','—','—','—','—','—','—','—']]
+       )}</div>
+     </div>
+     <div class="blitz-table">
+       <h3>Exact Player Combinations</h3><div class="sub">Specific defenders who rushed together on the same blitz.</div>
+       <div class="blitz-table-wrap">${table(['Blitzers','Calls','Call Share','Pressure %','Sacks','YPP','Median','Comp %','Expl %','Neg %'],
+         combos.length?combos.map(x=>[esc(x.k),x.n,pctText(x.n,rows.length),pctText(x.press,x.n),x.sacks,fmt(x.ypp,2),fmt(x.med,1),x.att?pctText(x.comp,x.att):'—',pctText(x.exp,x.n),pctText(x.neg,x.n)]):[['No exact player combo data available','—','—','—','—','—','—','—','—','—']]
+       )}</div>
+     </div>
+     <div class="blitz-table" style="grid-column:1/-1">
+       <div class="sample-note">“Actual blitzers” here means the added second-level or coverage defenders explicitly listed in PASSRUSHPLAYERS on a BLITZDOG play. The front stays on the field for context, but the highlighted callouts are showing the extra rush origins.</div>
+     </div>
+   </div>
+ </div>`;
+}
+
 function pressurePage(){
  let all=prPassRowsBase(),rows=prRows(),s=prMetrics(rows);
  let types=uniqueVals(all,prType),rushes=uniqueVals(all,prRushCount),downs=uniqueVals(all,pfDown),dists=uniqueVals(all,rdDistanceBucket),
      fields=uniqueVals(all,pfFieldZone),pers=uniqueVals(all,prPersonnel),forms=uniqueVals(all,prFormation),covs=uniqueVals(all,prCoverage);
- let typeB=prBreakdown(rows,prType),rushB=prBreakdown(rows,prRushCount),downB=prBreakdown(rows,pfDown),fieldB=prBreakdown(rows,pfFieldZone),persB=prBreakdown(rows,prPersonnel),combo=prComboRows(rows);
+ let typeB=prBreakdown(rows,prType),rushB=prBreakdown(rows,prRushCount),downB=addP10Breakdown(prBreakdown(rows,pfDown),rows,prMetrics),fieldB=prBreakdown(rows,pfFieldZone),persB=prBreakdown(rows,prPersonnel),combo=prComboRows(rows);
  let maxRush=Math.max(...rushB.map(x=>x.n),1);
  return `<div class="page-title"><h2>Pressure</h2><p>How Mississippi State creates pass-game stress by blitz, pressure state and rush count.</p></div>
  ${!all.length?`<div class="pf-empty"><b>No charted pass plays are loaded yet.</b><br>The Pressure workspace is built and will populate from the opponent-defense play feed.</div>`:''}
@@ -2451,10 +3611,11 @@ function pressurePage(){
    <label>Down<select onchange="setPR('down',this.value)"><option value="ALL">All Downs</option>${downs.map(v=>`<option ${prDownF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Distance<select onchange="setPR('dist',this.value)"><option value="ALL">All Distances</option>${dists.map(v=>`<option ${prDistF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Field Zone<select onchange="setPR('field',this.value)"><option value="ALL">All Field Zones</option>${fields.map(v=>`<option ${prFieldF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Hash<select onchange="setPR('hash',this.value)">${reportHashOptions(prHashF)}</select></label>
    <label>Personnel<select onchange="setPR('personnel',this.value)"><option value="ALL">All Personnel</option>${pers.map(v=>`<option ${prPersonnelF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Formation<select onchange="setPR('formation',this.value)"><option value="ALL">All Formations</option>${forms.map(v=>`<option ${prFormationF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Coverage<select onchange="setPR('coverage',this.value)"><option value="ALL">All Coverages</option>${covs.map(v=>`<option ${prCoverageF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <div class="pr-reset"><button onclick="resetPR()">Reset Filters</button></div>
+   ${dndSelect()}<div class="pr-reset"><button onclick="resetPR()">Reset Filters</button></div>
  </div>
 
  <div class="pr-kpis">
@@ -2471,17 +3632,17 @@ function pressurePage(){
  </div>
 
  <div class="pr-grid">
-   <div class="pr-section pr-span-4">
+   <div class="pr-section pr-pressure-wide">
      <h3>Pressure State</h3><div class="pr-sub">Blitz / pressure / no-pressure-tag frequency and results.</div>
      <div class="pr-table-wrap">${table(['Type','Plays','Usage','YPP','Median','Comp %','Sacks','Expl %','Neg %'],prTable(typeB,rows.length))}</div>
    </div>
 
-   <div class="pr-section pr-span-4">
+   <div class="pr-section pr-rush-narrow">
      <h3>Rush Count</h3><div class="pr-sub">How many defenders are coming when tagged.</div>
      <div class="pr-rush-grid">${rushB.length?rushB.slice(0,5).map(x=>`<div class="pr-rush-card"><span>Rush ${esc(x.k)}</span><div class="big">${x.n}</div><small>${pctText(x.n,rows.length)} · ${fmt(x.ypp,1)} YPP</small></div>`).join(''):'<div class="empty" style="grid-column:1/-1">Rush-count tags not available.</div>'}</div>
    </div>
 
-   <div class="pr-section pr-span-4">
+   <div class="pr-section pr-span-12">
      <h3>Rush Distribution</h3><div class="pr-sub">Relative frequency of rush-count calls.</div>
      <div class="pr-bar-wrap">${rushB.length?rushB.map(x=>`<div class="pr-bar-row"><b>${esc(x.k)} rushers</b><div class="pr-bar"><i style="width:${100*x.n/maxRush}%"></i></div><span>${x.n} · ${pctText(x.n,rows.length)}</span></div>`).join(''):'<div class="empty">No rush-count data.</div>'}</div>
    </div>
@@ -2496,24 +3657,181 @@ function pressurePage(){
      <div class="pr-table-wrap">${table(['Zone','Plays','Usage','YPP','Median','Comp %','Sacks','Expl %','Neg %'],prTable(fieldB,rows.length))}</div>
    </div>
 
-   <div class="pr-section pr-span-6">
-     <h3>By Personnel</h3><div class="pr-sub">How Mississippi State pressures different offensive personnel groupings.</div>
-     <div class="pr-table-wrap">${table(['Personnel','Plays','Usage','YPP','Median','Comp %','Sacks','Expl %','Neg %'],prTable(persB,rows.length))}</div>
-   </div>
-
-   <div class="pr-section pr-span-6">
-     <h3>Pressure × Rush Count × Coverage</h3><div class="pr-sub">Most common combined structures in the filtered sample.</div>
-     ${combo.length?`<div class="pr-combo head"><div>Type</div><div>Rush</div><div>Coverage</div><div>Plays</div><div>YPP</div><div>Comp%</div><div>Sacks</div><div>Expl%</div></div>${combo.map(x=>`<div class="pr-combo"><div><b>${esc(x.type)}</b></div><div>${esc(x.rush)}</div><div>${esc(x.cov)}</div><div>${x.n}</div><div>${fmt(x.ypp,2)}</div><div>${x.att?pctText(x.comp,x.att):'—'}</div><div>${x.sacks}</div><div>${pctText(x.exp,x.n)}</div></div>`).join('')}`:'<div class="empty">No combination data available.</div>'}
-   </div>
-
-   <div class="pr-section pr-span-12">
-     <div class="sample-note">Pressure, blitz and rush-count values come from tagged data only. Untagged plays remain unclassified rather than being guessed.</div>
-   </div>
  </div>`;
 }
 
 
+
+function hrHash(r){let h=String(firstField(r,['pff_HASH','HASH','hash'])||'').trim().toUpperCase();return ['L','C','R'].includes(h)?h:''}
+function hrHashLabel(h){return h==='L'?'Left Hash':h==='R'?'Right Hash':h==='C'?'Middle':'Unknown'}
+function hrRunPass(r){let v=String(firstField(r,['pff_RUNPASS'])||'').toUpperCase();return v==='R'?'Run':v==='P'?'Pass':'Other'}
+function hrMotion(r){return nonEmpty(firstField(r,['pff_SHIFTMOTION']))?'Motion / Shift':'No Motion / Shift'}
+function hrShell(r){return cvShell(r)||'Unknown'}
+function hrManZone(r){return cvManZone(r)||'Unknown'}
+function hrPressureState(r){return prType(r)||'Unknown'}
+function hrRushCount(r){return prRushCount(r)||'Unknown'}
+function hrTargetDepth(r){return cvTargetDepth(r)||'Unknown'}
+function hrTargetSide(r){return cvTargetSide(r)||'Unknown'}
+function hrTargetRelation(r){return hmTargetRelation(r)||'Unknown'}
+function hrFormationGroup(r){return String(firstField(r,['pff_OFFFORMATIONGROUP','pff_STARTING_OFFENSIVE_FORMATION_GROUP'])||'').trim()||'Unknown'}
+function hrFormation(r){return String(firstField(r,['pff_OFFENSIVE_FORMATION_NAME','pff_STARTING_OFFENSIVE_FORMATION_NAME','pff_OFFFORMATION'])||'').trim()||'Unknown'}
+function hrRBAlignment(r){return String(firstField(r,['pff_RBALIGNMENT','pff_RBDIRECTION'])||'').trim()||'Unknown'}
+function hrTEAlignment(r){return String(firstField(r,['pff_TEALIGNMENT'])||'').trim()||'Unknown'}
+function hrRouteGroup(r){return String(firstField(r,['pff_PASSROUTETARGETGROUP','pff_PASSPATTERNBASIC','pff_PASSROUTETARGET'])||'').trim()||'Unknown'}
+function hrReceiverPos(r){return String(firstField(r,['pff_PASSRECEIVERPOSITIONTARGET'])||'').trim()||'Unknown'}
+function hrRunGap(r){
+ let p=String(firstField(r,['pff_POAACTUAL'])||'').trim().toUpperCase();
+ return ({ML:'A-L',MR:'A-R',LG:'B-L',RG:'B-R',LT:'C-L',RT:'C-R',LE:'D-L',RE:'D-R'})[p]||p||'Unknown';
+}
+function hrRowsBase(){return dashboardPlayRows().filter(r=>hrHash(r))}
+function hrRows(){
+ return hrRowsBase().filter(r=>
+   (hrRPF==='ALL'||hrRunPass(r)===hrRPF) &&
+   (hrDownF==='ALL'||pfDown(r)===hrDownF) &&
+   (hrDistF==='ALL'||rdDistanceBucket(r)===hrDistF) &&
+   (hrFieldF==='ALL'||pfFieldZone(r)===hrFieldF) &&
+   (hrPersonnelF==='ALL'||pfPersonnel(r)===hrPersonnelF)
+ )
+}
+function hrIsPass(r){return hrRunPass(r)==='Pass'}
+function hrIsRun(r){return hrRunPass(r)==='Run'}
+function hrMetric(rows){
+ let gains=rows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
+ let n=rows.length,exp=gains.filter(x=>x>=15).length,neg=gains.filter(x=>x<=0).length;
+ let first=rows.filter(r=>pffBool(firstField(r,['pff_FIRST_DOWN_GAINED']))).length;
+ let td=rows.filter(r=>nonEmpty(firstField(r,['pff_TOUCHDOWN']))).length;
+ let passes=rows.filter(hrIsPass),runs=rows.filter(hrIsRun);
+ let att=0,comp=0,ints=0,sacks=0,press=0,blitz=0,ttt=[];
+ passes.forEach(r=>{
+   let res=String(firstField(r,['pff_PASSRESULT'])||'').toUpperCase();
+   if(['COMPLETE','INCOMPLETE','INTERCEPTION','THROWN AWAY','HIT AS THREW','BATTED PASS'].includes(res))att++;
+   if(res==='COMPLETE')comp++;
+   if(res==='INTERCEPTION'||nonEmpty(firstField(r,['pff_INTERCEPTION'])))ints++;
+   if(res==='SACK'||nonEmpty(firstField(r,['pff_SACK'])))sacks++;
+   if(nonEmpty(firstField(r,['pff_QBPRESSURE'])))press++;
+   if(pffBool(firstField(r,['pff_BLITZDOG'])))blitz++;
+   let v=firstField(r,['pff_TIMETOTHROW']);if(nonEmpty(v))ttt.push(num(v));
+ });
+ return {n,ypp:n?avg(gains):0,med:n?calcMedian(gains):0,exp,neg,first,td,runN:runs.length,passN:passes.length,att,comp,ints,sacks,press,blitz,ttt:ttt.length?avg(ttt):0};
+}
+function hrCoreTable(rows){
+ let hashes=['L','C','R'];
+ return hashes.map(h=>{
+   let a=rows.filter(r=>hrHash(r)===h),m=hrMetric(a);
+   return [hrHashLabel(h),m.n,fmt(m.ypp,2),fmt(m.med,1),pctText(m.exp,m.n),pctText(m.neg,m.n),pctText(m.first,m.n),m.td,m.runN,m.passN];
+ });
+}
+function hrPassTable(rows){
+ let hashes=['L','C','R'];
+ return hashes.map(h=>{
+   let a=rows.filter(r=>hrHash(r)===h&&hrIsPass(r)),m=hrMetric(a);
+   return [hrHashLabel(h),m.n,fmt(m.ypp,2),fmt(m.med,1),m.att?pctText(m.comp,m.att):'—',pctText(m.exp,m.n),pctText(m.neg,m.n),m.sacks,m.ints,m.td,pctText(m.press,m.n),pctText(m.blitz,m.n),m.ttt?fmt(m.ttt,2):'—'];
+ });
+}
+function hrRunTable(rows){
+ let hashes=['L','C','R'];
+ return hashes.map(h=>{
+   let a=rows.filter(r=>hrHash(r)===h&&hrIsRun(r)),m=hrMetric(a);
+   return [hrHashLabel(h),m.n,fmt(m.ypp,2),fmt(m.med,1),pctText(m.exp,m.n),pctText(m.neg,m.n),pctText(m.first,m.n),m.td];
+ });
+}
+function hrCategoryMatrix(rows,label,fn,filterFn=null,limit=30){
+ let base=filterFn?rows.filter(filterFn):rows,hashes=['L','C','R'];
+ let cats={};
+ base.forEach(r=>{let k=fn(r)||'Unknown';if(!cats[k])cats[k]={};(cats[k][hrHash(r)] ||= []).push(r)});
+ let vals=Object.entries(cats).map(([k,m])=>({k,total:Object.values(m).reduce((n,a)=>n+a.length,0),m})).sort((a,b)=>b.total-a.total).slice(0,limit);
+ return vals.map(x=>{
+   let out=[esc(x.k)];
+   hashes.forEach(h=>{
+     let a=x.m[h]||[],den=base.filter(r=>hrHash(r)===h).length,met=hrMetric(a);
+     out.push(a.length,den?pctText(a.length,den):'—',a.length?fmt(met.ypp,2):'—',a.length?fmt(met.med,1):'—');
+   });
+   return out;
+ });
+}
+function hrSection(title,sub,rows,label,fn,filterFn=null,limit=30){
+ let data=hrCategoryMatrix(rows,label,fn,filterFn,limit);
+ return `<div class="hr-section"><h3>${esc(title)}</h3><div class="hr-sub">${esc(sub)}</div><div class="hr-table-wrap">${table([label,'L N','L %','L YPP','L Med','C N','C %','C YPP','C Med','R N','R %','R YPP','R Med'],data)}</div></div>`;
+}
+function setHR(k,v){if(k==='rp')hrRPF=v;if(k==='down')hrDownF=v;if(k==='dist')hrDistF=v;if(k==='field')hrFieldF=v;if(k==='personnel')hrPersonnelF=v;render()}
+function resetHR(){hrRPF=hrDownF=hrDistF=hrFieldF=hrPersonnelF='ALL';render()}
+function hashReportPage(){
+ let all=hrRowsBase(),rows=hrRows();
+ let downs=uniqueVals(all,pfDown),dists=uniqueVals(all,rdDistanceBucket),fields=uniqueVals(all,pfFieldZone),pers=uniqueVals(all,pfPersonnel);
+ let hashCards=['L','C','R'].map(h=>{let a=rows.filter(r=>hrHash(r)===h),m=hrMetric(a);return `<div class="hr-hash-card"><h3>${hrHashLabel(h)}</h3><div class="sample">${m.n} filtered plays</div><div class="hr-mini-grid">
+   <div class="hr-mini"><span>YPP</span><b>${fmt(m.ypp,2)}</b></div><div class="hr-mini"><span>Median</span><b>${fmt(m.med,1)}</b></div><div class="hr-mini"><span>Expl %</span><b>${pctText(m.exp,m.n)}</b></div>
+   <div class="hr-mini"><span>Neg %</span><b>${pctText(m.neg,m.n)}</b></div><div class="hr-mini"><span>1D %</span><b>${pctText(m.first,m.n)}</b></div><div class="hr-mini"><span>Run / Pass</span><b>${m.runN}/${m.passN}</b></div>
+ </div></div>`}).join('');
+ return `<div class="page-title"><h2>Hash Intelligence</h2><p>Left, middle and right hash reports across every measurable scouting dimension available in the opponent-defense play feed.</p></div>
+ <div class="hr-toolbar">
+   <label>Run / Pass<select onchange="setHR('rp',this.value)"><option value="ALL">Run + Pass</option><option ${hrRPF==='Run'?'selected':''}>Run</option><option ${hrRPF==='Pass'?'selected':''}>Pass</option></select></label>
+   <label>Down<select onchange="setHR('down',this.value)"><option value="ALL">All Downs</option>${downs.map(v=>`<option ${hrDownF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Distance<select onchange="setHR('dist',this.value)"><option value="ALL">All Distances</option>${dists.map(v=>`<option ${hrDistF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Field Zone<select onchange="setHR('field',this.value)"><option value="ALL">All Field Zones</option>${fields.map(v=>`<option ${hrFieldF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Personnel<select onchange="setHR('personnel',this.value)"><option value="ALL">All Personnel</option>${pers.map(v=>`<option ${hrPersonnelF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <div class="hr-reset"><button onclick="resetHR()">Reset Filters</button></div>
+ </div>
+ <div class="hr-legend">Every category table reports both <b>raw count</b> and <b>within-hash percentage</b>, plus YPP and median YPP. Nothing is inferred when the underlying tag is absent.</div>
+ <div class="hr-hash-grid">${hashCards}</div>
+ <div class="hr-section hr-core"><h3>Overall Hash Comparison</h3><div class="hr-sub">Core efficiency and volume by ball hash.</div><div class="hr-table-wrap">${table(['Hash','Plays','YPP','Median','Expl %','Neg %','1D %','TD','Runs','Passes'],hrCoreTable(rows))}</div></div>
+ <div class="hr-passrun">
+  <div class="hr-section hr-core"><h3>Run Performance by Hash</h3><div class="hr-sub">Run-only production.</div><div class="hr-table-wrap">${table(['Hash','Runs','YPP','Median','Expl %','Neg %','1D %','Rush TD'],hrRunTable(rows))}</div></div>
+  <div class="hr-section hr-core"><h3>Pass Performance by Hash</h3><div class="hr-sub">Pass-only production and pressure results.</div><div class="hr-table-wrap">${table(['Hash','Pass Plays','YPP','Median','Comp %','Expl %','Neg %','Sacks','INT','Pass TD','Pressure %','Blitz %','Avg TTT'],hrPassTable(rows))}</div></div>
+ </div>
+ ${hrSection('Defensive Front by Hash','How the defense structures the front from each hash.',rows,'Front',pfFront,null,20)}
+ ${hrSection('Box Count by Hash','Tagged box-player counts by hash.',rows,'Box',pfBox,null,15)}
+ ${hrSection('Offensive Personnel Faced by Hash','Which offensive personnel groupings are being defended from each hash.',rows,'Personnel',pfPersonnel,null,20)}
+ ${hrSection('Coverage Family by Hash','Coverage calls on pass plays.',rows,'Coverage',cvFamily,hrIsPass,25)}
+ ${hrSection('Shell by Hash','1-high / 2-high / 0-high structure on pass plays.',rows,'Shell',hrShell,hrIsPass,10)}
+ ${hrSection('Man vs Zone by Hash','Broad coverage family on pass plays.',rows,'Type',hrManZone,hrIsPass,10)}
+ ${hrSection('Pressure State by Hash','Blitz / pressure result on pass plays.',rows,'Pressure',hrPressureState,hrIsPass,10)}
+ ${hrSection('Rush Count by Hash','Number of pass rushers by hash.',rows,'Rushers',hrRushCount,hrIsPass,10)}
+ ${hrSection('Run Concept by Hash','Run concept frequency and efficiency.',rows,'Concept',r=>String(firstField(r,['pff_RUNCONCEPTPRIMARY'])||'').trim()||'Unknown',hrIsRun,25)}
+ ${hrSection('Run Gap / Point of Attack by Hash','A/B/C/D translation from PFF POAACTUAL.',rows,'Gap',hrRunGap,hrIsRun,25)}
+ ${hrSection('Target Depth by Hash','Passing target depth bands.',rows,'Depth',hrTargetDepth,hrIsPass,10)}
+ ${hrSection('Target Direction by Hash','PFF left / middle / right target direction.',rows,'Direction',hrTargetSide,hrIsPass,10)}
+ ${hrSection('Target Relation to Hash','Boundary / middle / field-side target relationship.',rows,'Relation',hrTargetRelation,hrIsPass,10)}
+ ${hrSection('Target Position by Hash','Position of the intended receiver when tagged.',rows,'Target Pos',hrReceiverPos,hrIsPass,20)}
+ ${hrSection('Route / Pattern by Hash','Targeted route or pattern group when tagged.',rows,'Route',hrRouteGroup,hrIsPass,30)}
+ ${hrSection('Formation Group by Hash','Formation structure group.',rows,'Formation Group',hrFormationGroup,null,25)}
+ ${hrSection('Formation Name by Hash','Named offensive formations faced.',rows,'Formation',hrFormation,null,30)}
+ ${hrSection('Motion / Shift by Hash','Broad motion/shift usage.',rows,'Motion',hrMotion,null,10)}
+ ${hrSection('RB Alignment by Hash','Running back alignment/direction tag when available.',rows,'RB Align',hrRBAlignment,null,20)}
+ ${hrSection('TE Alignment by Hash','Tight-end alignment tag when available.',rows,'TE Align',hrTEAlignment,null,20)}
+ ${hrSection('Down by Hash','Down distribution within each hash.',rows,'Down',pfDown,null,10)}
+ ${hrSection('Distance by Hash','Distance bucket distribution within each hash.',rows,'Distance',rdDistanceBucket,null,10)}
+ ${hrSection('Field Zone by Hash','Field-position distribution within each hash.',rows,'Field Zone',pfFieldZone,null,15)}
+ <div class="hr-section"><div class="sample-note">Hash is taken directly from PFF HASH. Left / Middle / Right samples in the supplied feed are charted independently; missing tags are not reassigned. Category percentages are always calculated within the current hash after the page filters are applied.</div></div>`;
+}
+
 function hmPassRowsBase(){return cvPassRowsBase()}
+
+function hmTargetRelation(r){
+ let h=String(cvHash(r)||'').toUpperCase();
+ let w=firstField(r,['pff_PASSWIDTH']);
+ if(!nonEmpty(w))return '';
+ w=num(w);
+ if(h==='L'){
+   if(w<20)return'Boundary';
+   if(w<=33.34)return'Middle';
+   return'Field';
+ }
+ if(h==='R'){
+   if(w>33.34)return'Boundary';
+   if(w>=20)return'Middle';
+   return'Field';
+ }
+ if(h==='C')return'Center Ball';
+ return '';
+}
+function hmLaneFilterName(r){
+ let c=hmWidthBin(r);
+ return c>=0?hmLaneLabel(c):'';
+}
+function hmDepthFilterName(r){
+ let rr=hmDepthBin(r);
+ return rr>=0?hmDepthLabel(rr):'';
+}
 function hmRows(){
  return hmPassRowsBase().filter(r=>
    (hmCoverageF==='ALL'||cvFamily(r)===hmCoverageF) &&
@@ -2521,7 +3839,11 @@ function hmRows(){
    (hmPressureF==='ALL'||prType(r)===hmPressureF) &&
    (hmDownF==='ALL'||pfDown(r)===hmDownF) &&
    (hmHashF==='ALL'||cvHash(r)===hmHashF) &&
-   (hmFieldF==='ALL'||pfFieldZone(r)===hmFieldF)
+   (hmFieldF==='ALL'||pfFieldZone(r)===hmFieldF) &&
+   (hmRelativeF==='ALL'||hmTargetRelation(r)===hmRelativeF) &&
+   (hmDepthF==='ALL'||hmDepthFilterName(r)===hmDepthF) &&
+   (hmLaneF==='ALL'||hmLaneFilterName(r)===hmLaneF) &&
+   dndMatches(r)
  );
 }
 function hmCellRows(rows,depth,side){
@@ -2549,95 +3871,244 @@ function hmTable(arr,total){
 }
 function setHM(key,val){
  if(key==='metric')hmMetric=val;if(key==='coverage')hmCoverageF=val;if(key==='shell')hmShellF=val;
- if(key==='pressure')hmPressureF=val;if(key==='down')hmDownF=val;if(key==='hash')hmHashF=val;if(key==='field')hmFieldF=val;render();
+ if(key==='pressure')hmPressureF=val;if(key==='down')hmDownF=val;if(key==='hash')hmHashF=val;if(key==='field')hmFieldF=val;if(key==='relative')hmRelativeF=val;if(key==='depth')hmDepthF=val;if(key==='lane')hmLaneF=val;render();
 }
-function resetHM(){hmCoverageF=hmShellF=hmPressureF=hmDownF=hmHashF=hmFieldF='ALL';hmMetric='targets';render()}
+function resetHM(){hmCoverageF=hmShellF=hmPressureF=hmDownF=hmHashF=hmFieldF=hmRelativeF=hmDepthF=hmLaneF='ALL';hmMetric='ypp';render()}
+
+function hmWidthBin(r){
+ let w=firstField(r,['pff_PASSWIDTH']);
+ if(!nonEmpty(w))return -1;
+ let n=num(w);
+ if(!Number.isFinite(n))return -1;
+ return Math.max(0,Math.min(4,Math.floor((n/53.34)*5)));
+}
+function hmDepthBin(r){
+ let d=firstField(r,['pff_PASSDEPTH']);
+ if(!nonEmpty(d))return -1;
+ d=num(d);
+ if(d<0)return 3;
+ if(d<10)return 2;
+ if(d<20)return 1;
+ return 0;
+}
+function hmLaneLabel(c){return ['Left Sideline','Left Hash','Middle','Right Hash','Right Sideline'][c]}
+function hmDepthLabel(r){return ['20+','10-19','0-9','Behind LOS'][r]}
+function hmSpatialCells(rows){
+ let cells=Array.from({length:20},()=>[]);
+ rows.forEach(r=>{
+   let rr=hmDepthBin(r),cc=hmWidthBin(r);
+   if(rr<0||cc<0)return;
+   cells[rr*5+cc].push(r);
+ });
+ return cells;
+}
+
+function spatialMetricValue(a,metricName,totalMapped){
+ let m=cvMetrics(a),share=totalMapped?pctText(a.length,totalMapped):'—',comp=m.att?pctText(m.comp,m.att):'—';
+ let extra=a.length?`CMP ${comp} · YPP ${fmt(m.ypp,1)} · MED ${fmt(m.med,1)}`:'';
+ if(metricName==='targets')return {main:a.length,share,sub:a.length?`${a.length} targets · ${share}`:'No targets',extra};
+ if(metricName==='ypp')return {main:a.length?fmt(m.ypp,1):'—',share,sub:a.length?`${a.length} targets · ${share}`:'No targets',extra:`MED ${fmt(m.med,1)} · CMP ${comp}`};
+ if(metricName==='comp')return {main:comp,share,sub:m.att?`${m.comp}/${m.att} completions · ${a.length} targets`:'No attempts',extra:`YPP ${fmt(m.ypp,1)} · MED ${fmt(m.med,1)}`};
+ if(metricName==='expl')return {main:a.length?pctText(m.exp,m.n):'—',share,sub:a.length?`${m.exp} explosives / ${a.length} targets`:'No targets',extra:`CMP ${comp} · YPP ${fmt(m.ypp,1)} · MED ${fmt(m.med,1)}`};
+ if(metricName==='td')return {main:m.td,share,sub:a.length?`${m.td} TD · ${a.length} targets · ${share}`:'No targets',extra:`CMP ${comp} · YPP ${fmt(m.ypp,1)} · MED ${fmt(m.med,1)}`};
+ if(metricName==='int')return {main:m.ints,share,sub:a.length?`${m.ints} INT · ${a.length} targets · ${share}`:'No targets',extra:`CMP ${comp} · YPP ${fmt(m.ypp,1)} · MED ${fmt(m.med,1)}`};
+ return {main:a.length,share,sub:`${a.length} targets · ${share}`,extra};
+}
+
+
+function qbHashPosition(rows){
+ let posMap={L:30,C:50,R:70};
+ let tagged=rows.map(r=>String(cvHash(r)||'').toUpperCase()).filter(v=>v==='L'||v==='C'||v==='R');
+ if(!tagged.length)return 50;
+ let counts={L:0,C:0,R:0};
+ tagged.forEach(v=>counts[v]++);
+ return ((counts.L*posMap.L)+(counts.C*posMap.C)+(counts.R*posMap.R))/tagged.length;
+}
+function qbHashLabel(rows){
+ let tagged=rows.map(r=>String(cvHash(r)||'').toUpperCase()).filter(v=>v==='L'||v==='C'||v==='R');
+ if(!tagged.length)return 'HASH MIX UNKNOWN';
+ let counts={L:0,C:0,R:0}; tagged.forEach(v=>counts[v]++);
+ let top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+ return top==='L'?'QB ON LEFT HASH':top==='R'?'QB ON RIGHT HASH':'QB IN MIDDLE';
+}
+
+function zoneDetailData(a,row,col,totalMapped){
+ let m=cvMetrics(a);
+ return {
+   title:`${hmDepthLabel(row)} · ${hmLaneLabel(col)}`,
+   targets:a.length,
+   share:totalMapped?pctText(a.length,totalMapped):'—',
+   comp:m.att?pctText(m.comp,m.att):'—',
+   completions:m.comp,
+   attempts:m.att,
+   ypp:a.length?fmt(m.ypp,2):'—',
+   median:a.length?fmt(m.med,1):'—',
+   explosive:a.length?pctText(m.exp,m.n):'—',
+   explosives:m.exp,
+   td:m.td,
+   ints:m.ints,
+   sample:totalMapped
+ };
+}
+function openZoneModalFromEncoded(encoded){
+ try{
+   let d=JSON.parse(decodeURIComponent(encoded));
+   $('zoneModalTitle').textContent=d.title;
+   $('zoneModalBody').innerHTML=`<div class="zone-modal-kpis">
+      <div class="zone-modal-kpi"><span>Targets</span><b>${d.targets}</b></div>
+      <div class="zone-modal-kpi"><span>Target Share</span><b>${d.share}</b></div>
+      <div class="zone-modal-kpi"><span>Completion %</span><b>${d.comp}</b></div>
+      <div class="zone-modal-kpi"><span>Completions</span><b>${d.completions}/${d.attempts}</b></div>
+      <div class="zone-modal-kpi"><span>YPP</span><b>${d.ypp}</b></div>
+      <div class="zone-modal-kpi"><span>Median YPP</span><b>${d.median}</b></div>
+      <div class="zone-modal-kpi"><span>Explosive %</span><b>${d.explosive}</b></div>
+      <div class="zone-modal-kpi"><span>Explosives</span><b>${d.explosives}</b></div>
+      <div class="zone-modal-kpi"><span>TD</span><b>${d.td}</b></div>
+      <div class="zone-modal-kpi"><span>INT</span><b>${d.ints}</b></div>
+    </div>
+    <div class="zone-modal-note">Zone share is based on ${d.sample} mapped targets in the current filter. All other numbers are calculated only from plays in this zone.</div>`;
+   $('zoneModal').classList.remove('hidden');
+ }catch(e){console.error(e)}
+}
+function closeZoneModal(){$('zoneModal').classList.add('hidden')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeZoneModal()});
+
+
+function heatWeightValue(a,metricName){
+ if(!a.length)return null;
+ let m=cvMetrics(a);
+ if(metricName==='comp')return m.att ? (100*m.comp/m.att) : null;
+ if(metricName==='expl')return m.n ? (100*m.exp/m.n) : null;
+ return m.ypp;
+}
+function heatWeightRange(cells,metricName){
+ let vals=cells.map(a=>heatWeightValue(a,metricName)).filter(v=>Number.isFinite(v));
+ if(!vals.length)return {min:0,max:1};
+ let min=Math.min(...vals),max=Math.max(...vals);
+ if(max===min)max=min+1;
+ return {min,max};
+}
+function heatZoneStyle(a,metricName,range){
+ let v=heatWeightValue(a,metricName);
+ if(!Number.isFinite(v))return 'background:rgba(255,255,255,.52)';
+ let t=Math.max(0,Math.min(1,(v-range.min)/(range.max-range.min)));
+ let alpha=.05 + (.57*t);
+ return `background:rgba(111,24,39,${alpha.toFixed(3)});${t>.56?'color:#fff;':''}`;
+}
+function spatialFieldHTML(rows,metricName='ypp'){
+ let cells=hmSpatialCells(rows),totalMapped=cells.reduce((n,a)=>n+a.length,0),qbLeft=qbHashPosition(rows),qbText=qbHashLabel(rows),range=heatWeightRange(cells,metricName);
+ return `<div class="pass-field">
+   <div class="pass-los"><span>OFFENSIVE LINE OF SCRIMMAGE</span></div>
+   <div class="pass-field-grid">
+     ${cells.map((a,i)=>{
+       let row=Math.floor(i/5),col=i%5,v=spatialMetricValue(a,metricName,totalMapped),d=zoneDetailData(a,row,col,totalMapped),detail=encodeURIComponent(JSON.stringify(d));
+       let m=cvMetrics(a),style=heatZoneStyle(a,metricName,range);
+       return `<div class="pass-zone weighted" style="${style}" role="button" tabindex="0"
+         onclick="openZoneModalFromEncoded('${detail}')"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openZoneModalFromEncoded('${detail}')}">
+         <div class="pz-label">${hmDepthLabel(row)} · ${hmLaneLabel(col)}</div>
+         <div class="pz-main">${v.main}</div>
+         <div class="pz-share">${a.length?v.share:''}</div>
+         <div class="pz-sub">${v.sub}</div>
+         <div class="pz-extra">${a.length?v.extra:''}</div>
+         <div class="pz-context">${a.length?`<b>TD ${m.td}</b> · <b>INT ${m.ints}</b>`:''}</div>
+       </div>`
+     }).join('')}
+   </div>
+   <div class="pass-qb" style="left:${qbLeft}%"><div class="pass-qb-icon">QB</div><div class="pass-qb-label">${qbText}</div></div>
+ </div><div class="pass-axis"><span>OFFENSE LEFT</span><span>${totalMapped} mapped targets = 100%</span><span>OFFENSE RIGHT</span></div>`;
+}
 function heatmapsPage(){
  let all=hmPassRowsBase(),rows=hmRows(),s=cvMetrics(rows);
- let covs=uniqueVals(all,cvFamily),shells=uniqueVals(all,cvShell),pressures=uniqueVals(all,prType),downs=uniqueVals(all,pfDown),hashes=uniqueVals(all,cvHash),fields=uniqueVals(all,pfFieldZone);
- let depthOrder=['Deep 20+','Intermediate 10-19','Short 0-9','Behind LOS'];
- let sideOrder=['Left','Middle','Right'];
- let cells=[];
- depthOrder.forEach(d=>sideOrder.forEach(side=>cells.push({d,side,rows:hmCellRows(rows,d,side)})));
- let maxTargets=Math.max(...cells.map(c=>c.rows.length),1);
+ let covs=uniqueVals(all,cvFamily),shells=uniqueVals(all,cvShell),pressures=uniqueVals(all,prType),downs=uniqueVals(all,pfDown),hashes=uniqueVals(all,cvHash),fields=uniqueVals(all,pfFieldZone),rels=uniqueVals(all,hmTargetRelation),depthFilters=['20+','10-19','0-9','Behind LOS'],laneFilters=['Left Sideline','Left Hash','Middle','Right Hash','Right Sideline'];
+ let cells=hmSpatialCells(rows),maxTargets=Math.max(...cells.map(a=>a.length),1);
  let depthB=hmBreakdown(rows,cvTargetDepth),sideB=hmBreakdown(rows,cvTargetSide),covB=hmBreakdown(rows,cvFamily);
- return `<div class="page-title"><h2>Field Heat Maps</h2><p>Where offenses are attacking Mississippi State and how those throws are performing.</p></div>
+ let mapped=cells.reduce((n,a)=>n+a.length,0);
+ return `<div class="page-title"><h2>Field Heat Maps</h2><p>Offensive-view target map using the same 5-wide × 4-deep spatial structure as D Intel.</p></div>
  ${!all.length?`<div class="pf-empty"><b>No charted pass plays are loaded yet.</b><br>The Field Heat Maps workspace is built and will populate from the opponent-defense play feed.</div>`:''}
 
- <div class="hm-toolbar">
+ <div class="hm-toolbar hm-more">
    <label>Coverage<select onchange="setHM('coverage',this.value)"><option value="ALL">All Coverages</option>${covs.map(v=>`<option ${hmCoverageF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Shell<select onchange="setHM('shell',this.value)"><option value="ALL">All Shells</option>${shells.map(v=>`<option ${hmShellF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Pressure<select onchange="setHM('pressure',this.value)"><option value="ALL">All Pressure States</option>${pressures.map(v=>`<option ${hmPressureF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Down<select onchange="setHM('down',this.value)"><option value="ALL">All Downs</option>${downs.map(v=>`<option ${hmDownF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Hash<select onchange="setHM('hash',this.value)"><option value="ALL">All Hashes</option>${hashes.map(v=>`<option ${hmHashF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Field Zone<select onchange="setHM('field',this.value)"><option value="ALL">All Field Zones</option>${fields.map(v=>`<option ${hmFieldF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <div class="hm-reset"><button onclick="resetHM()">Reset Filters</button></div>
+   <label>Relative to Hash<select onchange="setHM('relative',this.value)"><option value="ALL">All Target Relations</option>${rels.map(v=>`<option ${hmRelativeF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Depth Band<select onchange="setHM('depth',this.value)"><option value="ALL">All Depths</option>${depthFilters.map(v=>`<option ${hmDepthF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label>Width Lane<select onchange="setHM('lane',this.value)"><option value="ALL">All Width Lanes</option>${laneFilters.map(v=>`<option ${hmLaneF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   ${dndSelect()}<div class="hm-reset"><button onclick="resetHM()">Reset Filters</button></div>
  </div>
 
- <div class="hm-metrics">
-   ${[['targets','Targets'],['ypp','YPP'],['comp','Completion %'],['expl','Explosive %'],['td','TD'],['int','INT']].map(([id,l])=>`<button class="${hmMetric===id?'active':''}" onclick="setHM('metric','${id}')">${l}</button>`).join('')}
+ <div class="hash-quick">
+   <button class="${hmHashF==='ALL'?'active':''}" onclick="setHM('hash','ALL')">All Hashes</button>
+   <button class="${hmHashF==='L'?'active':''}" onclick="setHM('hash','L')">Left Hash</button>
+   <button class="${hmHashF==='C'?'active':''}" onclick="setHM('hash','C')">Middle</button>
+   <button class="${hmHashF==='R'?'active':''}" onclick="setHM('hash','R')">Right Hash</button>
  </div>
+
+ <div class="hm-weight-select">
+   <label>Heat Weight
+     <select onchange="setHM('metric',this.value)">
+       <option value="ypp" ${hmMetric==='ypp'?'selected':''}>YPP</option>
+       <option value="comp" ${hmMetric==='comp'?'selected':''}>Completion %</option>
+       <option value="expl" ${hmMetric==='expl'?'selected':''}>Explosive %</option>
+     </select>
+   </label>
+ </div>
+ <div class="heat-scale"><span>Lower</span><div class="heat-scale-bar"></div><span>Higher selected metric</span></div>
 
  <div class="hm-summary">
    ${metric('Pass Plays',rows.length||'—')}
+   ${metric('Mapped Targets',mapped||'—')}
    ${metric('YPP',rows.length?fmt(s.ypp,2):'—')}
    ${metric('Median YPP',rows.length?fmt(s.med,1):'—')}
    ${metric('Completion %',s.att?pctText(s.comp,s.att):'—')}
    ${metric('Explosive %',rows.length?pctText(s.exp,s.n):'—')}
-   ${metric('Negative %',rows.length?pctText(s.neg,s.n):'—')}
    ${metric('TD',rows.length?s.td:'—')}
    ${metric('INT',rows.length?s.ints:'—')}
  </div>
 
- <div class="hm-grid-wrap">
-   <div class="hm-los"><span>LINE OF SCRIMMAGE</span></div>
-   <div class="hm-grid">
-     ${depthOrder.map(d=>['Left','Middle','Right'].map(side=>{
-       let c=cells.find(x=>x.d===d&&x.side===side),mv=hmMetricValue(c.rows),hot=c.rows.length===maxTargets&&c.rows.length>0;
-       return `<div class="hm-cell ${hot?'hot':''}" style="grid-column:${side==='Left'?1:side==='Middle'?3:5}"><b>${esc(mv.big)}</b><span>${esc(d)} · ${esc(side)}</span><small>${esc(mv.small)}</small></div>`
-     }).join('')).join('')}
-   </div>
- </div>
+ <div class="pass-legend"><span><b>20 zones:</b> 5 width lanes × 4 depth bands</span><span><b>LOS:</b> lower on field for offensive view</span></div>
+ ${spatialFieldHTML(rows,hmMetric)}
 
- <div class="sample-note">The hottest cell outline is based on target frequency, regardless of the metric currently displayed.</div>
+ <div class="sample-note">LOS is placed low on the field because this is the offensive view. The 20 zones use PFF PASSWIDTH and PASSDEPTH. Throws without a charted width are excluded from the spatial grid rather than forced into a lane.</div>
 
  <div class="hm-split-grid" style="margin-top:12px">
    <div class="hm-panel"><h3>By Target Depth</h3><div class="hm-sub">Behind LOS through deep 20+.</div><div class="hm-table-wrap">${table(['Depth','Targets','Usage','YPP','Median','Comp %','Expl %','TD','INT'],hmTable(depthB,rows.length))}</div></div>
-   <div class="hm-panel"><h3>By Target Side</h3><div class="hm-sub">Left, middle and right.</div><div class="hm-table-wrap">${table(['Side','Targets','Usage','YPP','Median','Comp %','Expl %','TD','INT'],hmTable(sideB,rows.length))}</div></div>
+   <div class="hm-panel"><h3>By Target Side</h3><div class="hm-sub">Broad left, middle and right PFF direction tag.</div><div class="hm-table-wrap">${table(['Side','Targets','Usage','YPP','Median','Comp %','Expl %','TD','INT'],hmTable(sideB,rows.length))}</div></div>
    <div class="hm-panel"><h3>By Coverage</h3><div class="hm-sub">Spatial results by coverage family.</div><div class="hm-table-wrap">${table(['Coverage','Targets','Usage','YPP','Median','Comp %','Expl %','TD','INT'],hmTable(covB,rows.length))}</div></div>
- </div>
-
- <div class="card" style="margin-top:12px"><div class="sample-note">Target depth and side come only from explicit charted target-location data. Untagged throws are not forced into a heat-map cell.</div></div>`;
+ </div>`;
 }
 
 
-function srFormation(r){
- return String(firstField(r,['pff_OFFFORMATIONUNBALANCED','pff_FORMATION','FORMATION','formation','OFF_FORMATION'])||'').trim();
-}
+const ULM_FORMATION_MAP={
+ 'PRO - CLOSED':'I-FLUTE','PRO - OPEN':'SPIN','PRO - PRO':'DIAMOND','QUADS WING - NIX':'FLANK','QUAY - NIX':'TRIO XTRA','QUAY - OPEN':'TRIO XTRA',
+ 'SLOT - CLOSED':'FLANK FIB','SLOT - OPEN':'TRIO','SLOT - PRO':'DUO','SLOT - SLOT':'DICE','SLOT - WING':'FLANK FIB','TOAD WING - OPEN':'TOP',
+ 'TREY - CLOSED':'FLANK','TREY - NIX':'TRIPS XTRA','TREY - OPEN':'TRIO','TREY - PRO':'TRUST FIB','TREY - SLOT':'TRUST','TRIPS - CLOSED':'FIST','TRIPS - OPEN':'TOP','TRIPS - SLOT':'TOP'
+};
+function pffFormation(r){return String(firstField(r,['pff_OFFENSIVE_FORMATION_NAME','pff_STARTING_OFFENSIVE_FORMATION_NAME','pff_OFFFORMATION'])||'').trim()}
+function ulmFormationFromPFF(v){let raw=String(v||'').trim().toUpperCase();return ULM_FORMATION_MAP[raw]||''}
+function ulmFormation(r){let raw=pffFormation(r);return ulmFormationFromPFF(raw)||raw||'Unknown'}
+function srFormation(r){return ulmFormation(r)}
+
 function srMotion(r){
- let v=String(firstField(r,['pff_MOTION','MOTION','motion','MOTION_TYPE','motion_type'])||'').trim();
- if(!v)return'No Motion Tag';
- if(['0','NO','N','FALSE','NONE'].includes(v.toUpperCase()))return'No Motion';
- return v;
+ let v=String(firstField(r,['pff_SHIFTMOTION'])||'').trim();
+ return v?'Motion / Shift Tagged':'No Motion / Shift Tag';
 }
 function srStructure(r){
- let explicit=String(firstField(r,['STRUCTURE','structure','FORMATION_FAMILY','formation_family'])||'').trim();
- if(explicit)return explicit;
+ let g=String(firstField(r,['pff_OFFFORMATIONGROUP','pff_STARTING_OFFENSIVE_FORMATION_GROUP'])||'').trim();
+ if(g)return g;
  let f=srFormation(r).toUpperCase();
  if(!f)return '';
  if(f.includes('EMPTY'))return'Empty';
  if(f.includes('BUNCH'))return'Bunch';
- if(f.includes('TRIPS')||f.includes('3X1')||f.includes('3 X 1'))return'Trips';
- if(f.includes('CONDENSED')||f.includes('NUB')||f.includes('TIGHT'))return'Condensed';
- if(f.includes('2X2')||f.includes('2 X 2'))return'2x2';
  return'Other';
 }
 function srBackLocation(r){
  return String(firstField(r,['pff_RBALIGNMENT','RB_ALIGNMENT','rb_alignment','BACK_LOCATION','back_location'])||'').trim();
 }
-function srTESurface(r){
- return String(firstField(r,['TE_SURFACE','te_surface','pff_TESURFACE','pff_TIGHTENDALIGNMENT'])||'').trim();
-}
+function srTESurface(r){return String(firstField(r,['pff_TEALIGNMENT','TE_SURFACE','te_surface'])||'').trim()}
 function srRows(){
  return dashboardPlayRows().filter(r=>
    (srFormationF==='ALL'||srFormation(r)===srFormationF) &&
@@ -2646,7 +4117,8 @@ function srRows(){
    (srStructureF==='ALL'||srStructure(r)===srStructureF) &&
    (srDownF==='ALL'||pfDown(r)===srDownF) &&
    (srFieldF==='ALL'||pfFieldZone(r)===srFieldF) &&
-   (srHashF==='ALL'||cvHash(r)===srHashF)
+   (srHashF==='ALL'||cvHash(r)===srHashF) &&
+   dndMatches(r)
  );
 }
 function srMetrics(rows){
@@ -2682,13 +4154,55 @@ function setSR(key,val){
  if(key==='formation')srFormationF=val;if(key==='personnel')srPersonnelF=val;if(key==='motion')srMotionF=val;
  if(key==='structure')srStructureF=val;if(key==='down')srDownF=val;if(key==='field')srFieldF=val;if(key==='hash')srHashF=val;render();
 }
-function resetSR(){srFormationF=srPersonnelF=srMotionF=srStructureF=srDownF=srFieldF=srHashF='ALL';render()}
+function resetSR(){srFormationF=srPersonnelF=srMotionF=srStructureF=srDownF=srFieldF=srHashF='ALL';dndFilter='ALL';render()}
+
+
+function formationPerfRows(rows){
+ let m={};
+ rows.forEach(r=>{let ulm=ulmFormation(r)||'Unknown',raw=pffFormation(r)||'Unknown';if(!m[ulm])m[ulm]={rows:[],raw:new Set()};m[ulm].rows.push(r);m[ulm].raw.add(raw)});
+ return Object.entries(m).map(([k,obj])=>{
+   let a=obj.rows,s=dashboardStats(a),runs=a.filter(r=>['R','RUN'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())),passes=a.filter(r=>['P','PASS'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase()));
+   let runG=runs.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained']))),passG=passes.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
+   let att=0,comp=0,sacks=0,ints=0,first=0;
+   a.forEach(r=>{if(pffBool(firstField(r,['pff_FIRST_DOWN_GAINED'])))first++});
+   passes.forEach(r=>{let res=String(firstField(r,['pff_PASSRESULT'])||'').toUpperCase();if(['COMPLETE','INCOMPLETE','INTERCEPTION','THROWN AWAY','HIT AS THREW','BATTED PASS'].includes(res))att++;if(res==='COMPLETE')comp++;if(res==='SACK'||nonEmpty(firstField(r,['pff_SACK'])))sacks++;if(res==='INTERCEPTION'||nonEmpty(firstField(r,['pff_INTERCEPTION'])))ints++});
+   return {k,pff:[...obj.raw].sort(),...s,runYpp:runs.length?avg(runG):0,passYpp:passes.length?avg(passG):0,att,comp,sacks,ints,first};
+ }).sort((a,b)=>b.n-a.n);
+}
+function formationPerfTable(arr,total){return arr.map(x=>[
+ `<span class="fm-ulm-name">${esc(x.k)}</span><span class="fm-pff-source">PFF: ${esc(x.pff.join(' / '))}</span>`,x.n,pctText(x.n,total),`${x.runN}/${x.passN}`,fmt(x.ypp,2),fmt(x.median,1),x.runN?fmt(x.runYpp,2):'—',x.passN?fmt(x.passYpp,2):'—',pctText(x.expl,x.n),pctText(x.neg,x.n),pctText(x.first,x.n),x.td,x.att?pctText(x.comp,x.att):'—',x.sacks,x.ints
+])}
+function fmRowsBase(){return dashboardPlayRows()}
+function fmRows(){return fmRowsBase().filter(r=>(fmFormationF==='ALL'||ulmFormation(r)===fmFormationF)&&(fmPersonnelF==='ALL'||pfPersonnel(r)===fmPersonnelF)&&(fmMotionF==='ALL'||srMotion(r)===fmMotionF)&&(fmDownF==='ALL'||pfDown(r)===fmDownF)&&(fmFieldF==='ALL'||pfFieldZone(r)===fmFieldF)&&(fmHashF==='ALL'||cvHash(r)===fmHashF)&&dndMatches(r))}
+function setFM(k,v){if(k==='formation')fmFormationF=v;if(k==='personnel')fmPersonnelF=v;if(k==='motion')fmMotionF=v;if(k==='down')fmDownF=v;if(k==='field')fmFieldF=v;if(k==='hash')fmHashF=v;render()}
+function resetFM(){fmFormationF=fmPersonnelF=fmMotionF=fmDownF=fmFieldF=fmHashF='ALL';dndFilter='ALL';render()}
+function formationsPage(){
+ let all=fmRowsBase(),rows=fmRows(),perf=formationPerfRows(rows),s=dashboardStats(rows);
+ let forms=uniqueVals(all,ulmFormation),pers=uniqueVals(all,pfPersonnel),motions=uniqueVals(all,srMotion),downs=uniqueVals(all,pfDown),fields=uniqueVals(all,pfFieldZone);
+ let mapped=all.filter(r=>ulmFormationFromPFF(pffFormation(r))).length,unmapped=all.length-mapped;
+ return `<div class="page-title"><h2>Formation Performance</h2><p>How offensive formations performed against Mississippi State, in ULM formation language.</p></div>
+ <div class="fm-note">ULM formation names are primary. The PFF source label is shown underneath only for reference. Unmapped PFF formations stay unchanged rather than being guessed.</div>
+ <div class="fm-toolbar">
+  <label>ULM Formation<select onchange="setFM('formation',this.value)"><option value="ALL">All ULM Formations</option>${forms.map(v=>`<option ${fmFormationF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+  <label>Personnel<select onchange="setFM('personnel',this.value)"><option value="ALL">All Personnel</option>${pers.map(v=>`<option ${fmPersonnelF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+  <label>Motion<select onchange="setFM('motion',this.value)"><option value="ALL">All Motion States</option>${motions.map(v=>`<option ${fmMotionF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+  <label>Down<select onchange="setFM('down',this.value)"><option value="ALL">All Downs</option>${downs.map(v=>`<option ${fmDownF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+  <label>Field Zone<select onchange="setFM('field',this.value)"><option value="ALL">All Field Zones</option>${fields.map(v=>`<option ${fmFieldF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+  <label>Hash<select onchange="setFM('hash',this.value)">${reportHashOptions(fmHashF)}</select></label>
+  ${dndSelect()}<div class="fm-reset"><button onclick="resetFM()">Reset Filters</button></div>
+ </div>
+ <div class="fm-summary">
+  <div class="fm-kpi"><span>Filtered Plays</span><b>${rows.length}</b></div><div class="fm-kpi"><span>ULM Formations</span><b>${perf.length}</b></div><div class="fm-kpi"><span>YPP</span><b>${rows.length?fmt(s.ypp,2):'—'}</b></div><div class="fm-kpi"><span>Median YPP</span><b>${rows.length?fmt(s.median,1):'—'}</b></div><div class="fm-kpi"><span>Explosive %</span><b>${rows.length?pctText(s.expl,s.n):'—'}</b></div><div class="fm-kpi"><span>Negative %</span><b>${rows.length?pctText(s.neg,s.n):'—'}</b></div>
+ </div>
+ <div class="fm-table-card"><h3>Formation Results</h3><div class="fm-table-wrap">${table(['ULM Formation','Plays','Usage','Run/Pass','YPP','Median','Run YPP','Pass YPP','Expl %','Neg %','1D %','TD','Comp %','Sacks','INT'],formationPerfTable(perf,rows.length))}</div></div>
+ <div class="sample-note" style="margin-top:10px">${mapped} of ${all.length} plays match one of the 20 taught PFF→ULM formation translations. ${unmapped} plays retain their PFF source name because no ULM translation was present in the taught map.</div>`;
+}
+
 function structuresPage(){
  let all=dashboardPlayRows(),rows=srRows(),s=srMetrics(rows);
  let forms=uniqueVals(all,srFormation),pers=uniqueVals(all,pfPersonnel),motions=uniqueVals(all,srMotion),structures=uniqueVals(all,srStructure),
      downs=uniqueVals(all,pfDown),fields=uniqueVals(all,pfFieldZone),hashes=uniqueVals(all,cvHash);
- let formB=srBreakdown(rows,srFormation),structB=srBreakdown(rows,srStructure),motionB=srBreakdown(rows,srMotion),
-     backB=srBreakdown(rows,srBackLocation),teB=srBreakdown(rows,srTESurface),combos=srComboRows(rows);
+ let formB=srBreakdown(rows,srFormation),structB=srBreakdown(rows,srStructure),motionB=srBreakdown(rows,srMotion);
  let topFront=srResponse(rows,pfFront),topBox=srResponse(rows,pfBox),topCov=srResponse(rows,cvFamily),topPress=srResponse(rows,prType);
  return `<div class="page-title"><h2>Structure Response</h2><p>How Mississippi State changes its defensive structure against offensive formations, personnel, motion and alignment.</p></div>
  ${!all.length?`<div class="pf-empty"><b>No charted play data is loaded yet.</b><br>This page is built and will populate when the opponent-defense play feed is available.</div>`:''}
@@ -2701,7 +4215,7 @@ function structuresPage(){
    <label>Down<select onchange="setSR('down',this.value)"><option value="ALL">All Downs</option>${downs.map(v=>`<option ${srDownF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Field Zone<select onchange="setSR('field',this.value)"><option value="ALL">All Field Zones</option>${fields.map(v=>`<option ${srFieldF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
    <label>Hash<select onchange="setSR('hash',this.value)"><option value="ALL">All Hashes</option>${hashes.map(v=>`<option ${srHashF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
-   <div class="sr-reset"><button onclick="resetSR()">Reset Filters</button></div>
+   ${dndSelect()}<div class="sr-reset"><button onclick="resetSR()">Reset Filters</button></div>
  </div>
 
  <div class="sr-kpis">
@@ -2726,12 +4240,7 @@ function structuresPage(){
      </div>
    </div>
 
-   <div class="sr-section sr-span-6">
-     <h3>By Formation</h3><div class="sr-sub">What happens against each offensive formation.</div>
-     <div class="sr-table-wrap">${table(['Formation','Plays','Usage','YPP','Median','Expl %','Neg %','R/P'],srTable(formB,rows.length))}</div>
-   </div>
-
-   <div class="sr-section sr-span-6">
+   <div class="sr-section sr-keep-full">
      <h3>By Structure Family</h3><div class="sr-sub">Trips, bunch, condensed, empty, 2x2 and other structures.</div>
      <div class="sr-table-wrap">${table(['Structure','Plays','Usage','YPP','Median','Expl %','Neg %','R/P'],srTable(structB,rows.length))}</div>
    </div>
@@ -2741,24 +4250,6 @@ function structuresPage(){
      <div class="sr-table-wrap">${table(['Motion','Plays','Usage','YPP','Median','Expl %','Neg %','R/P'],srTable(motionB,rows.length))}</div>
    </div>
 
-   <div class="sr-section sr-span-4">
-     <h3>Back Location</h3><div class="sr-sub">Defensive results versus tagged back alignments.</div>
-     <div class="sr-table-wrap">${table(['Back','Plays','Usage','YPP','Median','Expl %','Neg %','R/P'],srTable(backB,rows.length))}</div>
-   </div>
-
-   <div class="sr-section sr-span-4">
-     <h3>TE Surface</h3><div class="sr-sub">Defensive results versus tagged tight-end surfaces.</div>
-     <div class="sr-table-wrap">${table(['TE Surface','Plays','Usage','YPP','Median','Expl %','Neg %','R/P'],srTable(teB,rows.length))}</div>
-   </div>
-
-   <div class="sr-section sr-span-12">
-     <h3>Formation × Front × Coverage × Box</h3><div class="sr-sub">Most common full defensive responses to offensive formations.</div>
-     ${combos.length?`<div class="sr-combo head"><div>Formation</div><div>Front</div><div>Coverage</div><div>Box</div><div>Plays</div><div>YPP</div><div>Expl%</div></div>${combos.map(x=>`<div class="sr-combo"><div><b>${esc(x.formation)}</b></div><div>${esc(x.front)}</div><div>${esc(x.coverage)}</div><div>${esc(x.box)}</div><div>${x.n}</div><div>${fmt(x.ypp,2)}</div><div>${pctText(x.expl,x.n)}</div></div>`).join('')}`:'<div class="empty">No full structure-response combinations available.</div>'}
-   </div>
-
-   <div class="sr-section sr-span-12">
-     <div class="sample-note">Formation-family labels use explicit charted structure tags where available. If only a formation name exists, the app makes only broad string-based groups such as Empty, Bunch, Trips, Condensed or 2x2. It does not translate those formations into ULM terminology yet.</div>
-   </div>
  </div>`;
 }
 
@@ -2767,17 +4258,25 @@ function render(){
  let app=$('app');
  if(page==='players')app.innerHTML=playersPage();
  else if(page==='dashboard')app.innerHTML=dashboardPage();
+ else if(page==='leaders')app.innerHTML=leadersPage();
+ else if(page==='missedtackles')app.innerHTML=missedTacklesPage();
  else if(page==='personnel')app.innerHTML=personnelPage();
  else if(page==='run')app.innerHTML=runPage();
- else if(page==='pass')app.innerHTML=plannedPage('Pass Defense','Coverage, targets, completion profile and explosive prevention.');
+ else if(page==='qbrun')app.innerHTML=qbRunPage();
+ else if(page==='pass')app.innerHTML=passPage();
  else if(page==='coverage')app.innerHTML=coveragePage();
  else if(page==='pressure')app.innerHTML=pressurePage();
  else if(page==='situations')app.innerHTML=situationsPage();
  else if(page==='heatmaps')app.innerHTML=heatmapsPage();
+ else if(page==='formations')app.innerHTML=formationsPage();
  else if(page==='structures')app.innerHTML=structuresPage();
  else if(page==='advantage')app.innerHTML=plannedPage('Advantage Theory','Optional charted sample. This page will activate only when Advantage data is present.');
 }
 function goPage(p){page=p;syncNav();render();window.scrollTo({top:0,behavior:'smooth'})}
+window.setDashHash=setDashHash;window.setPassHash=setPassHash;
+window.setQBRun=setQBRun;window.resetQBRun=resetQBRun;
+window.setFM=setFM;window.resetFM=resetFM;
+window.setHR=setHR;window.resetHR=resetHR;
 function syncNav(){document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===page))}
 window.setGroup=id=>{group=id;selected=null;facet='overview';render()};window.openPlayer=name=>openFAUProfile(name);window.setFacet=id=>{facet=id;render()};
 window.setFreqMode=v=>{freqMode=v;render()};window.setDndFilter=v=>{dndFilter=v;render()};window.setHeatScope=v=>{heatScope=v;if(v!=='coverage')heatCoverage='ALL';render()};window.setHeatMetric=v=>{heatMetric=v;render()};window.setHeatCoverage=v=>{heatCoverage=v;render()};window.setHeatHash=v=>{heatHash=v;render()};window.setHeatQB=v=>{heatQB=v;render()};window.setRunConceptFocus=v=>{runConceptFocus=v;render()};
@@ -2796,12 +4295,24 @@ async function loadRoster(){
  roster=Array.isArray(data)?data:Array.isArray(data?.players)?data.players:[];
  await Promise.all(Object.keys(FILES).map(fetchCSV));
  let ok=Object.values(loadState).filter(x=>x.ok).length;
- h.textContent=roster.length?`Shared roster live • ${roster.length} total players • ${ok}/${Object.keys(FILES).length} dashboard data sources`:`Shared roster failed • ${ok}/${Object.keys(FILES).length} dashboard data sources`;
+ let coreOk=['plays','playerIntel'].filter(k=>loadState[k]?.ok).length;
+ h.textContent=roster.length?`Shared roster live • ${roster.length} total players • ${coreOk}/2 core data sources live`:`Shared roster failed • ${coreOk}/2 core data sources live`;
  render();
 }
 document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{page=b.dataset.page;syncNav();render()});$('reloadBtn').onclick=loadRoster;$('printBtn').onclick=openPrintCenter;render();loadRoster();
 
 </script>
+
+
+<div id="zoneModal" class="zone-modal hidden" onclick="if(event.target===this)closeZoneModal()">
+  <div class="zone-modal-card">
+    <div class="zone-modal-head">
+      <h2 id="zoneModalTitle">Pass Zone Detail</h2>
+      <button onclick="closeZoneModal()">×</button>
+    </div>
+    <div id="zoneModalBody" class="zone-modal-body"></div>
+  </div>
+</div>
 
 </body>
 </html>
