@@ -158,3 +158,17 @@ Field Heat Maps:
 - Restyled the Situations field-zone visual to read more like an actual football field.
 - Added turf striping, yard lines, yard numbers and maroon end zones with subtle ULM branding.
 - Moved Coverage filters down into a dedicated filter panel placed directly above the Target Location field so they sit closer to the main visual.
+
+
+## v41 Print Position Filters
+Fixed the blank Player Profile Pack picker.
+
+Cause:
+- print picker was still grouping players as QB/RB/WR/TE/OL from the earlier defensive-app template.
+
+Now:
+- All Defense / DL / LB / DB print filters
+- defensive players populate correctly
+- Select Visible Position selects the currently filtered position group
+- Select All Defense selects all defensive roster players
+- search works inside the selected position

@@ -954,6 +954,18 @@ main{padding:20px 22px 50px;min-width:0}.opponent-banner{background:linear-gradi
 .report-hash-filter{gap:10px;align-items:end;flex-wrap:wrap}.report-hash-filter>label{width:220px}
 .qbr-toolbar{grid-template-columns:repeat(3,minmax(160px,240px)) auto}
 
+
+/* v41 print roster position filters */
+.report-pos-filters{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px}
+.report-pos-filters button{padding:7px 11px;border-radius:8px;font-size:9px;font-weight:900}
+.report-pos-filters button.active{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+.report-player-picker{max-height:250px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:8px;background:#fbfcfd}
+.report-player-group-title{font-size:9px;text-transform:uppercase;font-weight:950;color:var(--maroon);padding:5px 2px}
+.report-player-choice{display:grid;grid-template-columns:20px minmax(0,1fr);gap:7px;align-items:center;padding:7px 6px;border-top:1px solid #e7ebef;cursor:pointer}
+.report-player-choice:hover{background:#fff7e8}
+.report-player-choice input{width:15px;height:15px}
+.rp-main{font-size:10px;font-weight:900;color:#172536}.rp-sub{font-size:8px;color:var(--muted);margin-top:1px}
+
 </style>
 </head>
 <body>
@@ -980,12 +992,19 @@ main{padding:20px 22px 50px;min-width:0}.opponent-banner{background:linear-gradi
           <button id="pp4" class="active" onclick="setProfilesPerPage(4)">4 / page</button>
           <button id="pp8" onclick="setProfilesPerPage(8)">8 / page</button>
         </div>
+        <div class="report-pos-filters">
+          <button id="rpfALL" class="active" onclick="setReportPlayerPos('ALL')">All Defense</button>
+          <button id="rpfDL" onclick="setReportPlayerPos('DL')">DL</button>
+          <button id="rpfLB" onclick="setReportPlayerPos('LB')">LB</button>
+          <button id="rpfDB" onclick="setReportPlayerPos('DB')">DB</button>
+        </div>
         <input id="reportPlayerSearch" class="report-player-search" placeholder="Search player name, number or position" oninput="renderReportPlayerPicker()">
         <div id="reportPlayerPicker" class="report-player-picker"></div>
         <div class="subtle" style="margin-top:8px">Selected for report</div>
         <div id="reportQueue" class="report-queue"></div>
         <div style="display:flex;gap:7px;flex-wrap:wrap">
-          <button onclick="selectAllReportPlayers()">Select All</button>
+          <button onclick="selectVisibleReportPlayers()">Select Visible Position</button>
+          <button onclick="selectAllReportPlayers()">Select All Defense</button>
           <button onclick="clearReportQueue()">Clear Selection</button>
         </div>
         <div style="margin-top:12px"><button class="primary" onclick="printProfilePack()">Print Profile Pack</button></div>
@@ -1034,6 +1053,7 @@ const FILES={
  fronts:['fronts.csv','front_summary.csv'],
  personnel:['personnel.csv','personnel_summary.csv']
 };
+let printPlayerPos='ALL';
 let roster=[],datasets={},loadState={},page='dashboard',group='ALL',selected=null,facet='overview',freqMode='raw',heatScope='all',heatMetric='attempts',heatCoverage='ALL',heatHash='ALL',heatQB='ALL',portalTab='overview',routeFocus='ALL',runConceptFocus='ALL',runHashF='ALL',runRBSideF='ALL',runPersonnelF='ALL',runFormationF='ALL',dndFilter='ALL',dashHashF='ALL',passHashF='ALL',qbRunHashF='ALL',qbRunTypeF='ALL',pfPersonnelF='ALL',pfFrontF='ALL',pfDownF='ALL',pfFieldF='ALL',pfBoxF='ALL',pfHashF='ALL',rdFrontF='ALL',rdBoxF='ALL',rdPersonnelF='ALL',rdDownF='ALL',rdDistF='ALL',rdFieldF='ALL',rdDirF='ALL',rdGapF='ALL',rdHashF='ALL',cvFamilyF='ALL',cvShellF='ALL',cvManZoneF='ALL',cvDownF='ALL',cvDistF='ALL',cvFieldF='ALL',cvHashF='ALL',cvPressureF='ALL',prTypeF='ALL',prRushF='ALL',prDownF='ALL',prDistF='ALL',prFieldF='ALL',prPersonnelF='ALL',prFormationF='ALL',prCoverageF='ALL',prHashF='ALL',stDownF='ALL',stDistF='ALL',stFieldF='ALL',stHashF='ALL',stRP='ALL',stPersonnelF='ALL',stFrontF='ALL',stCoverageF='ALL',hmMetric='ypp',hmCoverageF='ALL',hmShellF='ALL',hmPressureF='ALL',hmDownF='ALL',hmHashF='ALL',hmFieldF='ALL',srFormationF='ALL',srPersonnelF='ALL',srMotionF='ALL',srStructureF='ALL',srDownF='ALL',srFieldF='ALL',srHashF='ALL',fmFormationF='ALL',fmPersonnelF='ALL',fmMotionF='ALL',fmDownF='ALL',fmFieldF='ALL',fmHashF='ALL',hmRelativeF='ALL',hmDepthF='ALL',hmLaneF='ALL',hrRPF='ALL',hrDownF='ALL',hrDistF='ALL',hrFieldF='ALL',hrPersonnelF='ALL';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -1578,11 +1598,17 @@ function renderReportQueue(){
  [1,2,4,8].forEach(n=>{let b=$('pp'+n);if(b)b.classList.toggle('active',printProfilesPerPage===n)});
  renderReportPlayerPicker();
 }
+
+function setReportPlayerPos(pos){
+ printPlayerPos=pos;
+ ['ALL','DL','LB','DB'].forEach(x=>{let b=$('rpf'+x);if(b)b.classList.toggle('active',x===pos)});
+ renderReportPlayerPicker();
+}
 function reportPickerPlayers(){
  let q=String($('reportPlayerSearch')?.value||'').trim().toLowerCase();
- let list=offenseRoster().slice().sort((a,b)=>{
+ let list=offenseRoster().filter(p=>printPlayerPos==='ALL'||normPos(p.position)===printPlayerPos).slice().sort((a,b)=>{
    let pa=normPos(a.position),pb=normPos(b.position);
-   const order={QB:1,RB:2,WR:3,TE:4,OL:5,OTHER:99};
+   const order={DL:1,LB:2,DB:3,OTHER:99};
    return (order[pa]||50)-(order[pb]||50)||num(a.number)-num(b.number)||String(a.name).localeCompare(String(b.name));
  });
  if(!q)return list;
@@ -1591,22 +1617,27 @@ function reportPickerPlayers(){
 function renderReportPlayerPicker(){
  let el=$('reportPlayerPicker');
  if(!el)return;
+ ['ALL','DL','LB','DB'].forEach(x=>{let b=$('rpf'+x);if(b)b.classList.toggle('active',x===printPlayerPos)});
  let list=reportPickerPlayers();
  if(!list.length){
-   el.innerHTML='<div class="subtle">No players match that search.</div>';
+   el.innerHTML='<div class="subtle">No defensive players match that filter/search.</div>';
    return;
  }
- const labelMap={QB:'Quarterbacks',RB:'Running Backs',WR:'Wide Receivers',TE:'Tight Ends',OL:'Offensive Line',OTHER:'Other'};
- const order=['QB','RB','WR','TE','OL','OTHER'];
+ const labelMap={DL:'Defensive Line',LB:'Linebackers',DB:'Defensive Backs'};
+ const order=['DL','LB','DB'];
  const groups={};
  list.forEach(p=>{
-   const pos=normPos(p.position)||'OTHER';
+   const pos=normPos(p.position);
    (groups[pos]||(groups[pos]=[])).push(p);
  });
- el.innerHTML=`<div class="report-player-groups">${order.filter(pos=>groups[pos]?.length).map(pos=>`<div class="report-player-group"><div class="report-player-group-title">${labelMap[pos]||pos}</div><div class="report-player-list">${groups[pos].map(p=>{
+ el.innerHTML=`<div class="report-player-groups">${order.filter(pos=>groups[pos]?.length).map(pos=>`<div class="report-player-group"><div class="report-player-group-title">${labelMap[pos]||pos} (${groups[pos].length})</div><div class="report-player-list">${groups[pos].map(p=>{
        let checked=reportQueue.includes(p.name);
-       return `<label class="report-player-choice"><input type="checkbox" ${checked?'checked':''} onchange='toggleReportPlayer(${JSON.stringify(p.name)},this.checked)'><div><div class="rp-main">#${esc(p.number||'—')} ${esc(p.name)}</div><div class="rp-sub">${esc(p.position||'')}</div></div></label>`;
+       return `<label class="report-player-choice"><input type="checkbox" ${checked?'checked':''} onchange='toggleReportPlayer(${JSON.stringify(p.name)},this.checked)'><div><div class="rp-main">#${esc(p.number||'—')} ${esc(p.name)}</div><div class="rp-sub">${esc(p.position||'')} · ${esc(normPos(p.position))}</div></div></label>`;
      }).join('')}</div></div>`).join('')}</div>`;
+}
+function selectVisibleReportPlayers(){
+ reportPickerPlayers().forEach(p=>{if(!reportQueue.includes(p.name))reportQueue.push(p.name)});
+ renderReportQueue();
 }
 function toggleReportPlayer(name,checked){
  if(checked){
@@ -1621,7 +1652,7 @@ function selectAllReportPlayers(){
  renderReportQueue();
 }
 function setProfilesPerPage(n){printProfilesPerPage=n;renderReportQueue()}
-function openPrintCenter(){let el=$('printCenterOverlay');if(el){el.classList.add('open');renderReportQueue();renderReportPlayerPicker();renderCustomReportLibrary();renderCustomReportItems()}}
+function openPrintCenter(){let el=$('printCenterOverlay');if(el){el.classList.add('open');setReportPlayerPos(printPlayerPos||'ALL');renderReportQueue();renderCustomReportLibrary();renderCustomReportItems()}}
 function closePrintCenter(){let el=$('printCenterOverlay');if(el)el.classList.remove('open')}
 function printViewHeaderHTML(){
  let titles={dashboard:'Dashboard',players:'Player Intelligence',personnel:'Personnel & Formations',run:'Run Game',pass:'Pass Game',heatmaps:'Passing Heat Maps',coverage:'Coverage Response',situations:'Situations',rushcount:'Rush Count',pressure:'Pressure Response'};
@@ -4275,6 +4306,7 @@ function render(){
 function goPage(p){page=p;syncNav();render();window.scrollTo({top:0,behavior:'smooth'})}
 window.setDashHash=setDashHash;window.setPassHash=setPassHash;
 window.setQBRun=setQBRun;window.resetQBRun=resetQBRun;
+window.setReportPlayerPos=setReportPlayerPos;window.selectVisibleReportPlayers=selectVisibleReportPlayers;
 window.setFM=setFM;window.resetFM=resetFM;
 window.setHR=setHR;window.resetHR=resetHR;
 function syncNav(){document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===page))}
