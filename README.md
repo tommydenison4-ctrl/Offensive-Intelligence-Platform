@@ -172,3 +172,12 @@ Now:
 - Select Visible Position selects the currently filtered position group
 - Select All Defense selects all defensive roster players
 - search works inside the selected position
+
+
+## v42 clean coach/player UI
+- removed Historical identity notice
+- removed Player Intelligence explanatory subtitle
+- removed extra Shared Source / Advantage Data KPI boxes
+- removed roster/source instruction card
+- trimmed print modal helper copy
+- removed leader-page instructional note

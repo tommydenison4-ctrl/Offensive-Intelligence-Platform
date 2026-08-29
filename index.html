@@ -976,16 +976,16 @@ main{padding:20px 22px 50px;min-width:0}.opponent-banner{background:linear-gradi
 <div id="printCenterOverlay" class="print-center-overlay" onclick="if(event.target===this)closePrintCenter()">
   <div class="print-center">
     <h2>Print / Save PDF</h2>
-    <div class="subtle">Choose a polished scouting view or build a player profile pack.</div>
+    
     <div class="print-center-grid">
       <div class="print-option">
         <h3>Current Scouting View</h3>
-        <div class="subtle">Print the page you are currently viewing with the navigation and browser-only controls removed.</div>
+        
         <div style="margin-top:12px"><button class="primary" onclick="printCurrentView()">Print Current View</button></div>
       </div>
       <div class="print-option">
         <h3>Player Profile Pack</h3>
-        <div class="subtle">Hand-select exactly which players go on the report, then choose how many profiles fit on each page.</div>
+        
         <div class="print-layouts">
           <button id="pp1" onclick="setProfilesPerPage(1)">1 / page</button>
           <button id="pp2" onclick="setProfilesPerPage(2)">2 / page</button>
@@ -1012,7 +1012,7 @@ main{padding:20px 22px 50px;min-width:0}.opponent-banner{background:linear-gradi
     </div>
     <div class="custom-report-builder">
       <h3 style="margin:0">Build Your Own Scouting Report</h3>
-      <div class="subtle">Click anything you want. It appears in the report on the right in the order you add it.</div>
+      
       <div class="report-builder-grid" style="margin-top:12px">
         <div class="report-library">
           <input id="customReportSearch" class="report-player-search" placeholder="Search report items or players" oninput="renderCustomReportLibrary()">
@@ -1516,13 +1516,13 @@ function renderCustomReportLibrary(){
 function renderCustomReportItems(){
  let el=$('customReportItems'),sum=$('customReportSummary');
  if(!el)return;
- if(sum)sum.textContent=customReportItems.length?`${customReportItems.length} item${customReportItems.length===1?'':'s'} selected`:'Nothing selected yet.';
+ if(sum)sum.textContent=customReportItems.length?`${customReportItems.length} item${customReportItems.length===1?'':'s'} selected`:'';
  el.innerHTML=customReportItems.length?customReportItems.map((x,i)=>`<div class="custom-report-item">
    <div class="order">${i+1}</div>
    <div><b>${esc(x.label)}</b><small>${esc(x.cat||x.type)}</small></div>
    <div><button ${i===0?'disabled':''} onclick='moveCustomReportItem(${JSON.stringify(x.key)},-1)'>↑</button><button ${i===customReportItems.length-1?'disabled':''} onclick='moveCustomReportItem(${JSON.stringify(x.key)},1)'>↓</button></div>
    <button onclick='removeCustomReportItem(${JSON.stringify(x.key)})'>×</button>
- </div>`).join(''):'<div class="custom-report-empty">Click Add beside charts, scouting views, or players. They will appear here.</div>';
+ </div>`).join(''):'<div class="custom-report-empty"></div>';
 }
 function customViewHTML(id){
  if(id==='dashboard')return dashboardPage();
@@ -2238,13 +2238,13 @@ function missedTackleReport(players){
 function playersPage(){
  let all=offenseRoster(),list=filteredPlayers(),posCounts={};
  all.forEach(p=>posCounts[normPos(p.position)]=(posCounts[normPos(p.position)]||0)+1);
- return `<div class="page-title"><h2>Player Intelligence</h2><p>Shared opponent player profiles for the offensive staff, with defensive production added only when the play feed explicitly identifies the defender.</p></div>
- <div class="notice card"><b>Historical identity is name-verified.</b> A current player receives 2025 production only when his name directly matches the historical player data. Jersey number is used to locate play-feed events only after that identity match is established.</div>
+ return `<div class="page-title"><h2>Player Intelligence</h2></div>
+ 
  <div class="toolbar"><input id="playerSearch" placeholder="Search name, number, hometown or previous school" oninput="render()"><select id="playerSort" onchange="render()"><option value="number">Sort: number</option><option value="name">Sort: name</option><option value="position">Sort: position</option></select><div></div><div></div></div>
  <div class="position-tabs">${positionGroups().map(([id,l])=>`<button class="${group===id?'active':''}" onclick="setGroup('${id}')">${l}${id!=='ALL'&&posCounts[id]!=null?` (${posCounts[id]})`:''}</button>`).join('')}</div>
- <div class="kpis"><div class="kpi"><span>Defensive Players</span><b>${all.length}</b><small>shared 2026 roster</small></div><div class="kpi"><span>Current View</span><b>${list.length}</b><small>${group==='ALL'?'All defense':group}</small></div><div class="kpi"><span>Shared Source</span><b>LIVE</b><small>one roster for every intel app</small></div><div class="kpi"><span>Advantage Data</span><b>Later</b><small>optional sampled layer</small></div></div>
+ <div class="kpis"><div class="kpi"><span>Defensive Players</span><b>${all.length}</b></div><div class="kpi"><span>Current View</span><b>${list.length}</b><small>${group==='ALL'?'All defense':group}</small></div></div>
  <div class="player-grid">${list.length?list.map(playerCard).join(''):'<div class="empty">No defensive players match this view.</div>'}</div>
- <div class="card source-card"><b>Shared roster:</b> <code>Special Teams / Current / roster.json</code><br><b>Player production:</b> only explicit defender tags from <code>Offensive Intelligence / Mississippi State / Current</code>.</div>`;
+ `;
 }
 
 function firstField(r,names){
@@ -2370,7 +2370,7 @@ function leadersPage(){
    ${piLeaderCard('Tackle Leaders',tackle,'tackle')}
    ${piLeaderCard('Coverage Leaders',coverage,'coverage')}
  </div>
- <div class="sample-note" style="margin-top:12px">Headshots are intentionally smaller than the full bio photo. Click any leader to open the full Player Intelligence profile.</div>`;
+ `;
 }
 
 
