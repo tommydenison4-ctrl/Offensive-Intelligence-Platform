@@ -966,11 +966,35 @@ main{padding:20px 22px 50px;min-width:0}.opponent-banner{background:linear-gradi
 .report-player-choice input{width:15px;height:15px}
 .rp-main{font-size:10px;font-weight:900;color:#172536}.rp-sub{font-size:8px;color:var(--muted);margin-top:1px}
 
+
+/* v43 defensive depth chart */
+.dc-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:12px}
+.dc-head h2{margin:0}.dc-head .dc-sub{font-size:10px;color:var(--muted);margin-top:3px}
+.dc-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:#f8ead0;border:1px solid #e6c676;color:var(--maroon);font-size:9px;font-weight:950;white-space:nowrap}
+.dc-card{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:0 3px 12px rgba(24,35,45,.04)}
+.dc-titlebar{background:linear-gradient(90deg,var(--maroon),#8f2539);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:4px solid var(--gold)}
+.dc-titlebar h3{margin:0;font-size:18px;color:#fff}.dc-titlebar span{font-size:9px;font-weight:900;color:#fff4cf;text-transform:uppercase;letter-spacing:.06em}
+.dc-table-wrap{overflow:auto}.dc-table{width:100%;border-collapse:collapse;min-width:900px}
+.dc-table th{background:#101820;color:#fff;font-size:9px;text-transform:uppercase;letter-spacing:.04em;padding:10px 12px;text-align:left}
+.dc-table th:first-child{width:82px;text-align:center}
+.dc-table td{padding:10px 12px;border-top:1px solid #e5e9ed;vertical-align:middle;background:#fff}
+.dc-table tr:nth-child(even) td{background:#fbfaf7}
+.dc-pos{font-size:11px;font-weight:1000;color:#fff;background:var(--maroon)!important;text-align:center!important;letter-spacing:.03em}
+.dc-player{display:flex;align-items:center;gap:9px;min-width:0}
+.dc-player-btn{appearance:none;border:0;background:transparent;padding:0;margin:0;text-align:left;cursor:pointer;display:flex;align-items:center;gap:9px;min-width:0;width:100%}
+.dc-player-btn:hover .dc-name{text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:2px;text-underline-offset:3px}
+.dc-number{width:30px;height:30px;flex:0 0 30px;border-radius:8px;background:#0d2231;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:1000;border:2px solid var(--gold)}
+.dc-first .dc-number{background:var(--maroon)}
+.dc-name{font-size:11px;font-weight:950;color:#182636;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dc-class{font-size:8px;color:var(--muted);margin-top:2px}
+.dc-empty{color:#a0a8b0;font-size:10px}
+.dc-foot{padding:10px 14px;background:#f7f8fa;border-top:1px solid var(--line);font-size:8px;color:var(--muted)}
+@media(max-width:760px){.dc-head{align-items:flex-start;flex-direction:column}.dc-titlebar{align-items:flex-start;flex-direction:column}.dc-table{min-width:760px}}
+
 </style>
 </head>
 <body>
 <header><div class="header-inner"><div class="brand"><img src="ulm_avg_roundel_edge_star.png" alt="ULM"><div><div class="kicker">ULM Football</div><h1>Offensive Intelligence</h1><div class="sub">Independent offensive staff workspace · opponent defense · personnel intelligence</div><div id="headerStatus" class="status">Connecting to shared Mississippi State roster…</div></div></div><div class="header-actions"><button id="reloadBtn">Reload Live Roster</button><button id="printBtn">Print / Save PDF</button></div></div></header>
-<div class="shell"><aside><div class="side-title">OFFENSIVE STAFF<div class="side-sub">Mississippi State Week</div></div><button class="nav active" data-page="dashboard">⌂ Dashboard</button><button class="nav" data-page="players">♟ Player Intelligence</button><button class="nav" data-page="leaders">★ Leaders</button><button class="nav" data-page="missedtackles">✕ Missed Tackles</button><button class="nav" data-page="personnel">▦ Personnel & Fronts</button><button class="nav" data-page="run">↗ Run Defense</button><button class="nav" data-page="qbrun">QB Run Success</button><button class="nav" data-page="pass">◎ Pass Defense</button><button class="nav" data-page="coverage">◫ Coverage</button><button class="nav" data-page="pressure">✥ Pressure</button><button class="nav" data-page="situations"># Situations</button><button class="nav" data-page="heatmaps">▦ Field Heat Maps</button><button class="nav" data-page="formations">▤ Formations</button><button class="nav" data-page="structures">◇ Structure Response</button><button class="nav" data-page="advantage">★ Advantage Theory</button></aside><main><div class="opponent-banner"><div><div class="kicker">2026 Opponent Workspace</div><div class="opp-name">Mississippi State</div><div class="opp-meta">Offensive staff · opponent defense scouting</div></div><div class="live-pill">OFFENSIVE INTELLIGENCE</div></div><div id="app"></div></main></div>
+<div class="shell"><aside><div class="side-title">OFFENSIVE STAFF<div class="side-sub">Mississippi State Week</div></div><button class="nav active" data-page="dashboard">⌂ Dashboard</button><button class="nav" data-page="players">♟ Player Intelligence</button><button class="nav" data-page="depthchart">▤ Depth Chart</button><button class="nav" data-page="leaders">★ Leaders</button><button class="nav" data-page="missedtackles">✕ Missed Tackles</button><button class="nav" data-page="personnel">▦ Personnel & Fronts</button><button class="nav" data-page="run">↗ Run Defense</button><button class="nav" data-page="qbrun">QB Run Success</button><button class="nav" data-page="pass">◎ Pass Defense</button><button class="nav" data-page="coverage">◫ Coverage</button><button class="nav" data-page="pressure">✥ Pressure</button><button class="nav" data-page="situations"># Situations</button><button class="nav" data-page="heatmaps">▦ Field Heat Maps</button><button class="nav" data-page="formations">▤ Formations</button><button class="nav" data-page="structures">◇ Structure Response</button><button class="nav" data-page="advantage">★ Advantage Theory</button></aside><main><div class="opponent-banner"><div><div class="kicker">2026 Opponent Workspace</div><div class="opp-name">Mississippi State</div><div class="opp-meta">Offensive staff · opponent defense scouting</div></div><div class="live-pill">OFFENSIVE INTELLIGENCE</div></div><div id="app"></div></main></div>
 <div id="profileOverlay" class="profile-overlay" onclick="closeFAUProfile()"></div>
 <aside id="fauDrawer" class="fau-drawer" aria-label="Player profile"><div id="fauDrawerBody"></div></aside>
 <div id="printCenterOverlay" class="print-center-overlay" onclick="if(event.target===this)closePrintCenter()">
@@ -2233,6 +2257,37 @@ function missedTackleReport(players){
    ['Player','Pos','MT','Team MT Share','Tackles','Tackle Opps','MT %','Run MT','Pass MT','Explosive Plays on MT','YPP on MT Plays','Median'],
    rows.map(x=>[esc(x.p.name),esc(x.p.position),x.mt,pctText(x.mt,total),x.tkl,x.opp,`${x.mtPct.toFixed(1)}%`,x.run,x.pass,x.expl,fmt(x.ypp,2),fmt(x.med,1)])
  ):'<div class="empty">No missed-tackle data is available.</div>'}</div></div>`;
+}
+
+
+const DEF_DEPTH_CHART=[
+ {pos:'DE',first:['43','Will Whitson','GR/TR'],second:['23','Trevion Williams','RS JR'],third:['97','Jayson Jenkins','RS SR/TR']},
+ {pos:'NT',first:['9','Jaray Bledsoe','RS SR/TR'],second:['35','Kalvin Dinkins','RS SR'],third:['99','Diesel Moye','RS SR/TR']},
+ {pos:'DT',first:['14','Dealyn Evans','RS SO/TR'],second:['42','DJ Reed','RS JR/TR'],third:['55','Colin Coates','RS JR/TR']},
+ {pos:'JACK',first:['4','Amaree Williams','JR/TR'],second:['16','Derion Gullette','RS JR/TR'],third:['41','Tyshun Willis','RS FR']},
+ {pos:'WLB',first:['11','Tyler Lockhart','SO'],second:['10','Jalen Smith','RS JR/TR'],third:['13','LaKendrick James','RS JR/TR']},
+ {pos:'MLB',first:['7','Zakari Tillman','SR'],second:['0','Fatt Forrest','RS SO'],third:['32','AJ Rice','RS FR'],additional:['44','Gav Holman','RS SO/TR']},
+ {pos:'LCB',first:['1','Kelley Jones','RS JR'],second:['8','Kaylib Singleton','RS FR/TR'],third:['17','Kyle Johnson','RS FR']},
+ {pos:'SS',first:['5','Jardin Gilbert','GR/TR'],second:['28','Tanner Johnson','RS SR'],third:["12","Ja'Bryis Stewart",'RS JR/TR']},
+ {pos:'FS',first:['15','Marcus Williams','RS SR/TR'],second:['6','Bralan Womack','FR'],third:['21','Dre Riley','JR/TR']},
+ {pos:'RCB',first:['24','Quentin Taylor','RS SO/TR'],second:['20','Jett Jefferson','RS JR/TR'],third:['26','Jamroc Grimsley','RS SO/TR']},
+ {pos:'NB',first:['2','Isaac Smith','SR'],second:['3','Kendel Dolby','GR/TR'],third:null}
+];
+function depthPlayerCell(entry,first=false){
+ if(!entry)return '<span class="dc-empty">—</span>';
+ let [num,name,cls]=entry, found=resolveRosterPlayer(name);
+ let content=`<span class="dc-number">#${esc(num)}</span><span><span class="dc-name">${esc(name)}</span><span class="dc-class">${esc(cls||'')}</span></span>`;
+ return found?`<button class="dc-player-btn ${first?'dc-first':''}" onclick='openFAUProfile(${JSON.stringify(name)})'>${content}</button>`:`<div class="dc-player ${first?'dc-first':''}">${content}</div>`;
+}
+function depthChartPage(){
+ return `<div class="dc-head"><div><h2>Defensive Depth Chart</h2><div class="dc-sub">Mississippi State - Week 1</div></div><div class="dc-badge">3-3-5 · Projected Depth</div></div>
+ <div class="dc-card">
+  <div class="dc-titlebar"><h3>Mississippi State Defense</h3><span>September 5, 2026 · Davis Wade Stadium</span></div>
+  <div class="dc-table-wrap"><table class="dc-table"><thead><tr><th>Pos</th><th>1st</th><th>2nd</th><th>3rd / Additional</th></tr></thead><tbody>
+   ${DEF_DEPTH_CHART.map(r=>`<tr><td class="dc-pos">${esc(r.pos)}</td><td>${depthPlayerCell(r.first,true)}</td><td>${depthPlayerCell(r.second)}</td><td>${depthPlayerCell(r.third)}${r.additional?`<div style="margin-top:7px">${depthPlayerCell(r.additional)}</div>`:''}</td></tr>`).join('')}
+  </tbody></table></div>
+  <div class="dc-foot">Projected opponent depth chart · Week 1 matchup</div>
+ </div>`;
 }
 
 function playersPage(){
@@ -4288,6 +4343,7 @@ function structuresPage(){
 function render(){
  let app=$('app');
  if(page==='players')app.innerHTML=playersPage();
+ else if(page==='depthchart')app.innerHTML=depthChartPage();
  else if(page==='dashboard')app.innerHTML=dashboardPage();
  else if(page==='leaders')app.innerHTML=leadersPage();
  else if(page==='missedtackles')app.innerHTML=missedTacklesPage();

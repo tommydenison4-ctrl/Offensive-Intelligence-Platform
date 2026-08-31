@@ -181,3 +181,10 @@ Now:
 - removed roster/source instruction card
 - trimmed print modal helper copy
 - removed leader-page instructional note
+
+
+## v43 Defensive Depth Chart
+- Added standalone Depth Chart tab.
+- Uses the Week 1 Mississippi State projected 3-3-5 defensive depth chart from the supplied ULM matchup PDF.
+- Player names link directly to the existing in-app Player Intelligence profile when the player exists in the shared roster.
+- Includes DE, NT, DT, JACK, WLB, MLB, LCB, SS, FS, RCB and NB.
