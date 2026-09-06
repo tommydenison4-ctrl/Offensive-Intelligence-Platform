@@ -261,3 +261,11 @@ Now:
 - Tackle Leaders and Missed Tackles read from the same explicit tackling dataset.
 - Missed-tackle KPIs no longer depend on play-level missed-tackle tags to show team/player totals.
 - Rebuilt the 105-player UAB roster by preserving the original #1-18 verified photos and adding verified official UAB images for #19 and the previously blank higher-number defenders.
+
+
+## v53 Tackling hard fallback
+- Supabase pff-data (49).csv remains the primary UAB tackling source.
+- Embedded the exact uploaded pff-data (49).csv as a fallback so tackle leaders and missed-tackle totals cannot silently drop to zero if the public Storage fetch fails.
+- Embedded fallback contains 48 PFF rows.
+- Current UAB roster name-matching still filters the historical PFF table to players on the current roster.
+- The Missed Tackle page now shows which tackling source actually loaded.
