@@ -1242,7 +1242,8 @@ function activeFiles(){
    coverage:['pff-data (39).csv'],
    pressure:['pff-data (40).csv'],
    fronts:['pff-data (48).csv'],
-   personnel:['pff-data (38).csv']
+   personnel:['pff-data (38).csv'],
+   tackling:['pff-data (49).csv']
  };
  return {
    plays:['play_feed.csv','plays.csv','current.csv'],
@@ -1386,7 +1387,7 @@ function playsForPlayer(value){
  );
 }
 function avg(arr){return arr.length?arr.reduce((a,b)=>a+num(b),0)/arr.length:0}
-function dataStatus(){let labels={plays:'Play Feed',qb:'QB',receiving:'Receiving',routes:'Routes',dropbacks:'Dropbacks',passOverall:'Pass Overall',pressure:'Pressure',runConcepts:'Run Concepts',runDirections:'Point of Attack',runBlocking:'Run Block',passBlocking:'Pass Block',formations:'Formations',personnel:'Personnel'};return `<div class="data-status">${Object.entries(labels).map(([k,l])=>`<span class="data-chip ${loadState[k]?.ok?'ok':'bad'}">${loadState[k]?.ok?'✓':'×'} ${l}${loadState[k]?.ok?` · ${loadState[k].n}`:''}</span>`).join('')}</div>`}
+function dataStatus(){let labels={plays:'Play Feed',qb:'QB',receiving:'Receiving',routes:'Routes',dropbacks:'Dropbacks',passOverall:'Pass Overall',pressure:'Pressure',runConcepts:'Run Concepts',runDirections:'Point of Attack',runBlocking:'Run Block',passBlocking:'Pass Block',formations:'Formations',personnel:'Personnel',tackling:'Tackling'};return `<div class="data-status">${Object.entries(labels).map(([k,l])=>`<span class="data-chip ${loadState[k]?.ok?'ok':'bad'}">${loadState[k]?.ok?'✓':'×'} ${l}${loadState[k]?.ok?` · ${loadState[k].n}`:''}</span>`).join('')}</div>`}
 function metric(label,val,sub=''){return `<div class="metric"><span>${esc(label)}</span><b>${esc(value(val))}</b>${sub?`<div class="subtle">${esc(sub)}</div>`:''}</div>`}
 function detail(label,val){return `<div class="detail"><span>${label}</span><b>${esc(value(val))}</b></div>`}
 function table(headers,rows){return `<div class="table-wrap"><table class="data-table"><thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`}
@@ -2462,7 +2463,7 @@ window.openFAUProfile=openFAUProfile;window.openPlayerIndex=openPlayerIndex;wind
 function uabTackleSummaryRows(){
  if(activeOpponent!=='UAB')return [];
  let current=new Map(offenseRoster().map(p=>[loosePlayerName(p.name),p]));
- return (datasets.uabTacklesRaw||[]).map(r=>{
+ return (datasets.tackling||datasets.uabTacklesRaw||[]).map(r=>{
    let p=current.get(loosePlayerName(r.Name));
    if(!p)return null;
    return {p,total:num(r['TOT TKL']),tkl:num(r.TKL),ast:num(r.AST),mt:num(r.MT),stop:num(r.STOP),runMt:num(r['MT.1']),passMt:num(r['MT.2'])};
@@ -2923,12 +2924,11 @@ function setPF(key,val){
 function resetPF(){pfPersonnelF=pfFrontF=pfDownF=pfFieldF=pfBoxF=pfHashF='ALL';dndFilter='ALL';render()}
 
 function missedTacklesPage(){
- let players=offenseRoster().filter(piHasVerifiedHistoricalIdentity);
- let rows=mtReportRows(players),total=rows.reduce((n,x)=>n+x.mt,0),tackles=rows.reduce((n,x)=>n+x.tkl,0);
- let opp=tackles+total,run=rows.reduce((n,x)=>n+x.run,0),pass=rows.reduce((n,x)=>n+x.pass,0);
+ let players=offenseRoster().filter(piHasVerifiedHistoricalIdentity),rows=mtReportRows(players);
+ let total=rows.reduce((n,x)=>n+x.mt,0),tackles=rows.reduce((n,x)=>n+x.tkl,0),opp=tackles+total;
+ let run=rows.reduce((n,x)=>n+x.run,0),pass=rows.reduce((n,x)=>n+x.pass,0);
  let mtPlayRows=(datasets.plays||[]).filter(r=>nonEmpty(r.pff_MISSEDTACKLE));
- let gains=mtPlayRows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
- let expl=gains.filter(x=>x>=15).length;
+ let gains=mtPlayRows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained']))),expl=gains.filter(x=>x>=15).length;
  return `<div class="page-title"><h2>Missed Tackle Report</h2><p>Who is missing tackles, how often, and what happens on those plays.</p></div>
  <div class="kpis">
   <div class="kpi"><span>Missed Tackles</span><b>${total}</b></div>

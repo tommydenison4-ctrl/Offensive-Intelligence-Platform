@@ -254,3 +254,10 @@ Now:
 - UAB tackle leaders and missed tackles read directly from pff-data (49).csv by current-roster name.
 - Verified current-roster matches in 49: 20 players, 127 total tackles, 87 tackles, 34 assists, 19 missed tackles.
 - Added verified official UAB images for the previously blank #21+ defenders.
+
+
+## v52 Player fix
+- UAB pff-data (49).csv is now loaded as an independent `tackling` dataset instead of being buried inside the player-intelligence merge.
+- Tackle Leaders and Missed Tackles read from the same explicit tackling dataset.
+- Missed-tackle KPIs no longer depend on play-level missed-tackle tags to show team/player totals.
+- Rebuilt the 105-player UAB roster by preserving the original #1-18 verified photos and adding verified official UAB images for #19 and the previously blank higher-number defenders.
