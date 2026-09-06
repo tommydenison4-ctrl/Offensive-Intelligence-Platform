@@ -1091,6 +1091,18 @@ button.primary,.primary{background:#761c32!important;color:#fff!important}
 .dc-player-btn:hover .dc-name{color:#f3c750!important}
 .player-card .player-name,.player-card h3,.player-card h4{color:#f4f7fb!important}
 .player-card .profile-meta,.player-card small{color:#9eabba!important}
+
+/* v48 player image + profile polish */
+.fau-drawer,.fau-drawer-body,.fau-panel,.drawer-top,.fau-hero,.fau-tabs{background:#0d141c!important;color:#edf2f7!important;border-color:#293747!important}
+.drawer-player,.fau-hero-name,.fau-hero-pos{color:#f4f7fb!important}
+.drawer-pos,.fau-hero-info,.fau-hero-info div{color:#a7b4c2!important}
+.fau-tabs button{background:#111b26!important;color:#dbe4ed!important}
+.fau-tabs button.active{background:#7a1f34!important;color:#fff!important}
+.fau-panel .card,.fau-panel .metric,.fau-panel .metric-grid>div{background:#111821!important;color:#edf2f7!important;border-color:#2a3949!important}
+.fau-panel .metric span,.fau-panel .subtle{color:#97a6b5!important}
+.fau-panel .metric b{color:#f0c34f!important}
+.player-photo img,.leader-headshot img{object-fit:cover!important}
+
 </style>
 </head>
 <body>
@@ -1880,7 +1892,7 @@ function openPrintCenter(){let el=$('printCenterOverlay');if(el){el.classList.ad
 function closePrintCenter(){let el=$('printCenterOverlay');if(el)el.classList.remove('open')}
 function printViewHeaderHTML(){
  let titles={dashboard:'Dashboard',players:'Player Intelligence',personnel:'Personnel & Formations',run:'Run Game',pass:'Pass Game',heatmaps:'Passing Heat Maps',coverage:'Coverage Response',situations:'Situations',rushcount:'Rush Count',pressure:'Pressure Response'};
- return `<div class="print-view-header"><div style="display:flex;align-items:center;gap:9px"><img src="ulm_avg_roundel_edge_star.png"><div><b>ULM DEFENSIVE INTELLIGENCE</b><div style="font-size:9px;color:#667085">Mississippi State · ${esc(titles[page]||'Scouting Report')}</div></div></div><div style="font-size:9px;font-weight:900">2026 OPPONENT SCOUTING</div></div>`;
+ return `<div class="print-view-header"><div style="display:flex;align-items:center;gap:9px"><img src="ulm_avg_roundel_edge_star.png"><div><b>ULM OFFENSIVE INTELLIGENCE</b><div style="font-size:9px;color:#667085">${activeOpponentName()} · ${esc(titles[page]||'Scouting Report')}</div></div></div><div style="font-size:9px;font-weight:900">2026 OPPONENT SCOUTING</div></div>`;
 }
 function ensurePrintViewHeader(){
  let app=$('app'); if(!app)return;
@@ -2296,11 +2308,11 @@ function openFAUProfile(value){
  if(overlay)overlay.classList.add('open');
  if(drawer)drawer.classList.add('open');
  document.body.style.overflow='hidden';
- if(body)body.innerHTML=`<div class="drawer-top"><button class="back" onclick="closeFAUProfile()">← Back</button><div><div class="drawer-player">${esc(p.name)}</div><div class="drawer-pos">${esc(normPos(p.position))} · Mississippi State</div></div></div><div class="fau-panel"><div class="card"><h3>Loading profile…</h3></div></div>`;
+ if(body)body.innerHTML=`<div class="drawer-top"><button class="back" onclick="closeFAUProfile()">← Back</button><div><div class="drawer-player">${esc(p.name)}</div><div class="drawer-pos">${esc(normPos(p.position))} · ${activeOpponentName()}</div></div></div><div class="fau-panel"><div class="card"><h3>Loading profile…</h3></div></div>`;
  try{renderFAUDrawer(p)}
  catch(err){
    console.error('Player profile render error',err);
-   if(body)body.innerHTML=`<div class="drawer-top"><button class="back" onclick="closeFAUProfile()">← Back</button><div><div class="drawer-player">${esc(p.name)}</div><div class="drawer-pos">${esc(normPos(p.position))} · Mississippi State</div></div></div><div class="fau-panel"><div class="card error-card"><h3>Profile opened, but one profile section failed</h3><div class="subtle">${esc(err?.message||String(err))}</div></div></div>`;
+   if(body)body.innerHTML=`<div class="drawer-top"><button class="back" onclick="closeFAUProfile()">← Back</button><div><div class="drawer-player">${esc(p.name)}</div><div class="drawer-pos">${esc(normPos(p.position))} · ${activeOpponentName()}</div></div></div><div class="fau-panel"><div class="card error-card"><h3>Profile opened, but one profile section failed</h3><div class="subtle">${esc(err?.message||String(err))}</div></div></div>`;
  }
 }
 function closeFAUProfile(){
@@ -2421,7 +2433,7 @@ window.setPIProfileTab=id=>{portalTab=id;let p=roster.find(x=>x.name===selected)
 
 function renderFAUDrawer(p){
  let pos=normPos(p.position);
- $('fauDrawerBody').innerHTML=`<div class="drawer-top"><button class="back" onclick="closeFAUProfile()">← Back</button><div><div class="drawer-player">${esc(p.name)}</div><div class="drawer-pos">${esc(pos)} · Mississippi State</div></div><div class="drawer-spacer"></div>${p.profile?`<button onclick='window.open(${JSON.stringify(p.profile)},"_blank")'>Official Bio ↗</button>`:''}</div>
+ $('fauDrawerBody').innerHTML=`<div class="drawer-top"><button class="back" onclick="closeFAUProfile()">← Back</button><div><div class="drawer-player">${esc(p.name)}</div><div class="drawer-pos">${esc(pos)} · ${activeOpponentName()}</div></div><div class="drawer-spacer"></div>${p.profile?`<button onclick='window.open(${JSON.stringify(p.profile)},"_blank")'>Official Bio ↗</button>`:''}</div>
  <div class="fau-hero"><div class="player-photo">${photo(p)}<div class="player-no">#${esc(p.number||'—')}</div></div><div class="fau-hero-info"><div class="kicker">OFFENSIVE INTELLIGENCE</div><div class="fau-hero-name">${esc(p.name)}</div><div class="fau-hero-pos">${esc(p.position||'')} · #${esc(p.number||'—')}</div><div class="fau-meta">${p.height?esc(p.height):''}${p.weight?` · ${esc(p.weight)} lbs`:''}${p.class?` · ${esc(p.class)}`:''}${p.hometown?`<br>${esc(p.hometown)}`:''}${p.previousSchool?`<br>Previous: ${esc(p.previousSchool)}`:''}</div></div></div>
  <div class="pi-profile-tabs">
    <button class="${portalTab==='overview'?'active':''}" onclick="setPIProfileTab('overview')">Overview</button>
@@ -2442,11 +2454,14 @@ function mtRowsForPlayer(p){return dashboardPlayRows().filter(r=>piTagged(r,p,['
 function mtReportRows(players){
  return players.map(p=>{
    let s=piStats(p),mrows=mtRowsForPlayer(p);
-   let run=mrows.filter(r=>['R','RUN'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())).length;
-   let pass=mrows.filter(r=>['P','PASS'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())).length;
+   let runTagged=mrows.filter(r=>['R','RUN'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())).length;
+   let passTagged=mrows.filter(r=>['P','PASS'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())).length;
    let gains=mrows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
-   let expl=gains.filter(x=>x>=15).length,opp=num(s.tackles)+num(s.mt);
-   return {p,mt:num(s.mt),tkl:num(s.tackles),opp,mtPct:opp?100*num(s.mt)/opp:0,run,pass,expl,ypp:mrows.length?avg(gains):0,med:mrows.length?calcMedian(gains):0};
+   let expl=gains.filter(x=>x>=15).length;
+   let mt=num(s.mt),tkl=num(s.tackles),opp=tkl+mt;
+   let run=activeOpponent==='UAB'&&nonEmpty(s.runMt)?num(s.runMt):runTagged;
+   let pass=activeOpponent==='UAB'&&nonEmpty(s.passMt)?num(s.passMt):passTagged;
+   return {p,mt,tkl,opp,mtPct:opp?100*mt/opp:0,run,pass,expl,ypp:mrows.length?avg(gains):0,med:mrows.length?calcMedian(gains):0};
  }).filter(x=>x.mt>0).sort((a,b)=>b.mt-a.mt||b.mtPct-a.mtPct);
 }
 function missedTackleReport(players){
@@ -2592,7 +2607,13 @@ function piSummaryByVerifiedName(p){
  let nm=cleanName(p.name);
  return (datasets.playerIntel||[]).find(r=>cleanName(r.Name)===nm||loosePlayerName(r.Name)===loosePlayerName(p.name))||null;
 }
-function piHasVerifiedHistoricalIdentity(p){return !!piSummaryByVerifiedName(p)}
+function piHasVerifiedHistoricalIdentity(p){
+ if(activeOpponent==='UAB'){
+   let target=loosePlayerName(p?.name);
+   return (datasets.playerIntel||[]).some(r=>loosePlayerName(r.Name)===target);
+ }
+ return !!piSummaryByVerifiedName(p);
+}
 function piTokenMatchesPlayer(v,p){
  if(!nonEmpty(v)||!p)return false;
  let summary=piSummaryByVerifiedName(p);
@@ -2608,18 +2629,58 @@ function piRowsForPlayer(p){
   'pff_INTERCEPTION','pff_PASSBREAKUP','pff_FORCEDFUMBLE','pff_MISSEDTACKLE'
  ]));
 }
+function uabRawPlayerRow(key,p){
+ if(activeOpponent!=='UAB'||!p)return null;
+ let rows=datasets[key]||[],target=loosePlayerName(p.name);
+ return rows.find(r=>loosePlayerName(r.Name)===target)||null;
+}
 function piStats(p){
  let summary=piSummaryByVerifiedName(p);
+
+ if(activeOpponent==='UAB'){
+   let def=uabRawPlayerRow('uabDefenseRaw',p)||summary||{};
+   let tkl=uabRawPlayerRow('uabTacklesRaw',p)||{};
+   let cov=uabRawPlayerRow('uabCoverageRaw',p)||{};
+   let run=uabRawPlayerRow('uabRunRaw',p)||{};
+   let tech=uabRawPlayerRow('uabTechniqueRaw',p)||{};
+   let matched=!!(def.Name||tkl.Name||cov.Name||run.Name||tech.Name);
+   if(!matched){
+     return {rows:0,tackles:0,assists:0,stops:0,sacks:0,pressures:0,targets:0,comp:0,ints:0,td:0,pbu:0,mt:0,source:'No verified UAB PFF match',verified:false};
+   }
+   return {
+     rows:num(def.DEF),
+     tackles:num(tkl.TKL ?? def.TKL),
+     totalTackles:num(tkl['TOT TKL']),
+     assists:num(tkl.AST ?? def.AST),
+     stops:num(tkl.STOP ?? run.STOP),
+     sacks:num(tkl.SK ?? def.SK),
+     pressures:num(def.TPR ?? tech.TPR),
+     targets:num(cov.CTGT ?? def.CTGT),
+     comp:num(cov['REC ALL']),
+     ints:num(cov.INT ?? def.INT),
+     td:num(cov.TD),
+     pbu:num(cov.PBU ?? def.PBU),
+     mt:num(tkl.MT ?? def.MT),
+     runMt:num(tkl['MT.1']),
+     passMt:num(tkl['MT.2']),
+     mtPct:tkl['MT%']||'',
+     defGrade:def.DEF||'',runGrade:run['RUND GRD']||'',rushGrade:'',
+     covGrade:cov.COV||'',compPct:cov['COMP%']||'',passYds:num(cov['P YDS ALL']),
+     rating:cov.RTG||'',prWin:'',prPct:tech['PR%']||'',zonePct:'',manPct:'',
+     source:'Verified UAB PFF name match',verified:true
+   };
+ }
+
  if(!summary){
-   return {rows:0,tackles:0,stops:0,sacks:0,pressures:0,targets:0,comp:0,ints:0,td:0,pbu:0,mt:0,source:'No verified 2025 match',verified:false};
+   return {rows:0,tackles:0,assists:0,stops:0,sacks:0,pressures:0,targets:0,comp:0,ints:0,td:0,pbu:0,mt:0,source:'No verified 2025 match',verified:false};
  }
  return {
-  rows:num(summary.DEF),tackles:num(summary.TKL),stops:num(summary.STOP),sacks:num(summary.SK),pressures:num(summary.TPR),
-  targets:num(summary.CTGT),comp:num(summary.REC_ALLOWED),ints:num(summary.INT),td:num(summary.TD_ALLOWED),pbu:num(summary.PBU),mt:num(summary.MT),
-  defGrade:summary.DEF_GRD||'',runGrade:summary.RUND_GRD||'',rushGrade:summary.PRSH_GRD||'',covGrade:summary.COV_GRD||'',
-  compPct:summary.COMP_PCT_ALLOWED||'',passYds:num(summary.PASS_YDS_ALLOWED),rating:summary.RTG_ALLOWED||'',
-  prWin:summary.PR_WIN_PCT||'',prPct:summary.PRESSURE_PCT||'',zonePct:summary.ZONE_PCT||'',manPct:summary.MAN_PCT||'',
-  source:'Verified 2025 name match',verified:true
+   rows:num(summary.DEF),tackles:num(summary.TKL),assists:num(summary.AST),stops:num(summary.STOP),sacks:num(summary.SK),pressures:num(summary.TPR),
+   targets:num(summary.CTGT),comp:num(summary.REC_ALLOWED),ints:num(summary.INT),td:num(summary.TD_ALLOWED),pbu:num(summary.PBU),mt:num(summary.MT),
+   defGrade:summary.DEF_GRD||'',runGrade:summary.RUND_GRD||'',rushGrade:summary.PRSH_GRD||'',covGrade:summary.COV_GRD||'',
+   compPct:summary.COMP_PCT_ALLOWED||'',passYds:num(summary.PASS_YDS_ALLOWED),rating:summary.RTG_ALLOWED||'',
+   prWin:summary.PR_WIN_PCT||'',prPct:summary.PRESSURE_PCT||'',zonePct:summary.ZONE_PCT||'',manPct:summary.MAN_PCT||'',
+   source:'Verified 2025 name match',verified:true
  };
 }
 function piLeaderboard(players,metric,limit=6){

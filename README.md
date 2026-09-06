@@ -223,3 +223,12 @@ Now:
 - UAB PFF player summaries continue to drive tackles, missed tackles, pressure and coverage production.
 - Added conservative punctuation/suffix normalization for player name matching.
 - Improved depth-chart player-name contrast in dark mode.
+
+
+## v48 UAB Player Images + Player Reports
+- Uses the same UAB player-image roster source already proven in Defensive Intelligence.
+- Current roster image URLs point to Defensive Intelligence / Opponents / UAB / player-images backups.
+- UAB player reports now read directly from the underlying PFF player tables for tackle, missed-tackle, coverage and pass-rush production.
+- Player profile panel is fully dark-mode.
+- Tackling leaderboard can use UAB tackle summary instead of relying on play-event tags alone.
+- Missed Tackle report uses PFF player summary totals and run/pass missed-tackle splits when present.
