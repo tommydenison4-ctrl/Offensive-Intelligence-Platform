@@ -188,3 +188,13 @@ Now:
 - Uses the Week 1 Mississippi State projected 3-3-5 defensive depth chart from the supplied ULM matchup PDF.
 - Player names link directly to the existing in-app Player Intelligence profile when the player exists in the shared roster.
 - Includes DE, NT, DT, JACK, WLB, MLB, LCB, SS, FS, RCB and NB.
+
+
+## v44 Opponent Toggle + Dark Mode
+- Mississippi State is preserved.
+- Added Prep Opponent toggle: Mississippi State / UAB.
+- Mississippi State still uses its existing roster, PFF folder and static depth chart.
+- UAB reads only Offensive Intelligence / UAB / Current.
+- UAB loads play_feed (18).csv, UAB PFF player reports, roster.json, depth-chart.json and historical-roster-2025.json.
+- Switching opponents reloads roster, PFF data, depth chart and note namespace without overwriting the other opponent.
+- Converted the app to a dark staff-room theme.
