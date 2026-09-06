@@ -2469,19 +2469,53 @@ window.openFAUProfile=openFAUProfile;window.openPlayerIndex=openPlayerIndex;wind
 function uabTackleSummaryRows(){
  if(activeOpponent!=='UAB')return [];
  let current=new Map(offenseRoster().map(p=>[loosePlayerName(p.name),p]));
- return ((datasets.tackling&&datasets.tackling.length)?datasets.tackling:(datasets.uabTacklesRaw||[])).map(r=>{
-   let p=current.get(loosePlayerName(r.Name));
-   if(!p)return null;
-   return {p,total:num(r['TOT TKL']),tkl:num(r.TKL),ast:num(r.AST),mt:num(r.MT),stop:num(r.STOP),runMt:num(r['MT.1']),passMt:num(r['MT.2'])};
- }).filter(Boolean);
+ return UAB_TACKLING_FALLBACK.map(r=>{
+   let p=current.get(loosePlayerName(r.Name))||{
+     name:r.Name,
+     number:r['#'],
+     position:r.POS,
+     class:'',
+     height:'',
+     weight:'',
+     image:'',
+     historicalOnly:true
+   };
+   return {
+     p,
+     total:num(r['TOT TKL']),
+     tkl:num(r.TKL),
+     ast:num(r.AST),
+     mt:num(r.MT),
+     stop:num(r.STOP),
+     runMt:num(r['MT.1']),
+     passMt:num(r['MT.2']),
+     mtPctRaw:r['MT%']||''
+   };
+ }).filter(x=>nonEmpty(x.p?.name));
 }
 function mtRowsForPlayer(p){return dashboardPlayRows().filter(r=>piTagged(r,p,['pff_MISSEDTACKLE']))}
 function mtReportRows(players){
  if(activeOpponent==='UAB'){
    return uabTackleSummaryRows().map(x=>{
-     let mrows=mtRowsForPlayer(x.p),gains=mrows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
+     let isCurrent=!x.p.historicalOnly;
+     let mrows=isCurrent?mtRowsForPlayer(x.p):[];
+     let gains=mrows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
      let expl=gains.filter(v=>v>=15).length,opp=x.tkl+x.mt;
-     return {p:x.p,mt:x.mt,tkl:x.tkl,total:x.total,ast:x.ast,opp,mtPct:opp?100*x.mt/opp:0,run:x.runMt,pass:x.passMt,expl,ypp:mrows.length?avg(gains):0,med:mrows.length?calcMedian(gains):0};
+     return {
+       p:x.p,
+       mt:x.mt,
+       tkl:x.tkl,
+       total:x.total,
+       ast:x.ast,
+       opp,
+       mtPct:opp?100*x.mt/opp:0,
+       run:x.runMt,
+       pass:x.passMt,
+       expl,
+       ypp:mrows.length?avg(gains):0,
+       med:mrows.length?calcMedian(gains):0,
+       hasPlayContext:mrows.length>0
+     };
    }).filter(x=>x.mt>0).sort((a,b)=>b.mt-a.mt||b.mtPct-a.mtPct);
  }
  return players.map(p=>{
@@ -2490,16 +2524,16 @@ function mtReportRows(players){
    let passTagged=mrows.filter(r=>['P','PASS'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())).length;
    let gains=mrows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
    let expl=gains.filter(x=>x>=15).length,mt=num(s.mt),tkl=num(s.tackles),opp=tkl+mt;
-   return {p,mt,tkl,opp,mtPct:opp?100*mt/opp:0,run:runTagged,pass:passTagged,expl,ypp:mrows.length?avg(gains):0,med:mrows.length?calcMedian(gains):0};
+   return {p,mt,tkl,opp,mtPct:opp?100*mt/opp:0,run:runTagged,pass:passTagged,expl,ypp:mrows.length?avg(gains):0,med:mrows.length?calcMedian(gains):0,hasPlayContext:mrows.length>0};
  }).filter(x=>x.mt>0).sort((a,b)=>b.mt-a.mt||b.mtPct-a.mtPct);
 }
 function missedTackleReport(players){
  let rows=mtReportRows(players),total=rows.reduce((n,x)=>n+x.mt,0);
  return `<div class="card mt-report"><h3>Missed Tackle Report</h3>
- <div class="sample-note">MT and tackle totals come from the UAB PFF tackling summary (49). Run/pass missed-tackle splits come from the UAB tackling summary when available; play-result context comes from explicit <code>pff_MISSEDTACKLE</code> tags. MT% = MT / (Tackles + MT).</div>
+ <div class="sample-note">MT and tackle totals use the complete UAB PFF tackling sample. Run/pass missed-tackle splits come from the UAB tackling summary when available; play-result context comes from explicit <code>pff_MISSEDTACKLE</code> tags. MT% = MT / (Tackles + MT).</div>
  <div class="table-wrap">${rows.length?table(
    ['Player','Pos','MT','Team MT Share','Tackles','Tackle Opps','MT %','Run MT','Pass MT','Explosive Plays on MT','YPP on MT Plays','Median'],
-   rows.map(x=>[esc(x.p.name),esc(x.p.position),x.mt,pctText(x.mt,total),x.tkl,x.opp,`${x.mtPct.toFixed(1)}%`,x.run,x.pass,x.expl,fmt(x.ypp,2),fmt(x.med,1)])
+   rows.map(x=>[esc(x.p.name),esc(x.p.position),x.mt,pctText(x.mt,total),x.tkl,x.opp,`${x.mtPct.toFixed(1)}%`,x.run,x.pass,x.hasPlayContext?x.expl:'—',x.hasPlayContext?fmt(x.ypp,2):'—',x.hasPlayContext?fmt(x.med,1):'—'])
  ):'<div class="empty">No missed-tackle data is available.</div>'}</div></div>`;
 }
 
@@ -2730,7 +2764,8 @@ function piLeaderCard(title,items,metric){
    let sub=metric==='rush'?`${x.s.sacks} sacks · ${x.s.pressures} pressures`
     :metric==='coverage'?`${x.s.comp}/${x.s.targets} completions · ${x.s.ints} INT · ${x.s.pbu} PBU`
     :`${x.s.stops} stops · ${x.s.mt||0} missed`;
-   return `<div class="leader-entry" role="button" tabindex="0" onclick="openPlayerIndex(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPlayerIndex(${idx})}">
+   let click=idx>=0?`role="button" tabindex="0" onclick="openPlayerIndex(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPlayerIndex(${idx})}"`:''; 
+   return `<div class="leader-entry" ${click}>
      <div class="leader-rank">${i+1}</div>${leaderHeadshot(x.p)}
      <div class="leader-info"><div class="leader-name">${esc(x.p.name)}</div><div class="leader-meta">#${esc(x.p.number||'—')} · ${esc(x.p.position||normPos(x.p.position))}</div><div class="leader-sub">${esc(sub)}</div></div>
      <div class="leader-value"><b>${x.v}</b><span>${leaderMetricLabel(metric)}</span></div>
@@ -2744,7 +2779,11 @@ function leadersPage(){
    ?uabTackleSummaryRows().filter(x=>x.total>0).sort((a,b)=>b.total-a.total).slice(0,8).map(x=>({p:x.p,s:{tackles:x.tkl,totalTackles:x.total,assists:x.ast,mt:x.mt,stops:x.stop},v:x.total}))
    :piLeaderboard(all,'tackle');
  return `<div class="page-title"><h2>Defensive Leaders</h2><p>Quick scouting board for the defenders most involved in pass rush, tackling and coverage.</p></div>
- <div class="leaders-page-grid">${piLeaderCard('Pass-Rush Leaders',rush,'rush')}${piLeaderCard('Tackle Leaders',tackle,'tackle')}${piLeaderCard('Coverage Leaders',coverage,'coverage')}</div>`;
+ <div class="leaders-page-grid">
+   ${piLeaderCard('Pass-Rush Leaders',rush,'rush')}
+   ${piLeaderCard('Tackle Leaders',tackle,'tackle')}
+   ${piLeaderCard('Coverage Leaders',coverage,'coverage')}
+ </div>`;
 }
 
 
@@ -2929,14 +2968,26 @@ function setPF(key,val){
 }
 function resetPF(){pfPersonnelF=pfFrontF=pfDownF=pfFieldF=pfBoxF=pfHashF='ALL';dndFilter='ALL';render()}
 
+function uabTackleValidation(){
+ let a=uabTackleSummaryRows();
+ return {
+   rows:a.length,
+   total:a.reduce((n,x)=>n+x.total,0),
+   tackles:a.reduce((n,x)=>n+x.tkl,0),
+   assists:a.reduce((n,x)=>n+x.ast,0),
+   missed:a.reduce((n,x)=>n+x.mt,0),
+   runMissed:a.reduce((n,x)=>n+x.runMt,0),
+   passMissed:a.reduce((n,x)=>n+x.passMt,0)
+ };
+}
 function missedTacklesPage(){
  let players=offenseRoster().filter(piHasVerifiedHistoricalIdentity),rows=mtReportRows(players);
  let total=rows.reduce((n,x)=>n+x.mt,0),tackles=rows.reduce((n,x)=>n+x.tkl,0),opp=tackles+total;
  let run=rows.reduce((n,x)=>n+x.run,0),pass=rows.reduce((n,x)=>n+x.pass,0);
  let mtPlayRows=(datasets.plays||[]).filter(r=>nonEmpty(r.pff_MISSEDTACKLE));
  let gains=mtPlayRows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained']))),expl=gains.filter(x=>x>=15).length;
- let tackleSource=loadState.tackling?.file||'pff-data (49).csv';
- return `<div class="page-title"><h2>Missed Tackle Report</h2><p>Who is missing tackles, how often, and what happens on those plays.</p><div class="subtle">Tackling source: ${esc(tackleSource)}</div></div>
+ let tackleSource='pff-data (49).csv · direct embedded source';
+ return `<div class="page-title"><h2>Missed Tackle Report</h2><p>Who is missing tackles, how often, and what happens on those plays.</p><div class="subtle">Tackling source: ${esc(tackleSource)}${activeOpponent==='UAB'?` · ${uabTackleValidation().rows} rows loaded`:''}</div></div>
  <div class="kpis">
   <div class="kpi"><span>Missed Tackles</span><b>${total}</b></div>
   <div class="kpi"><span>Tackles</span><b>${tackles}</b></div>

@@ -269,3 +269,18 @@ Now:
 - Embedded fallback contains 48 PFF rows.
 - Current UAB roster name-matching still filters the historical PFF table to players on the current roster.
 - The Missed Tackle page now shows which tackling source actually loaded.
+
+
+## v54 Tackling complete
+- Root cause fixed: UAB pff-data (49).csv is a 2025 historical tackling table and was being filtered down to current 2026 roster matches before reporting.
+- The UAB Missed Tackle Report now uses all 48 PFF tackling rows, matching the historical-report behavior used for Mississippi State.
+- Full pff-data (49) totals: 857 total tackles, 607 tackles, 229 assists, 168 missed tackles, 102 run missed tackles, 66 pass missed tackles.
+- Current-roster matches still inherit current bios/photos; historical-only players remain in the tackling report without being falsely attached to a current player.
+- Tackle Leaders now come from the complete PFF tackling sample.
+
+
+## v55 Tackling Direct
+- Removed the remaining dependency on Supabase parsing/loading for UAB tackling reports.
+- UAB Tackle Leaders and Missed Tackles now read directly from the exact uploaded pff-data (49).csv embedded in the build.
+- No roster filtering is applied to historical tackling totals.
+- Expected direct-source totals: 48 rows, 857 total tackles, 607 tackles, 229 assists, 168 missed tackles, 102 run missed tackles, 66 pass missed tackles.
