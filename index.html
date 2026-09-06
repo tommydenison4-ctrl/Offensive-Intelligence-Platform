@@ -2469,17 +2469,29 @@ window.openFAUProfile=openFAUProfile;window.openPlayerIndex=openPlayerIndex;wind
 function uabTackleSummaryRows(){
  if(activeOpponent!=='UAB')return [];
  let current=new Map(offenseRoster().map(p=>[loosePlayerName(p.name),p]));
+ let hist=new Map((historicalRoster||[]).map(p=>[loosePlayerName(p.name),p]));
  return UAB_TACKLING_FALLBACK.map(r=>{
-   let p=current.get(loosePlayerName(r.Name))||{
-     name:r.Name,
-     number:r['#'],
-     position:r.POS,
-     class:'',
-     height:'',
-     weight:'',
-     image:'',
-     historicalOnly:true
-   };
+   let key=loosePlayerName(r.Name);
+   let hp=hist.get(key);
+   let p=current.get(key)||(
+     hp ? {
+       ...hp,
+       historicalOnly:true,
+       name:hp.name||r.Name,
+       number:hp.number||r['#'],
+       position:hp.position||r.POS
+     } : {
+       name:r.Name,
+       number:r['#'],
+       position:r.POS,
+       class:'',
+       height:'',
+       weight:'',
+       image:'',
+       profile:'',
+       historicalOnly:true
+     }
+   );
    return {
      p,
      total:num(r['TOT TKL']),
@@ -2530,7 +2542,7 @@ function mtReportRows(players){
 function missedTackleReport(players){
  let rows=mtReportRows(players),total=rows.reduce((n,x)=>n+x.mt,0);
  return `<div class="card mt-report"><h3>Missed Tackle Report</h3>
- <div class="sample-note">MT and tackle totals use the complete UAB PFF tackling sample. Run/pass missed-tackle splits come from the UAB tackling summary when available; play-result context comes from explicit <code>pff_MISSEDTACKLE</code> tags. MT% = MT / (Tackles + MT).</div>
+ <div class="sample-note"></div>
  <div class="table-wrap">${rows.length?table(
    ['Player','Pos','MT','Team MT Share','Tackles','Tackle Opps','MT %','Run MT','Pass MT','Explosive Plays on MT','YPP on MT Plays','Median'],
    rows.map(x=>[esc(x.p.name),esc(x.p.position),x.mt,pctText(x.mt,total),x.tkl,x.opp,`${x.mtPct.toFixed(1)}%`,x.run,x.pass,x.hasPlayContext?x.expl:'—',x.hasPlayContext?fmt(x.ypp,2):'—',x.hasPlayContext?fmt(x.med,1):'—'])
@@ -2764,7 +2776,9 @@ function piLeaderCard(title,items,metric){
    let sub=metric==='rush'?`${x.s.sacks} sacks · ${x.s.pressures} pressures`
     :metric==='coverage'?`${x.s.comp}/${x.s.targets} completions · ${x.s.ints} INT · ${x.s.pbu} PBU`
     :`${x.s.stops} stops · ${x.s.mt||0} missed`;
-   let click=idx>=0?`role="button" tabindex="0" onclick="openPlayerIndex(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPlayerIndex(${idx})}"`:''; 
+   let click=idx>=0
+     ?`role="button" tabindex="0" onclick="openPlayerIndex(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPlayerIndex(${idx})}"`
+     :(x.p.profile?`role="button" tabindex="0" onclick="window.open('${esc(x.p.profile)}','_blank')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.open('${esc(x.p.profile)}','_blank')}"`:'');
    return `<div class="leader-entry" ${click}>
      <div class="leader-rank">${i+1}</div>${leaderHeadshot(x.p)}
      <div class="leader-info"><div class="leader-name">${esc(x.p.name)}</div><div class="leader-meta">#${esc(x.p.number||'—')} · ${esc(x.p.position||normPos(x.p.position))}</div><div class="leader-sub">${esc(sub)}</div></div>
@@ -2773,12 +2787,32 @@ function piLeaderCard(title,items,metric){
  }).join(''):'<div class="empty">No explicit player production is available.</div>'}</div>`;
 }
 function leadersPage(){
- let all=offenseRoster().filter(piHasVerifiedHistoricalIdentity),dl=all.filter(p=>normPos(p.position)==='DL'),lb=all.filter(p=>normPos(p.position)==='LB'),db=all.filter(p=>normPos(p.position)==='DB');
- let rush=piLeaderboard(dl.concat(lb),'rush'),coverage=piLeaderboard(db.concat(lb),'coverage');
- let tackle=activeOpponent==='UAB'
-   ?uabTackleSummaryRows().filter(x=>x.total>0).sort((a,b)=>b.total-a.total).slice(0,8).map(x=>({p:x.p,s:{tackles:x.tkl,totalTackles:x.total,assists:x.ast,mt:x.mt,stops:x.stop},v:x.total}))
-   :piLeaderboard(all,'tackle');
- return `<div class="page-title"><h2>Defensive Leaders</h2><p>Quick scouting board for the defenders most involved in pass rush, tackling and coverage.</p></div>
+ let current=offenseRoster();
+ let verified=current.filter(piHasVerifiedHistoricalIdentity);
+ let dl=verified.filter(p=>normPos(p.position)==='DL');
+ let lb=verified.filter(p=>normPos(p.position)==='LB');
+ let db=verified.filter(p=>normPos(p.position)==='DB');
+
+ let rush=piLeaderboard(dl.concat(lb),'rush');
+ let coverage=piLeaderboard(db.concat(lb),'coverage');
+
+ let tackle;
+ if(activeOpponent==='UAB'){
+   let currentMap=new Map(current.map(p=>[loosePlayerName(p.name),p]));
+   tackle=uabTackleSummaryRows()
+     .filter(x=>!x.p.historicalOnly && currentMap.has(loosePlayerName(x.p.name)) && x.total>0)
+     .sort((a,b)=>b.total-a.total)
+     .slice(0,8)
+     .map(x=>({
+       p:currentMap.get(loosePlayerName(x.p.name)),
+       s:{tackles:x.tkl,totalTackles:x.total,assists:x.ast,mt:x.mt,stops:x.stop},
+       v:x.total
+     }));
+ }else{
+   tackle=piLeaderboard(verified,'tackle');
+ }
+
+ return `<div class="page-title"><h2>Defensive Leaders</h2><p>Current-roster defenders most involved in pass rush, tackling and coverage.</p></div>
  <div class="leaders-page-grid">
    ${piLeaderCard('Pass-Rush Leaders',rush,'rush')}
    ${piLeaderCard('Tackle Leaders',tackle,'tackle')}
@@ -2987,7 +3021,7 @@ function missedTacklesPage(){
  let mtPlayRows=(datasets.plays||[]).filter(r=>nonEmpty(r.pff_MISSEDTACKLE));
  let gains=mtPlayRows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained']))),expl=gains.filter(x=>x>=15).length;
  let tackleSource='pff-data (49).csv · direct embedded source';
- return `<div class="page-title"><h2>Missed Tackle Report</h2><p>Who is missing tackles, how often, and what happens on those plays.</p><div class="subtle">Tackling source: ${esc(tackleSource)}${activeOpponent==='UAB'?` · ${uabTackleValidation().rows} rows loaded`:''}</div></div>
+ return `<div class="page-title"><h2>Missed Tackle Report</h2><p>Full historical tackling sample, with current-player context where available.</p></div>
  <div class="kpis">
   <div class="kpi"><span>Missed Tackles</span><b>${total}</b></div>
   <div class="kpi"><span>Tackles</span><b>${tackles}</b></div>
