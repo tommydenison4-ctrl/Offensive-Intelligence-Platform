@@ -298,3 +298,32 @@ Now:
 - UAB tackle leaders still use pff-data (49).csv, but only where the PFF player name verifies against the current 2026 roster.
 - Missed Tackle Report keeps the full historical tackling sample for team-level scouting.
 - Removed temporary debugging/source labels from the coach-facing UI.
+
+
+## v58 Player Profile Complete
+- UAB profiles read exact player tables directly: 32 defense, 33 pass rush, 34 run defense, 35 coverage, 49 tackling.
+- Corrected COV vs COV.1: COV is coverage grade; COV.1 is coverage snaps.
+- Man/Zone is derived from play-feed coverage-player participation and coverage family.
+- Replaced unavailable overall DEF Grade with actual available UAB metrics.
+- Profile metric cards now use dark-mode styling.
+
+
+## v60 Main Analytics Season Weighting
+- Added global 2025 Raw / 2026 Raw / 50-50 Weighted controls to the main UAB analytics workspaces.
+- 2025 Raw and 2026 Raw preserve actual play counts.
+- 50-50 Weighted gives each season equal influence regardless of raw sample size.
+- The weighting control applies to Dashboard, Personnel & Fronts, Run Defense, QB Run Success, Pass Defense, Coverage, Pressure, Situations, Field Heat Maps, Formations, and Structure Response.
+- Player Intelligence retains its separate 2025 / 2026 player toggle.
+
+
+## v61 True 50/50 math
+- Removed play replication from the 50/50 mode.
+- The weighted view uses the actual combined play sample and preserves literal play counts.
+- Average-based metrics are computed by calculating each season separately and averaging the two season values 50/50.
+- Median YPP uses a true season-balanced weighted median.
+- 2025 Raw and 2026 Raw remain unchanged.
+
+
+## v62 Embedded Roundel
+- Embedded the ULM roundel directly inside index.html.
+- The logo now works even when index.html is opened directly from a Windows ZIP/temp folder where companion image files may not resolve.
