@@ -1305,7 +1305,7 @@ function normPos(pos){
  return p||'OTHER';
 }
 function initials(n){return String(n||'?').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()}
-function photo(p){return p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" onerror="this.remove();this.parentElement.querySelector('.initials').style.display='flex'"><div class="initials" style="display:none">${initials(p.name)}</div>`:`<div class="initials">${initials(p.name)}</div>`}
+function photo(p){return p.image?`<img src="${esc(p.image)}" data-alt="${esc(p.officialImageSource||p.supabaseImageBackup||'')}" alt="${esc(p.name)}" onerror="this.remove();this.parentElement.querySelector('.initials').style.display='flex'"><div class="initials" style="display:none">${initials(p.name)}</div>`:`<div class="initials">${initials(p.name)}</div>`}
 function value(x){return x===null||x===undefined||x===''?'—':x}
 function nonEmpty(v){return v!==null&&v!==undefined&&String(v).trim()!==''&&String(v).trim().toLowerCase()!=='nan'}
 function passResult(r){return String(r?.pff_PASSRESULT||'').trim().toUpperCase()}
@@ -1335,7 +1335,7 @@ function mergeUABPlayerIntelRows(parts){
 }
 async function fetchUABPlayerIntel(){
  await discoverUABBase();
- const files={defense:'pff-data (32).csv',run:'pff-data (34).csv',coverage:'pff-data (35).csv',tackles:'pff-data (36).csv',technique:'pff-data (48).csv'};
+ const files={defense:'pff-data (32).csv',run:'pff-data (34).csv',coverage:'pff-data (35).csv',tackles:'pff-data (49).csv',technique:'pff-data (48).csv'};
  const parts={},loaded=[];
  await Promise.all(Object.entries(files).map(async ([k,name])=>{
    try{parts[k]=await fetchCSVFile(name);loaded.push(name)}
@@ -1343,6 +1343,11 @@ async function fetchUABPlayerIntel(){
  }));
  let data=mergeUABPlayerIntelRows(parts);
  datasets.playerIntel=data;
+ datasets.uabDefenseRaw=parts.defense||[];
+ datasets.uabRunRaw=parts.run||[];
+ datasets.uabCoverageRaw=parts.coverage||[];
+ datasets.uabTacklesRaw=parts.tackles||[];
+ datasets.uabTechniqueRaw=parts.technique||[];
  loadState.playerIntel={ok:data.length>0,n:data.length,file:loaded.join(' + ')};
  return data;
 }
@@ -2467,7 +2472,7 @@ function mtReportRows(players){
 function missedTackleReport(players){
  let rows=mtReportRows(players),total=rows.reduce((n,x)=>n+x.mt,0);
  return `<div class="card mt-report"><h3>Missed Tackle Report</h3>
- <div class="sample-note">MT and tackle totals come from the PFF player summary. Run/pass split and play results come from explicit <code>pff_MISSEDTACKLE</code> tags. MT% = MT / (Tackles + MT).</div>
+ <div class="sample-note">MT and tackle totals come from the UAB PFF tackling summary (49). Run/pass missed-tackle splits come from the UAB tackling summary when available; play-result context comes from explicit <code>pff_MISSEDTACKLE</code> tags. MT% = MT / (Tackles + MT).</div>
  <div class="table-wrap">${rows.length?table(
    ['Player','Pos','MT','Team MT Share','Tackles','Tackle Opps','MT %','Run MT','Pass MT','Explosive Plays on MT','YPP on MT Plays','Median'],
    rows.map(x=>[esc(x.p.name),esc(x.p.position),x.mt,pctText(x.mt,total),x.tkl,x.opp,`${x.mtPct.toFixed(1)}%`,x.run,x.pass,x.expl,fmt(x.ypp,2),fmt(x.med,1)])
@@ -2685,13 +2690,13 @@ function piStats(p){
 }
 function piLeaderboard(players,metric,limit=6){
  return players.map(p=>({p,s:piStats(p)})).map(x=>{
-  let v=metric==='rush'?x.s.pressures+x.s.sacks:metric==='tackle'?x.s.tackles:metric==='coverage'?x.s.targets:x.s.rows;
+  let v=metric==='rush'?x.s.pressures+x.s.sacks:metric==='tackle'?(x.s.totalTackles||x.s.tackles+x.s.assists):metric==='coverage'?x.s.targets:x.s.rows;
   return {...x,v};
  }).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,limit);
 }
 
 function leaderHeadshot(p){
- return `<div class="leader-headshot">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" onerror="this.remove();this.parentElement.innerHTML='<div class=&quot;initials&quot;>${initials(p.name)}</div>'">`:`<div class="initials">${initials(p.name)}</div>`}</div>`;
+ return `<div class="leader-headshot">${p.image?`<img src="${esc(p.image)}" data-alt="${esc(p.officialImageSource||p.supabaseImageBackup||'')}" alt="${esc(p.name)}" onerror="if(this.dataset.alt&&this.src!==this.dataset.alt){this.src=this.dataset.alt;this.dataset.alt=''}else{this.remove();this.parentElement.innerHTML='<div class=&quot;initials&quot;>${initials(p.name)}</div>'}">`:`<div class="initials">${initials(p.name)}</div>`}</div>`;
 }
 function leaderMetricLabel(metric){return metric==='rush'?'Rush Impact':metric==='coverage'?'Targets':'Tackles'}
 function piLeaderCard(title,items,metric){
@@ -2903,31 +2908,25 @@ function setPF(key,val){
 function resetPF(){pfPersonnelF=pfFrontF=pfDownF=pfFieldF=pfBoxF=pfHashF='ALL';dndFilter='ALL';render()}
 
 function missedTacklesPage(){
- let all=offenseRoster().filter(piHasVerifiedHistoricalIdentity),rows=mtReportRows(all);
- let total=rows.reduce((n,x)=>n+x.mt,0),teamTkl=rows.reduce((n,x)=>n+x.tkl,0),opp=rows.reduce((n,x)=>n+x.opp,0);
- let run=rows.reduce((n,x)=>n+x.run,0),pass=rows.reduce((n,x)=>n+x.pass,0),expl=rows.reduce((n,x)=>n+x.expl,0);
- let gains=[];all.forEach(pl=>mtRowsForPlayer(pl).forEach(r=>gains.push(num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])))));
- let ypp=gains.length?avg(gains):0,med=gains.length?calcMedian(gains):0;
+ let players=offenseRoster().filter(piHasVerifiedHistoricalIdentity);
+ let rows=mtReportRows(players),total=rows.reduce((n,x)=>n+x.mt,0),tackles=rows.reduce((n,x)=>n+x.tkl,0);
+ let opp=tackles+total,run=rows.reduce((n,x)=>n+x.run,0),pass=rows.reduce((n,x)=>n+x.pass,0);
+ let mtPlayRows=(datasets.plays||[]).filter(r=>nonEmpty(r.pff_MISSEDTACKLE));
+ let gains=mtPlayRows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
+ let expl=gains.filter(x=>x>=15).length;
  return `<div class="page-title"><h2>Missed Tackle Report</h2><p>Who is missing tackles, how often, and what happens on those plays.</p></div>
- <div class="cv-kpis">
-   <div class="cv-kpi"><span>Missed Tackles</span><b>${total}</b></div>
-   <div class="cv-kpi"><span>Tackles</span><b>${teamTkl}</b></div>
-   <div class="cv-kpi"><span>Tackle Opportunities</span><b>${opp}</b></div>
-   <div class="cv-kpi"><span>Team MT %</span><b>${opp?pctText(total,opp):'—'}</b></div>
-   <div class="cv-kpi"><span>Run MT</span><b>${run}</b></div>
-   <div class="cv-kpi"><span>Pass MT</span><b>${pass}</b></div>
-   <div class="cv-kpi"><span>Explosive Plays on MT</span><b>${expl}</b></div>
-   <div class="cv-kpi"><span>YPP on MT Plays</span><b>${gains.length?fmt(ypp,2):'—'}</b></div>
-   <div class="cv-kpi"><span>Median</span><b>${gains.length?fmt(med,1):'—'}</b></div>
+ <div class="kpis">
+  <div class="kpi"><span>Missed Tackles</span><b>${total}</b></div>
+  <div class="kpi"><span>Tackles</span><b>${tackles}</b></div>
+  <div class="kpi"><span>Tackle Opportunities</span><b>${opp}</b></div>
+  <div class="kpi"><span>Team MT %</span><b>${opp?`${(100*total/opp).toFixed(1)}%`:'—'}</b></div>
+  <div class="kpi"><span>Run MT</span><b>${run}</b></div>
+  <div class="kpi"><span>Pass MT</span><b>${pass}</b></div>
+  <div class="kpi"><span>Explosive Plays on MT</span><b>${expl}</b></div>
+  <div class="kpi"><span>YPP on MT Plays</span><b>${gains.length?fmt(avg(gains),2):'—'}</b></div>
+  <div class="kpi"><span>Median</span><b>${gains.length?fmt(calcMedian(gains),1):'—'}</b></div>
  </div>
- <div class="card mt-report">
-   <h3>By Defender</h3>
-   <div class="sample-note">MT and tackle totals come from the PFF player summary. Run/pass split and play results come from explicit pff_MISSEDTACKLE tags. MT% = MT / (Tackles + MT).</div>
-   <div class="table-wrap">${rows.length?table(
-     ['Player','Pos','MT','Team MT Share','Tackles','Tackle Opps','MT %','Run MT','Pass MT','Explosive Plays on MT','YPP on MT Plays','Median'],
-     rows.map(x=>[esc(x.p.name),esc(x.p.position),x.mt,pctText(x.mt,total),x.tkl,x.opp,`${x.mtPct.toFixed(1)}%`,x.run,x.pass,x.expl,fmt(x.ypp,2),fmt(x.med,1)])
-   ):'<div class="empty">No missed-tackle data is available.</div>'}</div>
- </div>`;
+ ${missedTackleReport(players)}`;
 }
 
 function personnelPage(){

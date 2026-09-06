@@ -232,3 +232,19 @@ Now:
 - Player profile panel is fully dark-mode.
 - Tackling leaderboard can use UAB tackle summary instead of relying on play-event tags alone.
 - Missed Tackle report uses PFF player summary totals and run/pass missed-tackle splits when present.
+
+
+## v49 Tackling + Player Photo Fallback
+- Fixed the actual cause of empty UAB tackle leaders / missed tackle report: raw UAB player tables were loaded but not retained in datasets.
+- UAB tackling source is pff-data (36).csv.
+- pff-data (33).csv is an empty pass-rush report in the supplied package, not the tackling table.
+- Tackle leaders use total tackles when available and display solo / assists / missed tackles.
+- Missed Tackle KPIs now come from the UAB tackling player summary, with play-level gain context layered on where explicit missed-tackle tags exist.
+- Player images now try a secondary official/backup URL before falling back to initials.
+
+
+## v50 UAB Tackling Source 49
+- UAB tackling-dependent reports now use pff-data (49).csv.
+- pff-data (33).csv is no longer referenced.
+- Tackle Leaders, Missed Tackles, tackle opportunities, MT%, and run/pass missed-tackle splits all use the new tackling source.
+- Other UAB analytics retain their existing source files.
