@@ -1305,7 +1305,11 @@ function normPos(pos){
  return p||'OTHER';
 }
 function initials(n){return String(n||'?').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()}
-function photo(p){return p.image?`<img src="${esc(p.image)}" data-alt="${esc(p.officialImageSource||p.supabaseImageBackup||'')}" alt="${esc(p.name)}" onerror="this.remove();this.parentElement.querySelector('.initials').style.display='flex'"><div class="initials" style="display:none">${initials(p.name)}</div>`:`<div class="initials">${initials(p.name)}</div>`}
+function photo(p){
+ if(!p.image)return `<div class="initials">${initials(p.name)}</div>`;
+ let alt=p.officialImageSource||p.supabaseImageBackup||'';
+ return `<img src="${esc(p.image)}" data-alt="${esc(alt)}" alt="${esc(p.name)}" onerror="if(this.dataset.alt&&this.src!==this.dataset.alt){this.src=this.dataset.alt;this.dataset.alt=''}else{this.remove();this.parentElement.querySelector('.initials').style.display='flex'}"><div class="initials" style="display:none">${initials(p.name)}</div>`;
+}
 function value(x){return x===null||x===undefined||x===''?'—':x}
 function nonEmpty(v){return v!==null&&v!==undefined&&String(v).trim()!==''&&String(v).trim().toLowerCase()!=='nan'}
 function passResult(r){return String(r?.pff_PASSRESULT||'').trim().toUpperCase()}
@@ -2455,18 +2459,31 @@ window.setRouteFocus=r=>{routeFocus=r;let p=roster.find(x=>x.name===selected);if
 window.openFAUProfile=openFAUProfile;window.openPlayerIndex=openPlayerIndex;window.closeFAUProfile=closeFAUProfile;
 
 
+function uabTackleSummaryRows(){
+ if(activeOpponent!=='UAB')return [];
+ let current=new Map(offenseRoster().map(p=>[loosePlayerName(p.name),p]));
+ return (datasets.uabTacklesRaw||[]).map(r=>{
+   let p=current.get(loosePlayerName(r.Name));
+   if(!p)return null;
+   return {p,total:num(r['TOT TKL']),tkl:num(r.TKL),ast:num(r.AST),mt:num(r.MT),stop:num(r.STOP),runMt:num(r['MT.1']),passMt:num(r['MT.2'])};
+ }).filter(Boolean);
+}
 function mtRowsForPlayer(p){return dashboardPlayRows().filter(r=>piTagged(r,p,['pff_MISSEDTACKLE']))}
 function mtReportRows(players){
+ if(activeOpponent==='UAB'){
+   return uabTackleSummaryRows().map(x=>{
+     let mrows=mtRowsForPlayer(x.p),gains=mrows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
+     let expl=gains.filter(v=>v>=15).length,opp=x.tkl+x.mt;
+     return {p:x.p,mt:x.mt,tkl:x.tkl,total:x.total,ast:x.ast,opp,mtPct:opp?100*x.mt/opp:0,run:x.runMt,pass:x.passMt,expl,ypp:mrows.length?avg(gains):0,med:mrows.length?calcMedian(gains):0};
+   }).filter(x=>x.mt>0).sort((a,b)=>b.mt-a.mt||b.mtPct-a.mtPct);
+ }
  return players.map(p=>{
    let s=piStats(p),mrows=mtRowsForPlayer(p);
    let runTagged=mrows.filter(r=>['R','RUN'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())).length;
    let passTagged=mrows.filter(r=>['P','PASS'].includes(String(firstField(r,['pff_RUNPASS'])||'').toUpperCase())).length;
    let gains=mrows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])));
-   let expl=gains.filter(x=>x>=15).length;
-   let mt=num(s.mt),tkl=num(s.tackles),opp=tkl+mt;
-   let run=activeOpponent==='UAB'&&nonEmpty(s.runMt)?num(s.runMt):runTagged;
-   let pass=activeOpponent==='UAB'&&nonEmpty(s.passMt)?num(s.passMt):passTagged;
-   return {p,mt,tkl,opp,mtPct:opp?100*mt/opp:0,run,pass,expl,ypp:mrows.length?avg(gains):0,med:mrows.length?calcMedian(gains):0};
+   let expl=gains.filter(x=>x>=15).length,mt=num(s.mt),tkl=num(s.tackles),opp=tkl+mt;
+   return {p,mt,tkl,opp,mtPct:opp?100*mt/opp:0,run:runTagged,pass:passTagged,expl,ypp:mrows.length?avg(gains):0,med:mrows.length?calcMedian(gains):0};
  }).filter(x=>x.mt>0).sort((a,b)=>b.mt-a.mt||b.mtPct-a.mtPct);
 }
 function missedTackleReport(players){
@@ -2715,14 +2732,12 @@ function piLeaderCard(title,items,metric){
 }
 function leadersPage(){
  let all=offenseRoster().filter(piHasVerifiedHistoricalIdentity),dl=all.filter(p=>normPos(p.position)==='DL'),lb=all.filter(p=>normPos(p.position)==='LB'),db=all.filter(p=>normPos(p.position)==='DB');
- let rush=piLeaderboard(dl.concat(lb),'rush'),tackle=piLeaderboard(all,'tackle'),coverage=piLeaderboard(db.concat(lb),'coverage');
+ let rush=piLeaderboard(dl.concat(lb),'rush'),coverage=piLeaderboard(db.concat(lb),'coverage');
+ let tackle=activeOpponent==='UAB'
+   ?uabTackleSummaryRows().filter(x=>x.total>0).sort((a,b)=>b.total-a.total).slice(0,8).map(x=>({p:x.p,s:{tackles:x.tkl,totalTackles:x.total,assists:x.ast,mt:x.mt,stops:x.stop},v:x.total}))
+   :piLeaderboard(all,'tackle');
  return `<div class="page-title"><h2>Defensive Leaders</h2><p>Quick scouting board for the defenders most involved in pass rush, tackling and coverage.</p></div>
- <div class="leaders-page-grid">
-   ${piLeaderCard('Pass-Rush Leaders',rush,'rush')}
-   ${piLeaderCard('Tackle Leaders',tackle,'tackle')}
-   ${piLeaderCard('Coverage Leaders',coverage,'coverage')}
- </div>
- `;
+ <div class="leaders-page-grid">${piLeaderCard('Pass-Rush Leaders',rush,'rush')}${piLeaderCard('Tackle Leaders',tackle,'tackle')}${piLeaderCard('Coverage Leaders',coverage,'coverage')}</div>`;
 }
 
 
