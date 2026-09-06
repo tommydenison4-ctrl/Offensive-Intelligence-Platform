@@ -207,3 +207,19 @@ Now:
 - Mississippi State remains selectable and unchanged.
 - Dashboard waiting copy now follows the selected opponent.
 - Local file previews report that cloud data may be unreachable rather than implying the Supabase file is missing.
+
+
+## v46 UAB path auto-detection
+- Automatically detects the actual UAB Supabase folder before loading.
+- Tries UAB/Current, Current/UAB/Current, Current/UAB, and UAB.
+- Fixes the zero-player / waiting state if UAB was created one level deeper than expected.
+- Mississippi State remains unchanged and selectable.
+
+
+## v47 UAB Player Data Fix
+- Corrected the UAB roster source: the previous uploaded roster.json contained only 54 offensive players.
+- The corrected roster.json contains the full 2026 UAB roster, including defensive players.
+- Defensive position normalization now maps DE/DT/NT -> DL, OLB/JACK/MONEY -> LB, and CB/S/FS/SS/NB -> DB.
+- UAB PFF player summaries continue to drive tackles, missed tackles, pressure and coverage production.
+- Added conservative punctuation/suffix normalization for player name matching.
+- Improved depth-chart player-name contrast in dark mode.

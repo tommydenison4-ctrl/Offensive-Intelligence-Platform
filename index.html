@@ -1083,6 +1083,14 @@ button.primary,.primary{background:#761c32!important;color:#fff!important}
 .opponent-toggle button.active{background:#711c30!important;color:#fff!important}
 .opponent-toggle .uab.active{background:#146043!important;color:#fff!important}
 
+
+/* v47 UAB player data fix */
+.dc-name{color:#edf2f7!important;font-weight:900}
+.dc-class{color:#9eabba!important}
+.dc-player,.dc-player-btn{color:#edf2f7!important}
+.dc-player-btn:hover .dc-name{color:#f3c750!important}
+.player-card .player-name,.player-card h3,.player-card h4{color:#f4f7fb!important}
+.player-card .profile-meta,.player-card small{color:#9eabba!important}
 </style>
 </head>
 <body>
@@ -1185,9 +1193,29 @@ function activeOpponentName(){return opp().label}
 
 function localFileMode(){return location.protocol==='file:'}
 
-function activePffBase(){return opp().pffBase}
-function activeRosterUrl(){return opp().roster}
+function activePffBase(){return activeOpponent==='UAB'&&discoveredUABBase?discoveredUABBase:opp().pffBase}
+function activeRosterUrl(){return activeOpponent==='UAB'&&discoveredUABBase?discoveredUABBase+'roster.json':opp().roster}
 function notesTeam(){return opp().notesTeam}
+function uabBaseCandidates(){
+ const root=SUPABASE_BASE+'/Offensive%20Intelligence/';
+ return [
+   root+'UAB/Current/',
+   root+'Current/UAB/Current/',
+   root+'Current/UAB/',
+   root+'UAB/'
+ ];
+}
+async function discoverUABBase(){
+ if(activeOpponent!=='UAB')return '';
+ if(discoveredUABBase)return discoveredUABBase;
+ for(const base of uabBaseCandidates()){
+   try{
+     let r=await fetch(base+'roster.json?v='+Date.now(),{cache:'no-store'});
+     if(r.ok){discoveredUABBase=base;return base}
+   }catch(e){}
+ }
+ return '';
+}
 
 const SUPABASE_URL='https://hzrosmevuejjlxigdxmg.supabase.co';
 const SUPABASE_KEY='sb_publishable_FtmUeN1QkLlkRIqCIdQ5gw_KDbEFy1H';
@@ -1217,6 +1245,7 @@ let FILES=activeFiles();
 let printPlayerPos='ALL';
 let depthChartData=null;
 let historicalRoster=[];
+let discoveredUABBase='';
 let roster=[],datasets={},loadState={},page='dashboard',group='ALL',selected=null,facet='overview',freqMode='raw',heatScope='all',heatMetric='attempts',heatCoverage='ALL',heatHash='ALL',heatQB='ALL',portalTab='overview',routeFocus='ALL',runConceptFocus='ALL',runHashF='ALL',runRBSideF='ALL',runPersonnelF='ALL',runFormationF='ALL',dndFilter='ALL',dashHashF='ALL',passHashF='ALL',qbRunHashF='ALL',qbRunTypeF='ALL',pfPersonnelF='ALL',pfFrontF='ALL',pfDownF='ALL',pfFieldF='ALL',pfBoxF='ALL',pfHashF='ALL',rdFrontF='ALL',rdBoxF='ALL',rdPersonnelF='ALL',rdDownF='ALL',rdDistF='ALL',rdFieldF='ALL',rdDirF='ALL',rdGapF='ALL',rdHashF='ALL',cvFamilyF='ALL',cvShellF='ALL',cvManZoneF='ALL',cvDownF='ALL',cvDistF='ALL',cvFieldF='ALL',cvHashF='ALL',cvPressureF='ALL',prTypeF='ALL',prRushF='ALL',prDownF='ALL',prDistF='ALL',prFieldF='ALL',prPersonnelF='ALL',prFormationF='ALL',prCoverageF='ALL',prHashF='ALL',stDownF='ALL',stDistF='ALL',stFieldF='ALL',stHashF='ALL',stRP='ALL',stPersonnelF='ALL',stFrontF='ALL',stCoverageF='ALL',hmMetric='ypp',hmCoverageF='ALL',hmShellF='ALL',hmPressureF='ALL',hmDownF='ALL',hmHashF='ALL',hmFieldF='ALL',srFormationF='ALL',srPersonnelF='ALL',srMotionF='ALL',srStructureF='ALL',srDownF='ALL',srFieldF='ALL',srHashF='ALL',fmFormationF='ALL',fmPersonnelF='ALL',fmMotionF='ALL',fmDownF='ALL',fmFieldF='ALL',fmHashF='ALL',hmRelativeF='ALL',hmDepthF='ALL',hmLaneF='ALL',hrRPF='ALL',hrDownF='ALL',hrDistF='ALL',hrFieldF='ALL',hrPersonnelF='ALL';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -1256,12 +1285,12 @@ function resolvePlayer(value){
  return roster.find(x=>cleanName(x.name)===cleanName(value))||null;
 }
 
-function normPos(x){
- x=String(x||'').toUpperCase().trim().replace(/\s+/g,'');
- if(['DE','DT','DL','NT','EDGE','END','TACKLE','DL/DE','DE/DL'].includes(x))return'DL';
- if(['LB','ILB','OLB','MLB','WLB','SLB','MIKE','WILL','SAM','LB/EDGE','EDGE/LB'].includes(x))return'LB';
- if(['CB','DB','S','SS','FS','NB','NICKEL','STAR','SAF','SAFETY','CB/DB','DB/CB'].includes(x))return'DB';
- return x||'OTHER'
+function normPos(pos){
+ let p=String(pos||'').trim().toUpperCase();
+ if(['DL','DE','DT','NT'].includes(p))return'DL';
+ if(['LB','OLB','ILB','MLB','WLB','SLB','JACK','MONEY'].includes(p))return'LB';
+ if(['DB','CB','S','FS','SS','NB','NICKEL'].includes(p))return'DB';
+ return p||'OTHER';
 }
 function initials(n){return String(n||'?').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()}
 function photo(p){return p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" onerror="this.remove();this.parentElement.querySelector('.initials').style.display='flex'"><div class="initials" style="display:none">${initials(p.name)}</div>`:`<div class="initials">${initials(p.name)}</div>`}
@@ -1285,7 +1314,7 @@ function mergeUABPlayerIntelRows(parts){
  const byName=new Map();
  const get=(name)=>{let k=cleanName(name);if(!byName.has(k))byName.set(k,{Name:name});return byName.get(k)};
  const copy=(dst,src,map)=>Object.entries(map).forEach(([out,inp])=>{if(nonEmpty(src[inp]))dst[out]=src[inp]});
- (parts.defense||[]).forEach(r=>{let x=get(r.Name);copy(x,r,{'Player Id':'Player Id','#':'#','POS':'POS','DEF':'DEF','DEF_GRD':'DEF GRD','TKL':'TKL','AST':'AST','MT':'MT','SK':'SK','HT':'HT','HU':'HU','TPR':'TPR','PBU':'PBU','INT':'INT','FF':'FF'})});
+ (parts.defense||[]).forEach(r=>{let x=get(r.Name);copy(x,r,{'Player Id':'Player Id','#':'#','POS':'POS','DEF':'DEF','DEF_GRD':'DEF','TKL':'TKL','AST':'AST','MT':'MT','STOP':'STOP','SK':'SK','HT':'HT','HU':'HU','TPR':'TPR','PBU':'PBU','INT':'INT','FF':'FF','CTGT':'CTGT'})});
  (parts.run||[]).forEach(r=>{let x=get(r.Name);copy(x,r,{'RUND_GRD':'RUND GRD','STOP':'STOP'})});
  (parts.coverage||[]).forEach(r=>{let x=get(r.Name);copy(x,r,{'COV_GRD':'COV','COV_SNAPS':'COV.1','CTGT':'CTGT','REC_ALLOWED':'REC ALL','COMP_PCT_ALLOWED':'COMP%','PASS_YDS_ALLOWED':'P YDS ALL','TD_ALLOWED':'TD','INT':'INT','PBU':'PBU','RTG_ALLOWED':'RTG'})});
  (parts.tackles||[]).forEach(r=>{let x=get(r.Name);copy(x,r,{'TKL':'TKL','AST':'AST','MT':'MT','STOP':'STOP','MT_PCT':'MT%'})});
@@ -1293,6 +1322,7 @@ function mergeUABPlayerIntelRows(parts){
  return [...byName.values()].filter(r=>nonEmpty(r.Name));
 }
 async function fetchUABPlayerIntel(){
+ await discoverUABBase();
  const files={defense:'pff-data (32).csv',run:'pff-data (34).csv',coverage:'pff-data (35).csv',tackles:'pff-data (36).csv',technique:'pff-data (48).csv'};
  const parts={},loaded=[];
  await Promise.all(Object.entries(files).map(async ([k,name])=>{
@@ -2550,10 +2580,17 @@ function dashboardDataStatus(){
 }
 
 
+function loosePlayerName(v){
+ return String(v||'').toLowerCase()
+  .replace(/[.'’`-]/g,' ')
+  .replace(/\b(jr|sr|ii|iii|iv)\b/g,' ')
+  .replace(/[^a-z0-9 ]/g,' ')
+  .replace(/\s+/g,' ').trim();
+}
 function piSummaryByVerifiedName(p){
  if(!p||!nonEmpty(p.name))return null;
  let nm=cleanName(p.name);
- return (datasets.playerIntel||[]).find(r=>cleanName(r.Name)===nm)||null;
+ return (datasets.playerIntel||[]).find(r=>cleanName(r.Name)===nm||loosePlayerName(r.Name)===loosePlayerName(p.name))||null;
 }
 function piHasVerifiedHistoricalIdentity(p){return !!piSummaryByVerifiedName(p)}
 function piTokenMatchesPlayer(v,p){
@@ -2645,7 +2682,7 @@ function dashboardPage(){
  return `<div class="page-title"><h2>Dashboard</h2><p>${activeOpponentName()} defensive scouting overview for the ULM offensive staff.</p></div>
  <div class="report-hash-filter"><label>Hash<select onchange="setDashHash(this.value)">${reportHashOptions(dashHashF)}</select></label>${dndSelect()}</div>
  ${dashboardDataStatus()}
- ${!has?`<div class="dashboard-empty"><b>Dashboard shell is live. Opponent-defense play data has not been loaded yet.</b>Player Intelligence is connected to the selected opponent roster. Data loads from <code>Offensive Intelligence / ${activeOpponent==='UAB'?'UAB':'Mississippi State'} / Current</code>. Nothing here is estimated or fabricated.</div>`:''}
+ ${!has?`<div class="dashboard-empty"><b>Opponent data is not loaded.</b>Player Intelligence is connected to the selected opponent roster. Data loads from <code>Offensive Intelligence / ${activeOpponent==='UAB'?'UAB':'Mississippi State'} / Current</code>. Nothing here is estimated or fabricated.</div>`:''}
  <div class="dash-grid">
    <div class="dash-card span-12">
      <div class="section-head"><div><h3>Defensive Snapshot</h3><small>${has?`${s.n} charted plays`:'waiting for play data'}</small></div></div>
@@ -4573,8 +4610,13 @@ async function loadRoster(){
  let h=$('headerStatus');
  h.textContent=`Loading ${activeOpponentName()} roster + Offensive Intelligence data…`;
  roster=[];datasets={};loadState={};depthChartData=null;historicalRoster=[];FILES=activeFiles();
- let data=null;
 
+ if(activeOpponent==='UAB'){
+   discoveredUABBase='';
+   await discoverUABBase();
+ }
+
+ let data=null;
  if(activeOpponent==='MSST'){
    try{let r=await fetch('/api/roster?v='+Date.now(),{cache:'no-store'});if(r.ok)data=await r.json()}catch(e){}
  }
@@ -4583,22 +4625,27 @@ async function loadRoster(){
  }
  roster=Array.isArray(data)?data:Array.isArray(data?.players)?data.players:[];
 
- if(activeOpponent==='UAB'){
-   try{let r=await fetch(opp().depth+'?v='+Date.now(),{cache:'no-store'});if(r.ok)depthChartData=await r.json()}catch(e){}
-   try{let r=await fetch(opp().historical+'?v='+Date.now(),{cache:'no-store'});if(r.ok){let x=await r.json();historicalRoster=Array.isArray(x)?x:(x?.players||[])}}catch(e){}
+ if(activeOpponent==='UAB'&&discoveredUABBase){
+   try{let r=await fetch(discoveredUABBase+'depth-chart.json?v='+Date.now(),{cache:'no-store'});if(r.ok)depthChartData=await r.json()}catch(e){}
+   try{
+     let r=await fetch(discoveredUABBase+'historical-roster-2025.json?v='+Date.now(),{cache:'no-store'});
+     if(r.ok){let x=await r.json();historicalRoster=Array.isArray(x)?x:(x?.players||[])}
+   }catch(e){}
  }
 
  await Promise.all(Object.keys(FILES).map(fetchCSV));
+
  let coreOk=['plays','playerIntel'].filter(k=>loadState[k]?.ok).length;
  h.textContent=roster.length
- ?`${activeOpponentName()} roster live • ${roster.length} players • ${coreOk}/2 core data sources live`
- :`${activeOpponentName()} roster ${localFileMode()?'not reachable in local-file preview':'failed'} • ${coreOk}/2 core data sources live`;
+   ?`${activeOpponentName()} roster live • ${roster.length} players • ${coreOk}/2 core data sources live`
+   :`${activeOpponentName()} roster ${localFileMode()?'not reachable in local-file preview':'failed'} • ${coreOk}/2 core data sources live`;
 
  let on=$('oppName');if(on)on.textContent=activeOpponentName();
  let so=$('sideOpponent');if(so)so.textContent=`${activeOpponentName()} Week`;
  let bm=$('oppBtnMSST'),bu=$('oppBtnUAB');
  if(bm)bm.classList.toggle('active',activeOpponent==='MSST');
  if(bu)bu.classList.toggle('active',activeOpponent==='UAB');
+
  render();
 }
 async function setOpponent(key){
