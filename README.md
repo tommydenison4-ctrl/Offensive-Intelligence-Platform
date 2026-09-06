@@ -198,3 +198,12 @@ Now:
 - UAB loads play_feed (18).csv, UAB PFF player reports, roster.json, depth-chart.json and historical-roster-2025.json.
 - Switching opponents reloads roster, PFF data, depth chart and note namespace without overwriting the other opponent.
 - Converted the app to a dark staff-room theme.
+
+
+## v45 Dark + Toggle Fix
+- Dark mode now covers dashboard panels, KPIs, tables, player cards, modals and print/report UI instead of leaving large white cards.
+- Fixed opponent toggle active-state rendering.
+- Default prep opponent is now UAB unless a saved opponent choice exists.
+- Mississippi State remains selectable and unchanged.
+- Dashboard waiting copy now follows the selected opponent.
+- Local file previews report that cloud data may be unreachable rather than implying the Supabase file is missing.

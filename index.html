@@ -1039,6 +1039,50 @@ a{color:#e5bf50}
 .opponent-toggle button.active{background:var(--maroon);color:#fff;border-color:#8e2f44}
 .opponent-toggle .uab.active{background:#1b5f43;border-color:#2e8e68}
 
+
+/* v45 dark completion pass */
+body,.shell,main,#app{background:#090e14!important;color:#eef3f8!important}
+.dashboard-grid,.dash-grid,.grid,.report-grid{background:transparent!important}
+.dash-card,.dash-panel,.dash-section,.dashboard-card,.snapshot-card,.metric-card,.stat-card,
+.player-card,.player-grid>div,.profile-card,.leader-card,.missed-card,
+.toolbar,.controls,.position-tabs,.cv-toolbar,.rd-toolbar,.pf-toolbar,.pr-toolbar,.st-toolbar,.hm-toolbar,
+.dc-card,.custom-report-card,.print-panel,.print-section,.report-picker-card,.report-contents,
+.modal-card,.print-modal,.zone-modal-card{
+ background:#111821!important;color:#edf2f7!important;border-color:#263241!important;
+}
+.dash-card h3,.dash-panel h3,.dashboard-card h3,.snapshot-card h3,.metric-card h3,.stat-card h3{color:#f4f7fb!important}
+.dash-card small,.dash-panel small,.dashboard-card small,.snapshot-card small,.metric-card small,.stat-card small{color:#93a2b2!important}
+.kpi,.dash-kpi,.metric,.mini-metric,.stat,.statbox{
+ background:#0e151d!important;color:#edf2f7!important;border-color:#2b3948!important
+}
+.kpi span,.dash-kpi span,.metric span,.mini-metric span,.stat span,.statbox span{color:#96a5b5!important}
+.kpi b,.dash-kpi b,.metric b,.mini-metric b,.stat b,.statbox b{color:#f2f5f8!important}
+.notice,.notice.card,.pf-empty,.data-status,.status-card{
+ background:#151b23!important;color:#c5cfda!important;border-color:#354251!important
+}
+.notice b,.status-card b{color:#f2c95e!important}
+table{background:#0f161f!important}
+thead th{background:#14202b!important;color:#cbd5df!important}
+tbody td{background:#101820!important;color:#e3e9ef!important}
+tbody tr:nth-child(even) td{background:#0d151d!important}
+tbody tr:hover td{background:#192531!important}
+.player-card,.dc-card{overflow:hidden}
+.player-card .player-info,.player-card .player-stats,.player-card .player-meta{background:#111821!important;color:#e6edf3!important}
+.player-card .player-no,.dc-number{color:#f3c750!important}
+.player-card button,.profile-actions button{background:#741d32!important;color:#fff!important}
+.cv-shell,.st-card,.pf-mini,.rd-dir,.pr-rush-card{background:#0d151d!important}
+.cv-shell .big,.st-card b,.pf-mini b,.rd-dir b,.pr-rush-card .big{color:#f0c34f!important}
+.field-zone-field,.st-field-visual,.rd-field,.cv-field,.hm-grid-wrap{box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+input::placeholder,textarea::placeholder{color:#768698!important}
+select option{background:#101820;color:#eef3f8}
+button{background:#111b26;color:#dbe4ed}
+button:hover{background:#192736}
+button.primary,.primary{background:#761c32!important;color:#fff!important}
+.opponent-toggle-wrap{position:sticky;top:0;z-index:20;padding:8px 0;background:linear-gradient(180deg,#090e14 70%,rgba(9,14,20,0))}
+.opponent-toggle button{background:#111a24!important}
+.opponent-toggle button.active{background:#711c30!important;color:#fff!important}
+.opponent-toggle .uab.active{background:#146043!important;color:#fff!important}
+
 </style>
 </head>
 <body>
@@ -1047,8 +1091,8 @@ a{color:#e5bf50}
 <div class="opponent-toggle-wrap no-print">
  <span class="opponent-toggle-label">Prep Opponent</span>
  <div class="opponent-toggle">
-   <button class="${activeOpponent==='MSST'?'active':''}" onclick="setOpponent('MSST')">Mississippi State</button>
-   <button class="uab ${activeOpponent==='UAB'?'active':''}" onclick="setOpponent('UAB')">UAB</button>
+   <button id="oppBtnMSST" onclick="setOpponent('MSST')">Mississippi State</button>
+   <button id="oppBtnUAB" class="uab" onclick="setOpponent('UAB')">UAB</button>
  </div>
 </div>
 <div id="app"></div></main></div>
@@ -1134,10 +1178,13 @@ const OPPONENTS={
    notesTeam:'UAB'
  }
 };
-let activeOpponent=localStorage.getItem('ulmOffIntelOpponent')||'MSST';
+let activeOpponent=localStorage.getItem('ulmOffIntelOpponent')||'UAB';
 if(!OPPONENTS[activeOpponent])activeOpponent='MSST';
 function opp(){return OPPONENTS[activeOpponent]}
 function activeOpponentName(){return opp().label}
+
+function localFileMode(){return location.protocol==='file:'}
+
 function activePffBase(){return opp().pffBase}
 function activeRosterUrl(){return opp().roster}
 function notesTeam(){return opp().notesTeam}
@@ -2598,7 +2645,7 @@ function dashboardPage(){
  return `<div class="page-title"><h2>Dashboard</h2><p>${activeOpponentName()} defensive scouting overview for the ULM offensive staff.</p></div>
  <div class="report-hash-filter"><label>Hash<select onchange="setDashHash(this.value)">${reportHashOptions(dashHashF)}</select></label>${dndSelect()}</div>
  ${dashboardDataStatus()}
- ${!has?`<div class="dashboard-empty"><b>Dashboard shell is live. Opponent-defense play data has not been loaded yet.</b>Player Intelligence is already connected to the shared roster. When the first play-feed file is added to <code>Offensive Intelligence / Mississippi State / Current</code>, these cards populate automatically. Nothing here is being estimated or fabricated.</div>`:''}
+ ${!has?`<div class="dashboard-empty"><b>Dashboard shell is live. Opponent-defense play data has not been loaded yet.</b>Player Intelligence is connected to the selected opponent roster. Data loads from <code>Offensive Intelligence / ${activeOpponent==='UAB'?'UAB':'Mississippi State'} / Current</code>. Nothing here is estimated or fabricated.</div>`:''}
  <div class="dash-grid">
    <div class="dash-card span-12">
      <div class="section-head"><div><h3>Defensive Snapshot</h3><small>${has?`${s.n} charted plays`:'waiting for play data'}</small></div></div>
@@ -4543,10 +4590,15 @@ async function loadRoster(){
 
  await Promise.all(Object.keys(FILES).map(fetchCSV));
  let coreOk=['plays','playerIntel'].filter(k=>loadState[k]?.ok).length;
- h.textContent=roster.length?`${activeOpponentName()} roster live • ${roster.length} players • ${coreOk}/2 core data sources live`:`${activeOpponentName()} roster failed • ${coreOk}/2 core data sources live`;
+ h.textContent=roster.length
+ ?`${activeOpponentName()} roster live • ${roster.length} players • ${coreOk}/2 core data sources live`
+ :`${activeOpponentName()} roster ${localFileMode()?'not reachable in local-file preview':'failed'} • ${coreOk}/2 core data sources live`;
 
  let on=$('oppName');if(on)on.textContent=activeOpponentName();
  let so=$('sideOpponent');if(so)so.textContent=`${activeOpponentName()} Week`;
+ let bm=$('oppBtnMSST'),bu=$('oppBtnUAB');
+ if(bm)bm.classList.toggle('active',activeOpponent==='MSST');
+ if(bu)bu.classList.toggle('active',activeOpponent==='UAB');
  render();
 }
 async function setOpponent(key){
