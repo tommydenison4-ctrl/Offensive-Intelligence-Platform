@@ -1658,8 +1658,16 @@ function seasonSnapRows(p,year=playerIntelSeason){
  let source=activeOpponent==='UAB'?uabPlayerPlayRows():dashboardPlayRows();
  return source.filter(r=>playYear(r)===String(year)&&seasonFieldMatches(r?.pff_DEFPLAYERS,p,year));
 }
+function seasonTargetRows(p,year=playerIntelSeason){
+ let source=activeOpponent==='UAB'?uabPlayerPlayRows():dashboardPlayRows();
+ return source.filter(r=>{
+   if(playYear(r)!==String(year))return false;
+   if(!seasonFieldMatches(r?.pff_PASSCOVERAGE1,p,year))return false;
+   return nonEmpty(r?.pff_PASSRECEIVERTARGET);
+ });
+}
 function seasonProductionStats(p,year=playerIntelSeason){
- let rows=seasonEventRows(p,year),snapRows=seasonSnapRows(p,year),s={rows:rows.length,snaps:snapRows.length,tackles:0,assists:0,stops:0,sacks:0,pressures:0,ints:0,pbu:0,ff:0,mt:0,covSnaps:0};
+ let rows=seasonEventRows(p,year),snapRows=seasonSnapRows(p,year),targetRows=seasonTargetRows(p,year),s={rows:rows.length,snaps:snapRows.length,tackles:0,assists:0,stops:0,sacks:0,pressures:0,ints:0,pbu:0,ff:0,mt:0,covSnaps:0,targets:0,comp:0,passYds:0,td:0};
  rows.forEach(r=>{
    if(seasonFieldMatches(r.pff_TACKLE,p,year))s.tackles++;
    if(seasonFieldMatches(r.pff_TACKLEASSIST,p,year))s.assists++;
@@ -1672,6 +1680,16 @@ function seasonProductionStats(p,year=playerIntelSeason){
    if(seasonFieldMatches(r.pff_MISSEDTACKLE,p,year))s.mt++;
    if(seasonFieldMatches(r.pff_PASSCOVERAGEPLAYERS,p,year))s.covSnaps++;
  });
+ targetRows.forEach(r=>{
+   s.targets++;
+   let result=String(r.pff_PASSRESULT||'').toUpperCase();
+   if(result==='COMPLETE'){
+     s.comp++;
+     s.passYds+=num(r.pff_GAINLOSSNET||r.pff_GAINLOSS);
+   }
+   if(isPassTouchdown(r))s.td++;
+ });
+ s.compPct=s.targets?`${(100*s.comp/s.targets).toFixed(1)}%`:'—';
  return s;
 }
 function piSeasonStats(p){
@@ -1679,8 +1697,8 @@ function piSeasonStats(p){
  let e=seasonProductionStats(p,'2026');
  return {
    rows:e.snaps,tagged:e.rows,tackles:e.tackles,assists:e.assists,stops:e.stops,sacks:e.sacks,pressures:e.pressures,
-   targets:'—',comp:'—',ints:e.ints,td:'—',pbu:e.pbu,mt:e.mt,covSnaps:e.covSnaps,
-   compPct:'—',passYds:'—',rating:'—',manPct:'—',zonePct:'—',runGrade:'—',rushGrade:'—',covGrade:'—',prWin:'—',prPct:'—',verified:true
+   targets:e.targets,comp:e.comp,ints:e.ints,td:e.td,pbu:e.pbu,mt:e.mt,covSnaps:e.covSnaps,
+   compPct:e.compPct,passYds:e.passYds,rating:'—',manPct:'—',zonePct:'—',runGrade:'—',rushGrade:'—',covGrade:'—',prWin:'—',prPct:'—',verified:true
  };
 }
 function piSeasonCardMetrics(p){
@@ -1690,13 +1708,13 @@ function piSeasonCardMetrics(p){
    let s=piStats(p);
    if(!s.verified)return [['DEF SNAPS','—'],['TACKLES','—'],['STOPS','—'],['MISSED','—']];
    if(pos==='DL')return [['DEF SNAPS',s.rows],['TACKLES',s.tackles],['PRESS',s.pressures],['SACKS',s.sacks]];
-   if(pos==='LB')return [['DEF SNAPS',s.rows],['TACKLES',s.tackles],['STOPS',s.stops],['MISSED',s.mt]];
-   return [['DEF SNAPS',s.rows],['TARGETS',s.targets],['PBU',s.pbu],['INT',s.ints]];
+   if(pos==='LB')return [['DEF SNAPS',s.rows],['TACKLES',s.tackles],['TARGETS',s.targets],['COMP',s.comp],['PBU',s.pbu],['INT',s.ints]];
+   return [['DEF SNAPS',s.rows],['COV SNAPS',s.covSnaps||0],['TARGETS',s.targets],['COMP',s.comp],['PBU',s.pbu],['INT',s.ints]];
  }
  let e=seasonProductionStats(p,'2026');
  if(pos==='DL')return [['DEF SNAPS',e.snaps],['TACKLES',e.tackles],['PRESS',e.pressures],['SACKS',e.sacks]];
- if(pos==='LB')return [['DEF SNAPS',e.snaps],['TACKLES',e.tackles],['STOPS',e.stops],['MISSED',e.mt]];
- return [['DEF SNAPS',e.snaps],['TACKLES',e.tackles],['PBU',e.pbu],['INT',e.ints]];
+ if(pos==='LB')return [['DEF SNAPS',e.snaps],['TACKLES',e.tackles],['TARGETS',e.targets],['COMP',e.comp],['PBU',e.pbu],['INT',e.ints]];
+ return [['DEF SNAPS',e.snaps],['COV SNAPS',e.covSnaps],['TARGETS',e.targets],['COMP',e.comp],['PBU',e.pbu],['INT',e.ints]];
 }
 function playerSeasonToggle(){
  return `<div class="player-season-toggle"><span>Season</span><button class="${playerIntelSeason==='2025'?'active':''}" onclick="setPlayerIntelSeason('2025')">2025</button><button class="${playerIntelSeason==='2026'?'active':''}" onclick="setPlayerIntelSeason('2026')">2026</button></div>`;
@@ -2496,23 +2514,37 @@ function piPlayerEventRows(p){
 function piGameStats(p){
  if(activeOpponent!=='UAB'&&!piHasVerifiedHistoricalIdentity(p))return [];
  if(activeOpponent==='UAB'&&playerIntelSeason==='2025'&&!piStats(p).verified)return [];
- let pos=normPos(p.position),map={};
- piPlayerEventRows(p).forEach(r=>{
+ let year=activeOpponent==='UAB'?playerIntelSeason:'2025',map={};
+ let source=activeOpponent==='UAB'?uabPlayerPlayRows():dashboardPlayRows();
+ source.filter(r=>playYear(r)===String(year)).forEach(r=>{
+   let prodHit=[
+     'pff_TACKLE','pff_TACKLEASSIST','pff_STOP','pff_SACK','pff_QBPRESSURE',
+     'pff_INTERCEPTION','pff_PASSBREAKUP','pff_FORCEDFUMBLE','pff_MISSEDTACKLE'
+   ].some(k=>seasonFieldMatches(r?.[k],p,year));
+   let targetHit=seasonFieldMatches(r?.pff_PASSCOVERAGE1,p,year)&&nonEmpty(r?.pff_PASSRECEIVERTARGET);
+   if(!prodHit&&!targetHit)return;
    let key=piGameKey(r);
    if(!map[key])map[key]={
      key,date:firstField(r,['pff_GAMEDATE'])||'',opp:piOppName(firstField(r,['pff_OFFTEAM'])),
-     tagged:0,tkl:0,ast:0,stop:0,pressure:0,sack:0,int:0,pbu:0,ff:0,mt:0
+     tagged:0,tkl:0,ast:0,stop:0,pressure:0,sack:0,int:0,pbu:0,ff:0,mt:0,tgt:0,comp:0,yds:0,td:0
    };
-   let g=map[key];g.tagged++;
-   if(piTagged(r,p,['pff_TACKLE']))g.tkl++;
-   if(piTagged(r,p,['pff_TACKLEASSIST']))g.ast++;
-   if(piTagged(r,p,['pff_STOP']))g.stop++;
-   if(piTagged(r,p,['pff_QBPRESSURE']))g.pressure++;
-   if(piTagged(r,p,['pff_SACK']))g.sack++;
-   if(piTagged(r,p,['pff_INTERCEPTION']))g.int++;
-   if(piTagged(r,p,['pff_PASSBREAKUP']))g.pbu++;
-   if(piTagged(r,p,['pff_FORCEDFUMBLE']))g.ff++;
-   if(piTagged(r,p,['pff_MISSEDTACKLE']))g.mt++;
+   let g=map[key];
+   if(prodHit)g.tagged++;
+   if(seasonFieldMatches(r.pff_TACKLE,p,year))g.tkl++;
+   if(seasonFieldMatches(r.pff_TACKLEASSIST,p,year))g.ast++;
+   if(seasonFieldMatches(r.pff_STOP,p,year))g.stop++;
+   if(seasonFieldMatches(r.pff_QBPRESSURE,p,year))g.pressure++;
+   if(seasonFieldMatches(r.pff_SACK,p,year))g.sack++;
+   if(seasonFieldMatches(r.pff_INTERCEPTION,p,year))g.int++;
+   if(seasonFieldMatches(r.pff_PASSBREAKUP,p,year))g.pbu++;
+   if(seasonFieldMatches(r.pff_FORCEDFUMBLE,p,year))g.ff++;
+   if(seasonFieldMatches(r.pff_MISSEDTACKLE,p,year))g.mt++;
+   if(targetHit){
+     g.tgt++;
+     let result=String(r.pff_PASSRESULT||'').toUpperCase();
+     if(result==='COMPLETE'){g.comp++;g.yds+=num(r.pff_GAINLOSSNET||r.pff_GAINLOSS)}
+     if(isPassTouchdown(r))g.td++;
+   }
  });
  return Object.values(map).map(g=>{
    let production=g.tkl+g.ast+g.stop+g.pressure+g.sack+g.int+g.pbu+g.ff;
@@ -2525,7 +2557,8 @@ function piGameCard(g,i){
  <div class="pi-game-score">${g.production} charted production events</div>
  <div class="pi-game-mini">
   <div><span>Tackles</span><b>${g.tkl}</b></div><div><span>Stops</span><b>${g.stop}</b></div><div><span>Pressures</span><b>${g.pressure}</b></div>
-  <div><span>Sacks</span><b>${g.sack}</b></div><div><span>INT</span><b>${g.int}</b></div><div><span>PBU</span><b>${g.pbu}</b></div>
+  <div><span>Targets</span><b>${g.tgt}</b></div><div><span>Comp</span><b>${g.comp}</b></div><div><span>PBU</span><b>${g.pbu}</b></div>
+  <div><span>Sacks</span><b>${g.sack}</b></div><div><span>INT</span><b>${g.int}</b></div><div><span>Yds Allowed</span><b>${g.yds}</b></div>
  </div></div>`;
 }
 function piTopGamesPanel(p){
@@ -2538,10 +2571,10 @@ function piTopGamesPanel(p){
 function piGameLogPanel(p){
  let games=piGameStats(p).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
  return `<div class="card"><h3>Game-by-Game Production</h3><div class="pi-game-log-wrap">${games.length?table(
-  ['Date','Opponent','Tagged Events','Tkl','Ast','Stops','Press','Sacks','INT','PBU','FF','Missed'],
-  games.map(g=>[esc(g.date),esc(g.opp),g.tagged,g.tkl,g.ast,g.stop,g.pressure,g.sack,g.int,g.pbu,g.ff,g.mt])
+  ['Date','Opponent','Tagged Events','Tgt','Comp','Yds','TD','Tkl','Ast','Stops','Press','Sacks','INT','PBU','FF','Missed'],
+  games.map(g=>[esc(g.date),esc(g.opp),g.tagged,g.tgt,g.comp,g.yds,g.td,g.tkl,g.ast,g.stop,g.pressure,g.sack,g.int,g.pbu,g.ff,g.mt])
  ):'<div class="empty">No game log matched this player.</div>'}</div>
- <div class="pi-profile-note">“Tagged Events” is not snap count. It is the number of plays on which this player appears in one of the explicit defender-event fields available in the play feed.</div></div>`;
+ <div class="pi-profile-note">“Tagged Events” is not snap count. Targets/completions are assigned from PFF’s primary coverage-defender field (<code>pff_PASSCOVERAGE1</code>); PBU, INT, tackles, pressures and other production come from their explicit PFF event fields.</div></div>`;
 }
 function piDeploymentPanel(p){
  let s=piSummaryByVerifiedName(p);
@@ -2588,8 +2621,8 @@ function piProfilePanel(p,tab){
  let prod = pos==='DL'
   ? [detail('Def Snaps',s.rows),detail('Tackles',s.tackles),detail('Stops',s.stops),detail('Pressures',s.pressures),detail('Sacks',s.sacks),detail('Missed Tkl',s.mt),detail('Run Grade',s.runGrade||'—'),detail('Rush Grade',s.rushGrade||'—')]
   : pos==='LB'
-  ? [detail('Def Snaps',s.rows),detail('Tackles',s.tackles),detail('Assists',s.assists||0),detail('Stops',s.stops),detail('Pressures',s.pressures),detail('INT',s.ints),detail('Missed Tkl',s.mt),detail('Run Grade',s.runGrade||'—'),detail('Cov Grade',s.covGrade||'—')]
-  : [detail('Def Snaps',s.rows),detail('Coverage Snaps',s.covSnaps||0),detail('Tackles',s.tackles||0),detail('PBU',s.pbu||0),detail('INT',s.ints||0),detail('Missed Tkl',s.mt||0),detail('Targets',s.targets??'—'),detail('Completions',s.comp??'—'),detail('Completion %',s.compPct||'—'),detail('Yds Allowed',s.passYds??'—'),detail('Rating Allowed',s.rating||'—'),detail('Man / Zone',`${s.manPct||'—'} / ${s.zonePct||'—'}`)];
+  ? [detail('Def Snaps',s.rows),detail('Coverage Snaps',s.covSnaps||0),detail('Tackles',s.tackles),detail('Assists',s.assists||0),detail('Stops',s.stops),detail('Pressures',s.pressures),detail('Targets',s.targets??'—'),detail('Completions',s.comp??'—'),detail('Completion %',s.compPct||'—'),detail('Yds Allowed',s.passYds??'—'),detail('TD Allowed',s.td??'—'),detail('PBU',s.pbu||0),detail('INT',s.ints),detail('Missed Tkl',s.mt),detail('Run Grade',s.runGrade||'—'),detail('Cov Grade',s.covGrade||'—')]
+  : [detail('Def Snaps',s.rows),detail('Coverage Snaps',s.covSnaps||0),detail('Tackles',s.tackles||0),detail('Targets',s.targets??'—'),detail('Completions',s.comp??'—'),detail('Completion %',s.compPct||'—'),detail('Yds Allowed',s.passYds??'—'),detail('TD Allowed',s.td??'—'),detail('PBU',s.pbu||0),detail('INT',s.ints||0),detail('Missed Tkl',s.mt||0),detail('Rating Allowed',s.rating||'—'),detail('Man / Zone',`${s.manPct||'—'} / ${s.zonePct||'—'}`)];
  return `<div class="card"><h3>${seasonLabel} Defensive Production</h3><div class="detail-grid">${prod.join('')}</div></div>
  ${piTopGamesPanel(p)}
  ${activeOpponent==='UAB'&&playerIntelSeason==='2026'?'':piSkillPanel(p)}
@@ -2995,7 +3028,7 @@ function piStats(p){
  };
 }
 function piLeaderboard(players,metric,limit=6){
- return players.map(p=>({p,s:piStats(p)})).map(x=>{
+ return players.map(p=>({p,s:(activeOpponent==='UAB'?piSeasonStats(p):piStats(p))})).map(x=>{
   let v=metric==='rush'?x.s.pressures+x.s.sacks:metric==='tackle'?(x.s.totalTackles||x.s.tackles+x.s.assists):metric==='coverage'?x.s.targets:x.s.rows;
   return {...x,v};
  }).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,limit);
