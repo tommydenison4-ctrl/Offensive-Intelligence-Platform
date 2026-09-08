@@ -1,329 +1,48 @@
-# ULM Offensive Intelligence v22 — Blitz Layout Repair
+# ULM Offensive Intelligence — Grantham historical sample fix
 
-This fixes the v21 visual failure.
+## What changed
 
-The issue:
-Blitz Intelligence was inserted as a single grid item inside the Pressure 12-column layout, so the browser squeezed the entire report into one narrow column.
+- Main team analytics no longer use 2025 UAB defense as the historical sample.
+- `2025 Grantham · OK State` uses the exact 292-play `play_feed-94.csv` sample from Todd Grantham's 2025 Oklahoma State defense.
+- `2026 UAB` uses only 2026 rows from the existing live UAB play feed (`play_feed (18).csv` / fallback names already used by the app).
+- `50 / 50 Scheme + Current` uses the existing true season-balanced math: 50% influence from Grantham/Oklahoma State 2025 and 50% from UAB 2026. No plays are replicated.
+- Player Intelligence remains UAB-specific. Its 2025/2026 player history continues to use the original UAB play feed and UAB player PFF tables, not Oklahoma State defenders.
+- Missed-tackle player context and player coverage structure also remain isolated to UAB player data.
 
-Fixed:
-- Blitz Intelligence spans the full Pressure page width
-- origin cards use the full available width
-- player and combination tables use normal two-column layout
-- exact-player combination table spans full width
-- responsive tables scroll horizontally instead of collapsing
-- headline KPIs added for pass blitz calls, pressure plays, pressure rate and sacks
-- origin counts explicitly labeled as rusher participations because multiple rushers can appear on one play
+## Source audit
 
-No Supabase changes required.
+### `play_feed-94.csv`
 
+292 rows, all 2025 Oklahoma State defense:
 
-Version v23_BLITZ_ALIGNMENT
-- Replaces the word-only blitz prototype with a full defensive alignment field.
-- Keeps the front on the field for context and highlights the actual extra rush origins from filtered BLITZDOG plays.
-- Adds alignment-based blitz origin table, player table, and combo tables.
+- UT Martin: 60
+- Oregon: 68
+- Tulsa: 80
+- Baylor: 84
 
+The older UAB/Oklahoma State Grantham scheme workspace contained the exact same 292 PFF play IDs.
 
-## v29 Hash Intelligence
-Added a dedicated Hash Intelligence page comparing Left / Middle / Right hash.
+### `ALL_COMBINED.csv`
 
-Includes raw counts, within-hash percentages, YPP and median YPP for: overall performance, run/pass, front, box count, personnel, coverage, shell, man/zone, pressure state, rush count, run concept, A/B/C/D point of attack, target depth, target direction, target relation to hash, target position, route/pattern, formation group/name, motion/shift, RB alignment, TE alignment, down, distance and field zone.
+338 manual chart rows:
 
-Page filters: Run/Pass, Down, Distance, Field Zone and Personnel.
+- Oklahoma State vs UT Martin: 60
+- Oklahoma State at Oregon: 69
+- Oklahoma State vs Tulsa: 80
+- Oklahoma State vs Baylor: 84
+- UAB at Illinois: 45
 
+292 Oklahoma State rows match `play_feed-94.csv` one-for-one by game + drive + drive-play. The only unmatched Oklahoma State manual row is:
 
-## v30 Player Profiles
-Player Intelligence drawers now include:
-- Overview with Top 3 Games preview
-- Top 3 Games tab
-- Game Log tab
-- Deployment tab
-- Coach Notes
-- Season skill profile from player_intelligence.csv
+- `2502 Oklahoma State D @ Oregon, Play 016`
+- no Drive # / Drive Play #
 
-Top-game ranking uses explicit play-feed defender events and is position-weighted. It is not represented as a PFF per-game grade.
+That orphan manual row is intentionally **not** added to the PFF analytics sample, so the historical analytics remain the exact 292 PFF plays.
 
+## Deployment
 
-## v31 Hash Filters Only
-Removed the standalone Hash Intelligence page.
+Replace the current app's `index.html` with the `index.html` in this ZIP and redeploy.
 
-Hash filtering is now built into the existing analytics reports:
-- Dashboard
-- Personnel & Fronts
-- Run Defense
-- Pass Defense
-- Coverage
-- Pressure
-- Situations
-- Field Heat Maps
-- Structure Response
+No Supabase upload is required for `play_feed-94.csv`; the exact 292-play Grantham sample is embedded in the HTML so the historical sample cannot silently change or disappear.
 
-Each report recalculates its existing metrics/tables/visuals from All Hashes, Left Hash, Middle, or Right Hash.
-
-
-## v32 Football Reports
-- Removed the visible custom player impact score.
-- Added Missed Tackle Report to Player Intelligence.
-- Added comprehensive Formation Performance to Structure Response.
-- Added Route Defense to Pass Defense using PFF ROUTE_THROWN, route group and target position.
-- Existing hash filters recalculate Formation and Route reports.
-
-
-## v33 Missed Tackles Page
-Moved Missed Tackle Report out of Player Intelligence.
-
-Standalone left-nav page:
-- team missed-tackle summary
-- defender-by-defender MT table
-- run/pass MT split
-- explosive plays on MT
-- YPP / median on MT plays
-
-Player Intelligence is clean again.
-
-
-## v34 Leaders Tab
-Moved all leaderboards out of Player Intelligence.
-
-New standalone Leaders page:
-- Pass-Rush Leaders
-- Tackle Leaders
-- Coverage Leaders
-- small player headshots
-- clickable rows that open the full player profile
-
-Player Intelligence now contains only roster/profile content.
-
-
-## v35 ULM Formations
-- Formation Performance moved into its own Formations tab.
-- Uses the taught 20-name PFF→ULM formation translation map.
-- ULM name is primary; raw PFF name is secondary reference only.
-- Unmapped PFF formations remain unchanged rather than guessed.
-- Filters: ULM Formation, Personnel, Motion, Down, Field Zone, Hash.
-
-
-## v36 Historical Player Identity Fix
-Fixed cross-season jersey-number collisions.
-
-Historical stats now follow this rule:
-1. Current roster player name must directly match a name in the 2025 historical player dataset.
-2. Only after that match is verified may the historical jersey number be used to find that player's play-feed events.
-3. A current player with no verified 2025 name match gets no historical stats, no Top 3 Games, and no Game Log.
-4. Leaders and Missed Tackles exclude unverified current-roster identities.
-
-This prevents a 2026 player from inheriting a different 2025 player's statistics simply because they share a number.
-
-
-## v37 Structure Trim + Weighted Heat Map
-Structure Response:
-- removed everything below the user's marked line
-- removed Back Location
-- removed TE Surface
-- removed Formation × Front × Coverage × Box
-- kept Structure Family and Motion Response
-- made kept tables full-width to prevent clipping
-
-Field Heat Maps:
-- heat color now reflects the selected performance metric, not target volume
-- Heat Weight selector: YPP / Completion % / Explosive %
-- higher metric value = stronger maroon shading
-- every populated zone still shows target context
-- TD and INT are listed inside each populated zone
-- lower report tables receive wider scroll-safe table sizing
-
-
-## v38 QB Run + Field Zone Field
-- Field Zone Strip replaced with a full-field visual scaled to report yard-line ranges.
-- Situations hash filter remains active.
-- Pass Defense Route Defense now keeps only the full-width By Route report.
-- By Route Group removed.
-- By Target Position removed.
-- Added standalone QB Run Success tab.
-- QB Run Success splits explicit Designed Runs from explicit Scrambles.
-- QB Run page includes Run Type and Hash filters.
-
-
-## v39 QB Run + P & 10
-- Corrected designed QB run identification: RUNPASS=R and BALLCARRIER=QB.
-- 60 designed QB runs in the bundled feed.
-- 45 explicit scrambles.
-- Designed Run Concept report uses designed runs only.
-- P & 10 is the first offensive play of a drive/possession, 1st-and-10.
-- 161 P & 10 plays in the bundled feed.
-- Added P & 10 to Down/Distance report rows.
-- Added shared Down & Distance filter, including P & 10, across major analytics pages.
-
-
-## v40 field + coverage layout
-- Restyled the Situations field-zone visual to read more like an actual football field.
-- Added turf striping, yard lines, yard numbers and maroon end zones with subtle ULM branding.
-- Moved Coverage filters down into a dedicated filter panel placed directly above the Target Location field so they sit closer to the main visual.
-
-
-## v41 Print Position Filters
-Fixed the blank Player Profile Pack picker.
-
-Cause:
-- print picker was still grouping players as QB/RB/WR/TE/OL from the earlier defensive-app template.
-
-Now:
-- All Defense / DL / LB / DB print filters
-- defensive players populate correctly
-- Select Visible Position selects the currently filtered position group
-- Select All Defense selects all defensive roster players
-- search works inside the selected position
-
-
-## v42 clean coach/player UI
-- removed Historical identity notice
-- removed Player Intelligence explanatory subtitle
-- removed extra Shared Source / Advantage Data KPI boxes
-- removed roster/source instruction card
-- trimmed print modal helper copy
-- removed leader-page instructional note
-
-
-## v43 Defensive Depth Chart
-- Added standalone Depth Chart tab.
-- Uses the Week 1 Mississippi State projected 3-3-5 defensive depth chart from the supplied ULM matchup PDF.
-- Player names link directly to the existing in-app Player Intelligence profile when the player exists in the shared roster.
-- Includes DE, NT, DT, JACK, WLB, MLB, LCB, SS, FS, RCB and NB.
-
-
-## v44 Opponent Toggle + Dark Mode
-- Mississippi State is preserved.
-- Added Prep Opponent toggle: Mississippi State / UAB.
-- Mississippi State still uses its existing roster, PFF folder and static depth chart.
-- UAB reads only Offensive Intelligence / UAB / Current.
-- UAB loads play_feed (18).csv, UAB PFF player reports, roster.json, depth-chart.json and historical-roster-2025.json.
-- Switching opponents reloads roster, PFF data, depth chart and note namespace without overwriting the other opponent.
-- Converted the app to a dark staff-room theme.
-
-
-## v45 Dark + Toggle Fix
-- Dark mode now covers dashboard panels, KPIs, tables, player cards, modals and print/report UI instead of leaving large white cards.
-- Fixed opponent toggle active-state rendering.
-- Default prep opponent is now UAB unless a saved opponent choice exists.
-- Mississippi State remains selectable and unchanged.
-- Dashboard waiting copy now follows the selected opponent.
-- Local file previews report that cloud data may be unreachable rather than implying the Supabase file is missing.
-
-
-## v46 UAB path auto-detection
-- Automatically detects the actual UAB Supabase folder before loading.
-- Tries UAB/Current, Current/UAB/Current, Current/UAB, and UAB.
-- Fixes the zero-player / waiting state if UAB was created one level deeper than expected.
-- Mississippi State remains unchanged and selectable.
-
-
-## v47 UAB Player Data Fix
-- Corrected the UAB roster source: the previous uploaded roster.json contained only 54 offensive players.
-- The corrected roster.json contains the full 2026 UAB roster, including defensive players.
-- Defensive position normalization now maps DE/DT/NT -> DL, OLB/JACK/MONEY -> LB, and CB/S/FS/SS/NB -> DB.
-- UAB PFF player summaries continue to drive tackles, missed tackles, pressure and coverage production.
-- Added conservative punctuation/suffix normalization for player name matching.
-- Improved depth-chart player-name contrast in dark mode.
-
-
-## v48 UAB Player Images + Player Reports
-- Uses the same UAB player-image roster source already proven in Defensive Intelligence.
-- Current roster image URLs point to Defensive Intelligence / Opponents / UAB / player-images backups.
-- UAB player reports now read directly from the underlying PFF player tables for tackle, missed-tackle, coverage and pass-rush production.
-- Player profile panel is fully dark-mode.
-- Tackling leaderboard can use UAB tackle summary instead of relying on play-event tags alone.
-- Missed Tackle report uses PFF player summary totals and run/pass missed-tackle splits when present.
-
-
-## v49 Tackling + Player Photo Fallback
-- Fixed the actual cause of empty UAB tackle leaders / missed tackle report: raw UAB player tables were loaded but not retained in datasets.
-- UAB tackling source is pff-data (36).csv.
-- pff-data (33).csv is an empty pass-rush report in the supplied package, not the tackling table.
-- Tackle leaders use total tackles when available and display solo / assists / missed tackles.
-- Missed Tackle KPIs now come from the UAB tackling player summary, with play-level gain context layered on where explicit missed-tackle tags exist.
-- Player images now try a secondary official/backup URL before falling back to initials.
-
-
-## v50 UAB Tackling Source 49
-- UAB tackling-dependent reports now use pff-data (49).csv.
-- pff-data (33).csv is no longer referenced.
-- Tackle Leaders, Missed Tackles, tackle opportunities, MT%, and run/pass missed-tackle splits all use the new tackling source.
-- Other UAB analytics retain their existing source files.
-
-
-## v51 Player parity
-- UAB tackle leaders and missed tackles read directly from pff-data (49).csv by current-roster name.
-- Verified current-roster matches in 49: 20 players, 127 total tackles, 87 tackles, 34 assists, 19 missed tackles.
-- Added verified official UAB images for the previously blank #21+ defenders.
-
-
-## v52 Player fix
-- UAB pff-data (49).csv is now loaded as an independent `tackling` dataset instead of being buried inside the player-intelligence merge.
-- Tackle Leaders and Missed Tackles read from the same explicit tackling dataset.
-- Missed-tackle KPIs no longer depend on play-level missed-tackle tags to show team/player totals.
-- Rebuilt the 105-player UAB roster by preserving the original #1-18 verified photos and adding verified official UAB images for #19 and the previously blank higher-number defenders.
-
-
-## v53 Tackling hard fallback
-- Supabase pff-data (49).csv remains the primary UAB tackling source.
-- Embedded the exact uploaded pff-data (49).csv as a fallback so tackle leaders and missed-tackle totals cannot silently drop to zero if the public Storage fetch fails.
-- Embedded fallback contains 48 PFF rows.
-- Current UAB roster name-matching still filters the historical PFF table to players on the current roster.
-- The Missed Tackle page now shows which tackling source actually loaded.
-
-
-## v54 Tackling complete
-- Root cause fixed: UAB pff-data (49).csv is a 2025 historical tackling table and was being filtered down to current 2026 roster matches before reporting.
-- The UAB Missed Tackle Report now uses all 48 PFF tackling rows, matching the historical-report behavior used for Mississippi State.
-- Full pff-data (49) totals: 857 total tackles, 607 tackles, 229 assists, 168 missed tackles, 102 run missed tackles, 66 pass missed tackles.
-- Current-roster matches still inherit current bios/photos; historical-only players remain in the tackling report without being falsely attached to a current player.
-- Tackle Leaders now come from the complete PFF tackling sample.
-
-
-## v55 Tackling Direct
-- Removed the remaining dependency on Supabase parsing/loading for UAB tackling reports.
-- UAB Tackle Leaders and Missed Tackles now read directly from the exact uploaded pff-data (49).csv embedded in the build.
-- No roster filtering is applied to historical tackling totals.
-- Expected direct-source totals: 48 rows, 857 total tackles, 607 tackles, 229 assists, 168 missed tackles, 102 run missed tackles, 66 pass missed tackles.
-
-
-## v56 Tackle Leader Images
-- Historical-only 2025 UAB tackle leaders now inherit photo, number, position, and bio URL from historical-roster-2025.json.
-- Current 2026 players still use the current roster/profile.
-- Historical tackle leaders are labeled 2025 and can open their UAB Athletics bio when available.
-
-
-## v57 FINAL
-- Leaders page is current-roster only for game prep.
-- Pass-rush, tackle, and coverage leaderboards exclude historical/departed players.
-- UAB tackle leaders still use pff-data (49).csv, but only where the PFF player name verifies against the current 2026 roster.
-- Missed Tackle Report keeps the full historical tackling sample for team-level scouting.
-- Removed temporary debugging/source labels from the coach-facing UI.
-
-
-## v58 Player Profile Complete
-- UAB profiles read exact player tables directly: 32 defense, 33 pass rush, 34 run defense, 35 coverage, 49 tackling.
-- Corrected COV vs COV.1: COV is coverage grade; COV.1 is coverage snaps.
-- Man/Zone is derived from play-feed coverage-player participation and coverage family.
-- Replaced unavailable overall DEF Grade with actual available UAB metrics.
-- Profile metric cards now use dark-mode styling.
-
-
-## v60 Main Analytics Season Weighting
-- Added global 2025 Raw / 2026 Raw / 50-50 Weighted controls to the main UAB analytics workspaces.
-- 2025 Raw and 2026 Raw preserve actual play counts.
-- 50-50 Weighted gives each season equal influence regardless of raw sample size.
-- The weighting control applies to Dashboard, Personnel & Fronts, Run Defense, QB Run Success, Pass Defense, Coverage, Pressure, Situations, Field Heat Maps, Formations, and Structure Response.
-- Player Intelligence retains its separate 2025 / 2026 player toggle.
-
-
-## v61 True 50/50 math
-- Removed play replication from the 50/50 mode.
-- The weighted view uses the actual combined play sample and preserves literal play counts.
-- Average-based metrics are computed by calculating each season separately and averaging the two season values 50/50.
-- Median YPP uses a true season-balanced weighted median.
-- 2025 Raw and 2026 Raw remain unchanged.
-
-
-## v62 Embedded Roundel
-- Embedded the ULM roundel directly inside index.html.
-- The logo now works even when index.html is opened directly from a Windows ZIP/temp folder where companion image files may not resolve.
+The app still expects the existing UAB live folder and current `play_feed (18).csv` for 2026 UAB data, roster, depth chart and player tables.
