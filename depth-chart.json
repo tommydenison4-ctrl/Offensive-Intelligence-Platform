@@ -1,0 +1,144 @@
+{
+  "team": "Florida Atlantic",
+  "season": 2026,
+  "source": "Ourlads.com via ULM Command Center",
+  "updated": "2026-09-11 22:35 ET",
+  "scheme": "Multiple 4-2-5",
+  "defense": {
+    "scheme": "Multiple 4-2-5",
+    "positions": {
+      "DE": [
+        [
+          "12",
+          "Jay Crable",
+          "Sr."
+        ],
+        [
+          "11",
+          "Gavench Marcelin",
+          "Jr."
+        ]
+      ],
+      "NT": [
+        [
+          "1",
+          "CJ Doggette Jr.",
+          "Gr."
+        ],
+        [
+          "62",
+          "Enyce Sledge",
+          "Gr."
+        ]
+      ],
+      "DT": [
+        [
+          "98",
+          "Blake Burris",
+          "Gr."
+        ],
+        [
+          "2",
+          "Wilky Denaud",
+          "Sr."
+        ]
+      ],
+      "RUSH": [
+        [
+          "9",
+          "Jonathan Bax",
+          "Sr."
+        ],
+        [
+          "10",
+          "Josh Roberts",
+          "So."
+        ]
+      ],
+      "WLB": [
+        [
+          "6",
+          "Leon Hart Jr.",
+          "Gr."
+        ],
+        [
+          "43",
+          "Hector Chavez",
+          "So."
+        ]
+      ],
+      "MLB": [
+        [
+          "18",
+          "Joseph Sipp Jr.",
+          "5th"
+        ],
+        [
+          "21",
+          "Nate Fischer",
+          "Jr."
+        ]
+      ],
+      "LCB": [
+        [
+          "4",
+          "Damarius McGhee",
+          "Gr."
+        ],
+        [
+          "24",
+          "Ahlston Ware",
+          "Sr."
+        ]
+      ],
+      "SS": [
+        [
+          "19",
+          "Tyson Rooks",
+          "Gr."
+        ],
+        [
+          "22",
+          "Jayden Sweeney",
+          "Gr."
+        ]
+      ],
+      "FS": [
+        [
+          "0",
+          "Damon Allen",
+          "So."
+        ],
+        [
+          "20",
+          "Bo Simpson-Nealy",
+          "Sr."
+        ]
+      ],
+      "RCB": [
+        [
+          "23",
+          "JK Johnson",
+          "Gr."
+        ],
+        [
+          "27",
+          "Travis Jackson",
+          "Fr."
+        ]
+      ],
+      "NB": [
+        [
+          "8",
+          "Chris Tooley III",
+          "Sr."
+        ],
+        [
+          "3",
+          "Derrick Rogers",
+          "Sr."
+        ]
+      ]
+    }
+  }
+}

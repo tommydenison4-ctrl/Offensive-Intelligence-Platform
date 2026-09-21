@@ -346,3 +346,32 @@ Now:
 - Fixed Southeastern Main Analytics sample bar so 2025 Raw / 2026 Raw / 50-50 Weighted appears.
 - Added LASE jersey-token recognition for player event matching.
 - Included roster.json, historical-roster-2025.json and depth-chart.json as upload-ready files.
+
+
+## v65 — Southeastern player photo fix
+- Matches the reliable Defensive Intelligence photo pattern.
+- 42 current Southeastern defensive players now use direct official Southeastern/Sidearm CloudFront portrait URLs.
+- Added `referrerpolicy="no-referrer"` plus exact official-site fallback handling.
+- Four current defensive roster entries have no portrait published in the official 2026 roster table and intentionally retain initials: Kermit Jackson, Brody Knapps, Ramon Singleton Jr., Kyrin Gray.
+- Updated `roster.json` is included for Supabase upload.
+
+
+## v66 — Florida Atlantic Week
+- Added Florida Atlantic as the fourth prep opponent.
+- Live source folder: `Offensive Intelligence / Florida Atlantic / Current`.
+- Play feed: `play_feed (26).csv` — 219 2026 defensive plays.
+- Player exports: 76 overall, 77 pass rush, 78 run defense, 79 coverage, 80 tackling.
+- Team/situational exports: 81–92 loaded, including coverage, run concepts, pressure/blitz/stunt, and seven field-zone summaries.
+- Added official 2026 FAU defensive roster fallback.
+- Added current FAU Multiple 4-2-5 depth chart from the ULM Command Center.
+- FAU is intentionally 2026-only. No 2025/50-50 weighting is shown because no historical FAU play feed is loaded.
+
+
+## v67 — FAU official roster + portrait layer
+- Rebuilt the Florida Atlantic current defensive roster from the official 2026 FAU Athletics roster.
+- Added FAU Athletics/Sidearm roster portrait URLs to every current defensive player record.
+- Uses direct FAU CloudFront image assets first, then the official Sidearm resize endpoint, then initials.
+- Damon Allen and CJ Doggette Jr. image filenames were directly verified from official FAU roster image results.
+- Remaining portrait filenames follow the same FAU 2026 Sidearm roster naming convention and remain protected by the initials fallback if an individual asset uses a different filename.
+- Added `fau-player-image-manifest.csv` for quick verification/troubleshooting.
+- Included updated `roster.json` for the Supabase Florida Atlantic / Current folder.
