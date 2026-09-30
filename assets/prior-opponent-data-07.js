@@ -1,0 +1,1 @@
+const FAU_PFF_82=[{"Unnamed: 0":"florida-atlantic-owls","Team":"FAU","# Run Plays":99,"OZ":18,"OZ%":"18%","IZ":30,"IZ%":"30%","MAN":8,"MAN%":"8%","PWR":11,"PWR%":"11%","CTR":17,"CTR%":"17%","DRW":0,"DRW%":"0%","PLD":8,"PLD%":"8%","TRP":1,"TRP%":"1%","TRK":1,"TRK%":"1%","SNK":2,"SNK%":"2%","FB":0,"FB%":"0%","3OP":3,"3OP%":"3%","UND":0,"UND%":"0%","VID":0,"VID%":"0%"}];

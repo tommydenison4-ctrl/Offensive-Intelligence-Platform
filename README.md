@@ -375,3 +375,25 @@ Now:
 - Remaining portrait filenames follow the same FAU 2026 Sidearm roster naming convention and remain protected by the initials fallback if an individual asset uses a different filename.
 - Added `fau-player-image-manifest.csv` for quick verification/troubleshooting.
 - Included updated `roster.json` for the Supabase Florida Atlantic / Current folder.
+
+## South Alabama full-app repair
+
+The homepage now uses the previous-week full application with all five opponents.
+South Alabama loads `Offensive Intelligence / South Alabama / Current`, with the
+prepared 205–222 PFF exports, play feed, internal language file, roster and depth
+chart embedded as an outage/local-file fallback. The original four opponent
+configurations and `legacy.html` are retained.
+
+The official 2026 South Alabama roster supplies 114 players (52 defenders).
+Verified official portraits are bundled in the page. Player statistics match by
+name before using the PFF jersey number to match `ALSO` defender events; roster
+jersey changes do not transfer statistics to another player. Duplicate CSV
+headers retain their `.1`, `.2`, etc. identities (coverage grade versus snaps;
+overall versus run/pass tackling). Analytics exclude the nine no-play rows,
+leaving 216 valid plays. Internal formation language is applied only to unique
+matches on opponent, quarter, drive, play-in-drive, run/pass and gain.
+
+Regression checks: `cd tests && npm install && npm test`. These exercise simulated
+live sources, failed network requests and a local-file environment, all 15
+South Alabama pages, all five profile tabs, source counts, duplicate headers,
+name matching, multi-defender event tags, the depth chart and opponent switching.

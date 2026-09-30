@@ -1,30 +1,127 @@
 {
-  "opponent": "South Alabama",
+  "team": "South Alabama",
   "nickname": "Jaguars",
   "teamCode": "ALSO",
   "season": 2026,
   "week": 5,
-  "sourceFolder": "Offensive Intelligence / South Alabama / Current",
-  "dataStatus": "staged",
-  "sources": {
-    "fullPlayFeed": "play_feed-109.csv",
-    "internalBreakdown": "ALL_GAMES_COMBINED.csv",
-    "translationWorkbook": "ULM_PFF_Translation_Workbook.xlsx"
+  "supabaseTargetFolder": "Offensive Intelligence / South Alabama / Current",
+  "rosterSource": "https://usajaguars.com/sports/football/roster",
+  "playFeed": {
+    "file": "play_feed.csv",
+    "rows": 225,
+    "validRunPassRows": 216,
+    "defTeamsSeen": [
+      "ALSO"
+    ],
+    "gameIds": [
+      "31097",
+      "31166",
+      "31255",
+      "31322"
+    ]
   },
-  "language": {
-    "primary": "ULM offensive language",
-    "method": "Exact internal ULM tags are preferred when the internal play list matches the full PFF play. Remaining formation rows use the ULM PFF translation workbook and retain confidence/review-required status."
-  },
-  "sample": {
-    "fullFeedRows": 225,
-    "validSnapsAllDowns": 216,
-    "coreSnapsFirstThroughThirdDown": 209,
-    "games": ["Southeastern Louisiana", "Tulane", "Ohio", "Kentucky"]
-  },
-  "filesPrepared": [
-    "south-alabama-play-feed-ulm-v2.csv",
-    "app-summary-v2.json",
+  "internalLanguageFile": "ALL_GAMES_COMBINED.csv",
+  "pffExports": [
+    {
+      "file": "pff-data-205.csv",
+      "role": "player_overall_defense"
+    },
+    {
+      "file": "pff-data-206.csv",
+      "role": "player_pass_rush"
+    },
+    {
+      "file": "pff-data-207.csv",
+      "role": "player_run_defense"
+    },
+    {
+      "file": "pff-data-208.csv",
+      "role": "player_coverage"
+    },
+    {
+      "file": "pff-data-209.csv",
+      "role": "player_tackling"
+    },
+    {
+      "file": "pff-data-210.csv",
+      "role": "team_coverage_distribution"
+    },
+    {
+      "file": "pff-data-211.csv",
+      "role": "team_run_concepts"
+    },
+    {
+      "file": "pff-data-212.csv",
+      "role": "coverage_scheme_performance"
+    },
+    {
+      "file": "pff-data-213.csv",
+      "role": "team_pass_rush_pressure"
+    },
+    {
+      "file": "pff-data-214.csv",
+      "role": "defensive_personnel_pressure"
+    },
+    {
+      "file": "pff-data-215.csv",
+      "role": "coverage_pressure_tendency"
+    },
+    {
+      "file": "pff-data-216.csv",
+      "role": "blitz_origin_simulated_pressure"
+    },
+    {
+      "file": "pff-data-217.csv",
+      "role": "player_alignment_all"
+    },
+    {
+      "file": "pff-data-218.csv",
+      "role": "player_alignment_dl"
+    },
+    {
+      "file": "pff-data-219.csv",
+      "role": "player_alignment_box"
+    },
+    {
+      "file": "pff-data-220.csv",
+      "role": "player_alignment_slot"
+    },
+    {
+      "file": "pff-data-221.csv",
+      "role": "player_alignment_corner"
+    },
+    {
+      "file": "pff-data-222.csv",
+      "role": "player_alignment_safety"
+    }
+  ],
+  "requiredAppFiles": [
     "roster.json",
-    "depth-chart.json"
+    "depth-chart.json",
+    "play_feed.csv",
+    "ALL_GAMES_COMBINED.csv",
+    "pff-data-205.csv",
+    "pff-data-206.csv",
+    "pff-data-207.csv",
+    "pff-data-208.csv",
+    "pff-data-209.csv",
+    "pff-data-210.csv",
+    "pff-data-211.csv",
+    "pff-data-212.csv",
+    "pff-data-213.csv",
+    "pff-data-214.csv",
+    "pff-data-215.csv",
+    "pff-data-216.csv",
+    "pff-data-217.csv",
+    "pff-data-218.csv",
+    "pff-data-219.csv",
+    "pff-data-220.csv",
+    "pff-data-221.csv",
+    "pff-data-222.csv"
+  ],
+  "notes": [
+    "Upload every file in this Current folder to the same Supabase folder.",
+    "Do not rename individual PFF files after upload unless the app loader is changed to match.",
+    "ALL_GAMES_COMBINED.csv is the internal ULM-language matching source; play_feed.csv is the full PFF play feed."
   ]
 }

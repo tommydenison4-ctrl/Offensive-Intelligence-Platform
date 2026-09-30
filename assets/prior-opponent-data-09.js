@@ -1,0 +1,1 @@
+const FAU_PFF_84=[{"Rank":"","Team":"FAU","PRSH GRD":66.9,"PASS":112,"PASS BLITZ":37,"PASS BLITZ%":"33.0%","STUNT":30,"PASS STUNT%":"26.8%","SK":5,"SK CONV%":"11.6%","HT":10,"PR":43,"PR%":"38.4%","QK PR":29,"QK PR%":"25.9%","UPR":11,"UBP%":"9.8%","AVGTTP":2.51,"SK/GM":1.67}];
