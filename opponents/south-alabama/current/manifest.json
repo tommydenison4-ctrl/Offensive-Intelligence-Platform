@@ -1,0 +1,30 @@
+{
+  "opponent": "South Alabama",
+  "nickname": "Jaguars",
+  "teamCode": "ALSO",
+  "season": 2026,
+  "week": 5,
+  "sourceFolder": "Offensive Intelligence / South Alabama / Current",
+  "dataStatus": "staged",
+  "sources": {
+    "fullPlayFeed": "play_feed-109.csv",
+    "internalBreakdown": "ALL_GAMES_COMBINED.csv",
+    "translationWorkbook": "ULM_PFF_Translation_Workbook.xlsx"
+  },
+  "language": {
+    "primary": "ULM offensive language",
+    "method": "Exact internal ULM tags are preferred when the internal play list matches the full PFF play. Remaining formation rows use the ULM PFF translation workbook and retain confidence/review-required status."
+  },
+  "sample": {
+    "fullFeedRows": 225,
+    "validSnapsAllDowns": 216,
+    "coreSnapsFirstThroughThirdDown": 209,
+    "games": ["Southeastern Louisiana", "Tulane", "Ohio", "Kentucky"]
+  },
+  "filesPrepared": [
+    "south-alabama-play-feed-ulm-v2.csv",
+    "app-summary-v2.json",
+    "roster.json",
+    "depth-chart.json"
+  ]
+}
