@@ -203,7 +203,6 @@ function personnelPage(){
 function rdRunRowsBase(){
  return dashboardPlayRows().filter(r=>{
    let rp=String(firstField(r,['pff_RUNPASS','RUNPASS','run_pass','play_type'])||'').toUpperCase();
-   if(activeOpponent==='SA')return (rp==='R'||rp==='P')&&num(r.pff_NOPLAY)!==1;
    return rp==='R'||rp==='RUN';
  });
 }
@@ -493,7 +492,6 @@ function passPage(){
 function cvPassRowsBase(){
  return dashboardPlayRows().filter(r=>{
    let rp=String(firstField(r,['pff_RUNPASS','RUNPASS','run_pass','play_type'])||'').toUpperCase();
-   if(activeOpponent==='SA')return (rp==='R'||rp==='P')&&num(r.pff_NOPLAY)!==1;
    return rp==='P'||rp==='PASS';
  });
 }

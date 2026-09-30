@@ -268,7 +268,6 @@ function dashboardStats(rows){
  rows.forEach(r=>{
    let gain=num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained'])); gains.push(gain);
    let rp=String(firstField(r,['pff_RUNPASS','RUNPASS','run_pass','play_type'])||'').toUpperCase();
-   if(activeOpponent==='SA')return (rp==='R'||rp==='P')&&num(r.pff_NOPLAY)!==1;
    if(rp==='R'||rp==='RUN')runRows.push(r); if(rp==='P'||rp==='PASS')passRows.push(r);
    let result=String(firstField(r,['pff_PASSRESULT','PASSRESULT','pass_result'])||'').toUpperCase();
    if(['COMPLETE','INCOMPLETE','INTERCEPTION','THROWN AWAY','HIT AS THREW','BATTED PASS'].includes(result))att++;

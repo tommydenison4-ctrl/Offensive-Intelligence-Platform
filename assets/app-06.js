@@ -195,7 +195,6 @@ function coveragePage(){
 
 function stRunPass(r){
  let rp=String(firstField(r,['pff_RUNPASS','RUNPASS','run_pass','play_type'])||'').toUpperCase();
-   if(activeOpponent==='SA')return (rp==='R'||rp==='P')&&num(r.pff_NOPLAY)!==1;
  if(rp==='R'||rp==='RUN')return'Run';
  if(rp==='P'||rp==='PASS')return'Pass';
  return '';

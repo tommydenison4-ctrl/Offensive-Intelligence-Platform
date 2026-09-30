@@ -15,6 +15,13 @@ async function check(mode){
  assert.equal(w.document.querySelectorAll('.opponent-toggle button').length,5);
  assert.equal(ev('dashboardPlayRows().length'),216);assert.equal(ev('datasets.plays.length'),225);
  assert.equal(ev('offenseRoster().length'),52);
+ const dashboard=ev('dashboardStats(dashboardPlayRows())');
+ for(const [key,expected] of Object.entries({n:216,runN:102,passN:114,att:99,comp:66,sacks:7,ints:3,td:17}))assert.equal(dashboard[key],expected,'dashboard '+key);
+ assert.equal(ev('rdRunRowsBase().length'),102);
+ assert.equal(ev('cvPassRowsBase().length'),114);
+ assert.equal(ev("dashboardPlayRows().filter(r=>stRunPass(r)==='Run').length"),102);
+ assert.equal(ev("dashboardPlayRows().filter(r=>stRunPass(r)==='Pass').length"),114);
+
  assert.equal(ev('Object.values(loadState).filter(x=>x.ok).length'),20);
  assert.equal(ev("parseCSV('COV,COV,MT,MT\\n62.3,107,2,1')[0]['COV.1']"),'107');
  assert.equal(ev("piStats(roster.find(p=>p.name==='Jayvon Henderson')).covGrade"),'62.3');
