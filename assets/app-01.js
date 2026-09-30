@@ -254,7 +254,8 @@ const num=v=>{let n=parseFloat(String(v??'').replace(/[%,$]/g,''));return Number
 const pct=v=>{if(v===null||v===undefined||v==='')return '—';let s=String(v);return s.includes('%')?s:(num(v).toFixed(1)+'%')};
 function parsePctValue(v){let n=parseFloat(String(v??'').replace('%','').trim());return Number.isFinite(n)?n:0}
 const fmt=(v,d=1)=>Number.isFinite(+v)?(+v).toFixed(d):'—';
-const cleanName=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+// Official roster lists Masey Lewis; the supplied PFF/depth chart uses Mase Lewis.
+const cleanName=s=>{const name=String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');return activeOpponent==='SA'&&name==='maselewis'?'maseylewis':name};
 function jerseyNum(v){let m=String(v??'').match(/\d+/);return m?String(parseInt(m[0],10)):''}
 function tokenJersey(token){
  let s=String(token||'').toUpperCase();

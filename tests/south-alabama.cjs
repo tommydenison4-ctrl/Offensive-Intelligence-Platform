@@ -22,6 +22,8 @@ async function check(mode){
  assert.equal(ev("piStats(roster.find(p=>p.name==='DJ Moore')).rows"),69);
  assert.equal(ev("piGameStats(roster.find(p=>p.name==='Jayvon Henderson')).length"),4);
  assert.equal(ev('activeDefDepthRows().length'),11);
+ assert.equal(ev("piStats(roster.find(p=>p.name==='Masey Lewis')).verified"),true);
+ assert.equal(ev("resolveRosterPlayer('Mase Lewis').name"),'Masey Lewis');
  assert(ev('datasets.plays.filter(r=>r.ulmFormation).length')>=20);
  assert.equal(ev("piTokenMatchesPlayer('ALSO D08; ALSO D02',roster.find(p=>p.name==='Jayvon Henderson'))"),true);
  assert.equal(ev("piTokenMatchesPlayer('LASE D02',roster.find(p=>p.name==='Jayvon Henderson'))"),false);
