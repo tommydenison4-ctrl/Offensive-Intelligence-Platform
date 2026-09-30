@@ -1,0 +1,23 @@
+{
+  "team":"South Alabama",
+  "nickname":"Jaguars",
+  "season":2026,
+  "week":5,
+  "updated":"2026-09-29",
+  "source":"ULM Week 5 South Alabama Depth Chart / OurLads",
+  "scheme":"Multiple 4-2-5",
+  "defense":{
+    "DE":[["18","Mase Lewis","RS SR/TR"],["90","E'Mauri Smiley","SO"],["85","Andrew Washburn","RS SR/TR"]],
+    "NT":[["56","Stephen Johnson","RS JR/TR"],["49","Tre Brown","RS JR/TR"]],
+    "DT":[["41","Tyler Carter","RS SO"],["11","Andrew Hines","SO/TR"]],
+    "EDGE":[["25","Tre'Mon Henry","RS JR/TR"],["17","Christian Ross","RS SR/TR"],["10","William Felton IV","RS SO"]],
+    "MAC":[["6","Kaydon Degraffenreid","JR/TR"],["0","Parker Shattuck","JR"],["16","Seidrion Langston","SR/TR"]],
+    "ROVER":[["48","Jordan Williams","RS JR"],["26","Xavious Anderson Jr.","FR"]],
+    "LCB":[["12","Jaylen Moson","RS JR/TR"],["3","Tre Webb III","RS JR/TR"]],
+    "SS":[["14","Cole Blaylock","RS JR"],["32","Camen Upshaw","FR"]],
+    "FS":[["8","Dallas Young","RS JR/TR"],["1","DJ Moore","RS SR/TR"],["13","Kam Robinson","SR/TR"]],
+    "RCB":[["2","Jayvon Henderson","RS SR/TR"],["34","Bradley Thomas","RS SR/TR"]],
+    "NB":[["24","Damyrion Darby","JR"],["21","Deon Callins","FR"]]
+  },
+  "quickReference":{"front":"Lewis, Johnson, Carter and Henry","MAC1":"#6 Kaydon Degraffenreid","ROVER1":"#48 Jordan Williams"}
+}
