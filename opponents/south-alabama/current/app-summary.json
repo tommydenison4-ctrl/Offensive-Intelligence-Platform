@@ -1,0 +1,66 @@
+{
+  "opponent": "South Alabama",
+  "teamCode": "ALSO",
+  "season": 2026,
+  "sample": {
+    "fullFeedRows": 225,
+    "validSnapsAllDowns": 216,
+    "coreSnapsFirstThroughThirdDown": 209,
+    "games": ["Southeastern Louisiana", "Tulane", "Ohio", "Kentucky"]
+  },
+  "definitions": {
+    "validPlay": "PFF no-play = 0 and run/pass in {P,R}",
+    "coreSample": "valid play, downs 1-3",
+    "negative": "gain <= 0",
+    "explosive": "gain >= 15",
+    "completion": "COMPLETE or LATERAL / charted pass attempts",
+    "rushCount": "leading numeric count in PFF pass-rush-player field",
+    "formationLanguage": "Exact internal ULM offensive language when aligned; otherwise ULM PFF Translation Workbook mapping with confidence retained"
+  },
+  "overallCore": {"n":209,"yards":1606.0,"ypp":7.68,"median_ypp":4.0,"completion_pct":69.5,"pass_attempts":95,"explosive_pct":16.7,"negative_pct":26.8,"scramble_rate":16.4,"sack_rate":6.4},
+  "rushCount": [
+    {"rush":3,"n":4,"ypp":6.25,"median_ypp":5.5,"completion_pct":100.0,"explosive_pct":25.0,"negative_pct":25.0,"scramble_rate":0.0,"sack_rate":0.0},
+    {"rush":4,"n":65,"ypp":10.11,"median_ypp":8.0,"completion_pct":71.9,"explosive_pct":24.6,"negative_pct":27.7,"scramble_rate":12.3,"sack_rate":3.1},
+    {"rush":5,"n":31,"ypp":4.32,"median_ypp":2.0,"completion_pct":64.0,"explosive_pct":12.9,"negative_pct":45.2,"scramble_rate":29.0,"sack_rate":12.9},
+    {"rush":6,"n":9,"ypp":2.22,"median_ypp":1.0,"completion_pct":62.5,"explosive_pct":0.0,"negative_pct":44.4,"scramble_rate":11.1,"sack_rate":11.1},
+    {"rush":7,"n":1,"ypp":0.0,"median_ypp":0.0,"completion_pct":0.0,"explosive_pct":0.0,"negative_pct":100.0,"scramble_rate":0.0,"sack_rate":0.0}
+  ],
+  "pressure": [
+    {"pressure":true,"n":71,"ypp":6.58,"median_ypp":3.0,"completion_pct":66.1,"explosive_pct":18.3,"negative_pct":38.0,"scramble_rate":21.1,"sack_rate":8.5},
+    {"pressure":false,"n":39,"ypp":9.46,"median_ypp":8.0,"completion_pct":75.0,"explosive_pct":20.5,"negative_pct":28.2,"scramble_rate":7.7,"sack_rate":2.6}
+  ],
+  "topFronts": [
+    {"front":"EVEN FAMILY","n":44,"ypp":9.55,"median_ypp":5.5,"completion_pct":85.7,"explosive_pct":18.2,"negative_pct":18.2,"scramble_rate":6.7,"sack_rate":6.7},
+    {"front":"ODD","n":37,"ypp":7.14,"median_ypp":1.0,"completion_pct":54.5,"explosive_pct":18.9,"negative_pct":45.9,"scramble_rate":16.7,"sack_rate":8.3},
+    {"front":"WIDE OVER","n":33,"ypp":7.30,"median_ypp":4.0,"completion_pct":68.4,"explosive_pct":12.1,"negative_pct":27.3,"scramble_rate":10.0,"sack_rate":0.0},
+    {"front":"OVER","n":28,"ypp":7.89,"median_ypp":3.5,"completion_pct":72.7,"explosive_pct":14.3,"negative_pct":28.6,"scramble_rate":7.7,"sack_rate":7.7},
+    {"front":"BEAR","n":19,"ypp":5.47,"median_ypp":3.0,"completion_pct":75.0,"explosive_pct":21.1,"negative_pct":26.3,"scramble_rate":41.7,"sack_rate":8.3},
+    {"front":"WIDE UNDER","n":14,"ypp":10.14,"median_ypp":7.5,"completion_pct":83.3,"explosive_pct":21.4,"negative_pct":7.1,"scramble_rate":37.5,"sack_rate":0.0}
+  ],
+  "topCoverages": [
+    {"coverage":"COVER 3","n":34,"ypp":6.88,"median_ypp":3.5,"completion_pct":65.5,"explosive_pct":17.6,"negative_pct":41.2,"scramble_rate":20.6,"sack_rate":11.8},
+    {"coverage":"COVER 4","n":17,"ypp":6.18,"median_ypp":2.0,"completion_pct":53.8,"explosive_pct":23.5,"negative_pct":41.2,"scramble_rate":23.5,"sack_rate":5.9},
+    {"coverage":"COVER 1","n":13,"ypp":5.46,"median_ypp":5.0,"completion_pct":58.3,"explosive_pct":7.7,"negative_pct":46.2,"scramble_rate":7.7,"sack_rate":0.0},
+    {"coverage":"COVER 2","n":7,"ypp":18.71,"median_ypp":11.0,"completion_pct":85.7,"explosive_pct":42.9,"negative_pct":14.3,"scramble_rate":0.0,"sack_rate":0.0},
+    {"coverage":"COVER 3 SEAM","n":6,"ypp":9.17,"median_ypp":5.0,"completion_pct":50.0,"explosive_pct":16.7,"negative_pct":33.3,"scramble_rate":33.3,"sack_rate":0.0}
+  ],
+  "topFormationsULM": [
+    {"formation":"DUO","n":34,"ypp":8.85,"median_ypp":3.0,"completion_pct":85.7,"explosive_pct":14.7,"negative_pct":23.5,"scramble_rate":36.8,"sack_rate":10.5},
+    {"formation":"TRIO","n":34,"ypp":8.32,"median_ypp":6.0,"completion_pct":54.5,"explosive_pct":20.6,"negative_pct":26.5,"scramble_rate":28.6,"sack_rate":14.3},
+    {"formation":"DICE","n":27,"ypp":6.81,"median_ypp":4.0,"completion_pct":73.3,"explosive_pct":22.2,"negative_pct":29.6,"scramble_rate":23.8,"sack_rate":9.5},
+    {"formation":"TOP","n":27,"ypp":6.52,"median_ypp":4.0,"completion_pct":72.2,"explosive_pct":11.1,"negative_pct":22.2,"scramble_rate":5.6,"sack_rate":0.0},
+    {"formation":"FLANK","n":13,"ypp":12.15,"median_ypp":4.0,"completion_pct":33.3,"explosive_pct":15.4,"negative_pct":23.1,"scramble_rate":0.0,"sack_rate":0.0},
+    {"formation":"DIAMOND","n":11,"ypp":13.64,"median_ypp":7.0,"completion_pct":100.0,"explosive_pct":27.3,"negative_pct":0.0,"scramble_rate":0.0,"sack_rate":0.0},
+    {"formation":"KING U OFF","n":7,"ypp":5.86,"median_ypp":2.0,"completion_pct":75.0,"explosive_pct":14.3,"negative_pct":28.6,"scramble_rate":0.0,"sack_rate":0.0},
+    {"formation":"FIST","n":6,"ypp":8.83,"median_ypp":9.5,"completion_pct":100.0,"explosive_pct":16.7,"negative_pct":16.7,"scramble_rate":0.0,"sack_rate":0.0}
+  ],
+  "playFamilies": [
+    {"family":"RUN","n":99,"ypp":7.78,"median_ypp":4.0,"explosive_pct":14.1,"negative_pct":18.2},
+    {"family":"DROPBACK","n":64,"ypp":6.44,"median_ypp":3.5,"completion_pct":58.5,"explosive_pct":14.1,"negative_pct":42.2,"scramble_rate":23.4,"sack_rate":7.8},
+    {"family":"SCREEN","n":19,"ypp":10.89,"median_ypp":8.0,"completion_pct":100.0,"explosive_pct":26.3,"negative_pct":5.3,"scramble_rate":0.0,"sack_rate":0.0},
+    {"family":"RPO","n":14,"ypp":5.71,"median_ypp":3.5,"completion_pct":61.5,"explosive_pct":7.1,"negative_pct":35.7,"scramble_rate":7.1,"sack_rate":0.0},
+    {"family":"PLAY ACTION","n":10,"ypp":10.60,"median_ypp":11.5,"completion_pct":71.4,"explosive_pct":50.0,"negative_pct":40.0,"scramble_rate":20.0,"sack_rate":20.0},
+    {"family":"SPRINT/ROLLOUT","n":3,"ypp":10.33,"median_ypp":9.0,"completion_pct":100.0,"explosive_pct":33.3,"negative_pct":33.3,"scramble_rate":0.0,"sack_rate":0.0}
+  ],
+  "languageCoverage": {"formationPopulated":211,"formationTotal":225,"reviewRequired":142}
+}
