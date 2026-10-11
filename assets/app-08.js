@@ -166,6 +166,7 @@ function structuresPage(){
 
 
 function render(){
+ if(activeOpponent==='LT' && renderLaTechOff())return;
  let app=$('app');
  if(page==='players')app.innerHTML=playersPage();
  else if(page==='depthchart')app.innerHTML=depthChartPage();
@@ -207,6 +208,7 @@ document.addEventListener('click',e=>{
  if(card && !e.target.closest('button,a')) openPlayerIndex(Number(card.dataset.playerIndex));
 });
 async function loadRoster(){
+ if(activeOpponent==='LT')return loadLaTechOff();
  let h=$('headerStatus');
  bundledSources.clear();
  h.textContent=`Loading ${activeOpponentName()} roster + Offensive Intelligence data…`;
@@ -285,6 +287,7 @@ async function loadRoster(){
 }
 async function setOpponent(key){
  if(!OPPONENTS[key]||key===activeOpponent)return;
+ $('oppBtnLT')?.classList.toggle('active',key==='LT');
  activeOpponent=key;
  localStorage.setItem('ulmOffIntelOpponent',activeOpponent);
  group='ALL';selected=null;dndFilter='ALL';
@@ -292,3 +295,23 @@ async function setOpponent(key){
 }
 document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{page=b.dataset.page;syncNav();render()});$('reloadBtn').onclick=loadRoster;$('printBtn').onclick=openPrintCenter;render();loadRoster();
 
+
+
+async function loadLaTechOff(){
+ const selectedOpponent=activeOpponent;roster=[];datasets={};loadState={};depthChartData=LaTech.depth;historicalRoster=[];
+ $('oppName').textContent='Louisiana Tech';$('sideOpponent').textContent='Louisiana Tech · Week 7';
+ document.querySelectorAll('.opponent-toggle button').forEach(b=>b.classList.toggle('active',b.id==='oppBtnLT'));
+ $('headerStatus').textContent='Louisiana Tech · Checking uploads…';render();
+ const result=await LaTech.load(parseCSV);if(!result||activeOpponent!==selectedOpponent)return;
+ datasets=result.data;loadState=Object.fromEntries(Object.entries(result.status).map(([k,v])=>[k,{ok:!!datasets[k]?.length,n:datasets[k]?.length||0,file:v}]));
+ roster=result.roster||LaTech.roster(['defense']);
+ $('headerStatus').textContent='Louisiana Tech · Week 7 · '+(datasets.plays?.length?'2026 play feed loaded':'Awaiting upload');render();
+}
+function renderLaTechOff(){
+ datasets=LaTech.state.data;roster=LaTech.state.roster||LaTech.roster(['defense']);$('oppName').textContent='Louisiana Tech';$('sideOpponent').textContent='Louisiana Tech · Week 7';
+ $('headerStatus').textContent='Louisiana Tech · Week 7 · '+(LaTech.state.loading?'Checking uploads…':datasets.plays?.length?'2026 play feed loaded':'Awaiting upload');
+ if(page==='depthchart'){$('app').innerHTML=LaTech.depthHTML(['defense','offense','specialTeams']);return true}
+ const need={players:['playerIntel'],leaders:['playerIntel'],missedtackles:['tackling'],coverage:['plays','coverage'],pressure:['plays','pressure']};
+ const missing=(need[page]||['plays']).filter(k=>!datasets[k]?.length);
+ if(missing.length){$('app').innerHTML=LaTech.pending(page==='players'?'Player Intelligence':page)+LaTech.statusHTML();return true}return false;
+}
