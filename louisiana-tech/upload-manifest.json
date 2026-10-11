@@ -1,0 +1,26 @@
+{
+  "team": "Louisiana Tech",
+  "season": 2026,
+  "week": 7,
+  "storageBase": "https://hzrosmevuejjlxigdxmg.supabase.co/storage/v1/object/public/Offensive%20Intelligence/Louisiana%20Tech/Current/",
+  "files": {
+    "plays": "play_feed.csv",
+    "internalLanguage": "ALL_GAMES_COMBINED.csv",
+    "playerIntel": "player_intelligence.csv",
+    "playerRush": "pff-pass-rush.csv",
+    "playerRun": "pff-run-defense.csv",
+    "playerCoverage": "pff-player-coverage.csv",
+    "tackling": "pff-tackling.csv",
+    "coverageDistribution": "pff-coverage-distribution.csv",
+    "runConcepts": "pff-run-concepts.csv",
+    "coverage": "pff-coverage.csv",
+    "pressure": "pff-pressure.csv",
+    "personnel": "pff-personnel.csv",
+    "fronts": "pff-fronts.csv"
+  },
+  "teamField": "pff_DEFTEAM",
+  "teamCodes": [
+    "LATU"
+  ],
+  "rosterFile": "roster.json"
+}

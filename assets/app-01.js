@@ -18,8 +18,8 @@ function enrichSouthAlabamaLanguage(){
 }
 
 const bundledSources=new Set();
-function isCurrentSeasonOpponent(){return activeOpponent==='SA'||activeOpponent==='FAU'}
-function defenseTeamCode(){return {SA:'ALSO',FAU:'FLAT',SELA:'LASE',UAB:'ALBI',MSST:'MSST'}[activeOpponent]}
+function isCurrentSeasonOpponent(){return activeOpponent==='LT'||activeOpponent==='SA'||activeOpponent==='FAU'}
+function defenseTeamCode(){return {LT:'LATU',SA:'ALSO',FAU:'FLAT',SELA:'LASE',UAB:'ALBI',MSST:'MSST'}[activeOpponent]}
 async function fetchOpponentResource(url,options={}){
  const name=decodeURIComponent(String(url).split('/').pop().split('?')[0]);
  const fallback=activeOpponent==='SA'?SA_BUNDLE[name]:undefined;
@@ -33,6 +33,7 @@ async function fetchOpponentResource(url,options={}){
 
 const SUPABASE_BASE='https://hzrosmevuejjlxigdxmg.supabase.co/storage/v1/object/public';
 const OPPONENTS={
+ LT:{label:'Louisiana Tech',notesTeam:'Louisiana Tech'},
  SA:{label:'South Alabama',pffBase:SUPABASE_BASE+'/Offensive%20Intelligence/South%20Alabama/Current/',roster:SUPABASE_BASE+'/Offensive%20Intelligence/South%20Alabama/Current/roster.json',notesTeam:'South Alabama'},
  MSST:{
    label:'Mississippi State',
@@ -63,7 +64,7 @@ const OPPONENTS={
    notesTeam:'Florida Atlantic'
  }
 };
-let activeOpponent=new URLSearchParams(location.search).get('opponent')||localStorage.getItem('ulmOffIntelOpponent')||'SA';
+let activeOpponent=LaTech.initial()?'LT':(new URLSearchParams(location.search).get('opponent')||'SA');
 if(!OPPONENTS[activeOpponent])activeOpponent='MSST';
 function opp(){return OPPONENTS[activeOpponent]}
 function activeOpponentName(){return opp().label}
