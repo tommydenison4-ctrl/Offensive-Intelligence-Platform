@@ -11,8 +11,8 @@ async function check(mode){
  }});
  const w=dom.window,ev=s=>w.eval(s);
  for(let i=0;i<100&&!w.document.querySelector('#headerStatus').textContent.includes('core data sources loaded');i++)await new Promise(r=>setTimeout(r,20));
- assert.deepEqual([...ev('Object.keys(OPPONENTS)')].sort(),['FAU','MSST','SA','SELA','UAB']);
- assert.equal(w.document.querySelectorAll('.opponent-toggle button').length,5);
+ assert.deepEqual([...ev('Object.keys(OPPONENTS)')].sort(),['FAU','LT','MSST','SA','SELA','UAB']);
+ assert.equal(w.document.querySelectorAll('.opponent-toggle button').length,6);
  assert.equal(ev('dashboardPlayRows().length'),216);assert.equal(ev('datasets.plays.length'),225);
  assert.equal(ev('offenseRoster().length'),52);
  const dashboard=ev('dashboardStats(dashboardPlayRows())');
