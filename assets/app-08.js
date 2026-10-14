@@ -168,7 +168,7 @@ function structuresPage(){
 function render(){
  document.body.classList.toggle('lt-week7',activeOpponent==='LT');
  if(activeOpponent!=='LT'&&page==='teamoffense'){page='dashboard';syncNav()}
- if(activeOpponent==='LT' && ['depthchart','teamoffense'].includes(page) && renderLaTechOff())return;
+ if(activeOpponent==='LT' && page==='teamoffense' && renderLaTechOff())return;
  let app=$('app');
  if(page==='players')app.innerHTML=playersPage();
  else if(page==='depthchart')app.innerHTML=depthChartPage();
