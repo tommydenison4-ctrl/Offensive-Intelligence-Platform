@@ -2,7 +2,7 @@
   "team": "Louisiana Tech",
   "season": 2026,
   "week": 7,
-  "storageBase": "https://hzrosmevuejjlxigdxmg.supabase.co/storage/v1/object/public/Offensive%20Intelligence/Louisiana%20Tech/Current/",
+  "storageBase": "https://hzrosmevuejjlxigdxmg.supabase.co/storage/v1/object/public/Offensive%20Intelligence/Current/Louisiana%20Tech/",
   "playsFile": "play_feed-5.csv",
   "breakdownFiles": [
     "26_01_LA_Tech_D_vs_Northwestern_Louisiana_.csv",
