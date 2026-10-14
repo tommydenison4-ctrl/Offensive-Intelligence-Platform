@@ -167,7 +167,8 @@ function structuresPage(){
 
 function render(){
  document.body.classList.toggle('lt-week7',activeOpponent==='LT');
- if(activeOpponent!=='LT'&&page==='teamoffense'){page='dashboard';syncNav()}
+ if(activeOpponent!=='LT'&&['teamoffense','latplayers'].includes(page)){page='dashboard';syncNav()}
+ if(activeOpponent==='LT' && page==='latplayers'){ $('app').innerHTML=LaTech.page('players'); return; }
  if(activeOpponent==='LT' && page==='teamoffense' && renderLaTechOff())return;
  let app=$('app');
  if(page==='players')app.innerHTML=playersPage();
@@ -291,7 +292,7 @@ async function loadRoster(){
 async function setOpponent(key){
  if(!OPPONENTS[key]||key===activeOpponent)return;
  $('oppBtnLT')?.classList.toggle('active',key==='LT');
- activeOpponent=key;if(activeOpponent!=='LT'&&page==='teamoffense')page='dashboard';
+ activeOpponent=key;if(activeOpponent!=='LT'&&['teamoffense','latplayers'].includes(page))page='dashboard';
  localStorage.setItem('ulmOffIntelOpponent',activeOpponent);
  group='ALL';selected=null;dndFilter='ALL';
  await loadRoster();
