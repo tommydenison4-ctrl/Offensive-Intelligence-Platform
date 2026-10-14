@@ -1,25 +1,154 @@
-/* Louisiana Tech Week 7. Depth data is from the linked Ourlads posting; analytics require uploads. */
+/* Louisiana Tech Week 7: offensive staff scouting workspace. */
 window.LaTech = (() => {
- const depth={"team": "Louisiana Tech", "nickname": "Bulldogs", "season": 2026, "week": 7, "gameDate": "2026-10-17", "updated": "10/10/2026 9:08 AM ET", "source": "Ourlads", "sourceUrl": "https://www.ourlads.com/ncaa-football-depth-charts/depth-chart/louisiana-tech/90889", "retrieved": "2026-10-11", "offense": {"WR-X": [["47", "Jay Wilkerson", "RS SR/TR"], ["6", "Marcus Calwise Jr.", "JR/TR"], ["83", "Carter Harris", "FR"]], "WR-Z": [["86", "Talyn Shettron", "RS SR/TR"], ["15", "Luke Watkins", "SO"]], "WR-H": [["11", "Jalen Mickens", "SO"], ["3", "Dedrick Latulas", "RS JR"], ["8", "David Pierro", "SR/TR"]], "LT": [["72", "Hayden Christman", "RS JR"], ["57", "Tadan Bingham", "FR"]], "LG": [["79", "Ashanti Cole", "RS SR/TR"], ["74", "Jamon Lee Jr.", "RS JR/TR"]], "C": [["60", "Roy Brackins III", "RS JR"], ["56", "Andrew Richard", "RS SO"]], "RG": [["53", "Austin Ellis", "RS SO"], ["66", "Will Hutchens", "RS JR/TR"]], "RT": [["52", "Troy Smith III", "RS JR"], ["58", "Tye Hylton", "RS SO/TR"]], "TE": [["84", "Eli Finley", "SR"], ["87", "Brayden Bockler", "JR/TR"]], "QB": [["5", "Blake Baker", "RS JR"], ["2", "Trey Kukuk", "SR/TR"], ["7", "Jackson Bradley", "RS FR"]], "RB": [["0", "Jaden Miller", "RS JR/TR"], ["26", "Dylone Brooks", "RS FR"]]}, "defense": {"LDE": [["98", "Donovan Rieman", "RS SR/TR"], ["99", "Judd Rouyea", "RS JR"], ["90", "Jojo Odom", "SO"]], "NT": [["93", "Jacob Bradford", "RS SO"], ["54", "Justice Williams", "RS SR/TR"], ["91", "Za'Qwaun Nunn", "FR"]], "RDE": [["11", "Emmanuel Oguns", "RS SR/TR"], ["92", "Lane Condry", "RS SO/TR"], ["44", "Kaleb Coleman", "RS SO/TR"]], "WLB": [["10", "Kolbe Fields", "GR/TR"], ["22", "Jadon Mayfield", "RS SO"]], "MLB": [["21", "Zheric Hill", "SO"], ["40", "Ayden Combs", "FR"]], "SLB": [["24", "Alonzo Jackson Jr.", "RS SO"], ["35", "Cole Watson", "RS SO"]], "LCB": [["7", "Janard Lockhardt", "RS JR/TR"], ["3", "Kameron Carter", "SR/TR"]], "SS": [["1", "Sam Fongang", "SR/TR"], ["4", "Kam Franklin", "RS JR/TR"], ["39", "Jacoryian Crowe", "RS SO"]], "FS": [["16", "Taeden Rogers", "SO/TR"], ["13", "MJ Moultrie II", "RS JR/TR"], ["27", "Grayson Hardy", "FR"]], "RCB": [["2", "Amari Butler", "SR/TR"], ["17", "Demario Bookhart", "RS SO/TR"]], "NB": [["0", "Jordan McRae", "JR/TR"], ["20", "Ty Jones", "SR/TR"], ["5", "Ahkhari Johnson", "JR/TR"]]}, "specialTeams": {"PT": [["29", "Lexington Matthews", "RS JR/TR"]], "PK": [["38", "Kaegan Kent", "RS FR"], ["31", "Hunter Rioux", "RS JR/TR"]], "KO": [["31", "Hunter Rioux", "RS JR/TR"]], "LS": [["41", "Ean Burch", "RS SR"], ["69", "Trent Sims", "RS SO/TR"], ["59", "Jake Riggs", "RS SO"]], "H": [["29", "Lexington Matthews", "RS JR/TR"]], "PR": [["3", "Dedrick Latulas", "RS JR"], ["0", "Jaden Miller", "RS JR/TR"]], "KR": [["3", "Dedrick Latulas", "RS JR"], ["26", "Dylone Brooks", "RS FR"], ["5", "Ahkhari Johnson", "JR/TR"]]}}, defaultConfig={"team": "Louisiana Tech", "season": 2026, "week": 7, "storageBase": "https://hzrosmevuejjlxigdxmg.supabase.co/storage/v1/object/public/Offensive%20Intelligence/Louisiana%20Tech/Current/", "files": {"plays": "play_feed.csv", "internalLanguage": "ALL_GAMES_COMBINED.csv", "playerIntel": "player_intelligence.csv", "playerRush": "pff-pass-rush.csv", "playerRun": "pff-run-defense.csv", "playerCoverage": "pff-player-coverage.csv", "tackling": "pff-tackling.csv", "coverageDistribution": "pff-coverage-distribution.csv", "runConcepts": "pff-run-concepts.csv", "coverage": "pff-coverage.csv", "pressure": "pff-pressure.csv", "personnel": "pff-personnel.csv", "fronts": "pff-fronts.csv"}, "teamField": "pff_DEFTEAM", "teamCodes": ["LATU"], "rosterFile": "roster.json"};
+ const defaultConfig={
+  team:'Louisiana Tech',season:2026,week:7,
+  storageBase:'https://hzrosmevuejjlxigdxmg.supabase.co/storage/v1/object/public/Offensive%20Intelligence/Louisiana%20Tech/Current/',
+  playsFile:'play_feed-5.csv',
+  breakdownFiles:[
+   '26_01_LA_Tech_D_vs_Northwestern_Louisiana_.csv',
+   '26_02_LA_Tech_D_vs_LSU.csv',
+   '26_03_LA_Tech_D_vs_Baylor.csv',
+   '26_04_LA_Tech_D_vs_Army.csv',
+   '2606_Louisiana_Tech_D_vs_Louisiana-_Lafayette.csv'
+  ],
+  teamField:'pff_OFFTEAM',teamCodes:['LATC'],rosterFile:'roster.json'
+ };
+ const state={config:defaultConfig,data:{plays:[],breakdowns:[]},status:{},depth:null,roster:null,loading:false,version:0};
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const state={config:defaultConfig,data:{},status:{},loading:false,version:0};
- const initial=()=>!new URLSearchParams(location.search).has('opponent')||['latech','LT','W7'].includes(new URLSearchParams(location.search).get('opponent'));
- function pending(label='Data'){return `<div class="card no-sample-banner" style="padding:18px;border:1px solid #655124;border-radius:12px;margin:12px 0"><h3>${esc(label)} · Louisiana Tech</h3><p>Awaiting upload · Week 7 · October 17, 2026</p><p>Louisiana Tech PFF and roster uploads are pending. Reload after the files are available.</p></div>`}
- function table(unit){return `<div class="depth-card card" style="padding:14px;margin:12px 0;overflow:auto"><h3>Louisiana Tech ${unit==='specialTeams'?'Special Teams':unit==='offense'?'Offense · Air Raid':'Defense · 3-3-5'}</h3><table class="depth-table depthTable" style="width:100%;text-align:left"><thead><tr><th>Position</th><th>1st</th><th>2nd</th><th>3rd</th></tr></thead><tbody>${Object.entries(depth[unit]).map(([pos,ps])=>`<tr><td>${esc(pos)}</td>${[0,1,2].map(i=>`<td style="padding:8px">${ps[i]?`#${esc(ps[i][0])} ${esc(ps[i][1])} <small>${esc(ps[i][2])}</small>`:'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`}
- function depthHTML(units=['offense','defense','specialTeams']){return `<div class="page-title"><h2>Louisiana Tech Depth Chart</h2><p>Week 7 · October 17, 2026 · Source updated ${esc(depth.updated)}</p><a href="${depth.sourceUrl}" target="_blank" rel="noopener">Ourlads source ↗</a></div>`+units.map(table).join('')}
- function roster(units){const seen=new Map();for(const unit of units)for(const [position,ps] of Object.entries(depth[unit]))for(const [number,name,cls] of ps){const key=name+'|'+number;if(!seen.has(key))seen.set(key,{number,name,position, class:cls,source:'Ourlads depth chart',bio:'Depth-chart identity only. Official roster biography and PFF statistics awaiting upload.'})}return [...seen.values()]}
- async function response(url){const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),6000);try{return await fetch(url,{cache:'no-store',signal:ctl.signal})}finally{clearTimeout(timer)}}
- async function load(parse){const version=++state.version;state.loading=true;state.data={};state.status={};
+ const n=x=>{const v=Number(String(x??'').replace(/[^0-9.-]/g,''));return Number.isFinite(v)?v:0};
+ const get=(r,keys)=>{for(const k of keys){if(r&&r[k]!=null&&String(r[k]).trim()!=='')return r[k]}return ''};
+ const fileLabel=f=>f;
+ async function response(url){const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),8000);try{return await fetch(url,{cache:'no-store',signal:ctl.signal})}finally{clearTimeout(timer)}}
+ async function load(parse){
+  const version=++state.version;state.loading=true;state.data={plays:[],breakdowns:[]};state.status={};
   try{const r=await response('./louisiana-tech/upload-manifest.json');if(r.ok)state.config={...defaultConfig,...await r.json()}}catch(_){}
-  const cfg=state.config;
-  const url=name=>cfg.storageBase+encodeURIComponent(name)+'?v='+Date.now();
-  const data={},status={};
-  await Promise.all(Object.entries(cfg.files).map(async([key,names])=>{data[key]=[];for(const name of Array.isArray(names)?names:[names]){try{const r=await response(url(name));if(!r.ok){status[key]='Awaiting upload (HTTP '+r.status+')';continue}let rows=parse(await r.text());if(!rows.length){status[key]='Awaiting upload (empty file)';continue}
-    if(key==='plays'||cfg.teamField==='either'){rows=rows.filter(x=>(cfg.teamField==='either'?[x.pff_OFFTEAM,x.pff_DEFTEAM]:[x[cfg.teamField]]).some(t=>cfg.teamCodes.includes(String(t||'').trim()))&&String(x.pff_GAMESEASON)==='2026');if(!rows.length){status[key]='Rejected: no 2026 Louisiana Tech plays';continue}}
-    data[key]=rows;status[key]='Loaded '+rows.length+' rows';break}catch(_){status[key]='Awaiting upload (unreachable)'}}}));
-  let rosterData=null;try{const r=await response(url(cfg.rosterFile||'roster.json'));if(r.ok){const x=await r.json();rosterData=Array.isArray(x)?x:x.players;if(!Array.isArray(rosterData))rosterData=null}}catch(_){}
-  if(version!==state.version)return null;Object.assign(state,{data,status,roster:rosterData,loading:false});return state;
+  const cfg=state.config,base=cfg.storageBase,stamp='?v='+Date.now();
+  const loadFile=async name=>{const r=await response(base+encodeURIComponent(name)+stamp);if(!r.ok)throw Error('HTTP '+r.status);return parse(await r.text())};
+  try{const r=await response(base+encodeURIComponent(cfg.depthFile||'depth-chart.json')+stamp);if(r.ok)state.depth=await r.json()}catch(_){}
+  if(!state.depth){try{const r=await response('./louisiana-tech/depth-chart.json');if(r.ok)state.depth=await r.json()}catch(_){}}
+  let plays=[];
+  try{
+   plays=await loadFile(cfg.playsFile||'play_feed-5.csv');
+   plays=plays.filter(r=>cfg.teamCodes.includes(String(r[cfg.teamField]||'').trim())&&String(r.pff_GAMESEASON||'')==='2026');
+   state.status.plays=plays.length?'Loaded '+plays.length+' Louisiana Tech offensive plays':'Rejected: no LATC 2026 offense rows';
+  }catch(e){state.status.plays='Awaiting upload ('+String(e.message||'unreachable')+')'}
+  const breakdowns=[];
+  for(const name of cfg.breakdownFiles||[]){
+   try{const rows=await loadFile(name);breakdowns.push({name,label:fileLabel(name),rows});state.status[name]='Loaded '+rows.length+' rows'}
+   catch(e){state.status[name]='Awaiting upload ('+String(e.message||'unreachable')+')'}
+  }
+  let rosterData=null;
+  try{const r=await response(base+encodeURIComponent(cfg.rosterFile||'roster.json')+stamp);if(r.ok){const x=await r.json();rosterData=Array.isArray(x)?x:x.players;if(!Array.isArray(rosterData))rosterData=null}}catch(_){}
+  if(version!==state.version)return null;
+  state.data={plays,breakdowns};state.roster=rosterData;state.loading=false;return state;
  }
- function statusHTML(){return `<div class="card" style="padding:14px;margin:12px 0"><b>Louisiana Tech uploads</b><p>${state.loading?'Checking uploads…':Object.entries(state.status).map(([k,v])=>esc(k)+': '+esc(v)).join(' · ')||'Awaiting upload'}</p></div>`}
- return {depth,state,esc,initial,pending,table,depthHTML,roster,load,statusHTML};
+ function depthPlayers(){
+  const rows=[],by=state.depth?.offense||{};
+  for(const [position,players] of Object.entries(by))for(const p of players||[])rows.push({number:String(p[0]||''),name:String(p[1]||''),position,class:String(p[2]||'')});
+  return rows;
+ }
+ function allPlays(){return state.data.plays||[]}
+ function groups(rows,field,label){
+  const m=new Map();for(const r of rows){const k=String(get(r,[field])||'Unknown').trim()||'Unknown';if(!m.has(k))m.set(k,[]);m.get(k).push(r)}
+  return [...m].map(([key,items])=>({key,items,n:items.length,yards:items.reduce((a,r)=>a+n(r.pff_GAINLOSS),0)})).sort((a,b)=>b.n-a.n);
+ }
+ function pct(a,b){return b?((100*a/b).toFixed(1)+'%'):'—'}
+ function summary(rows){
+  const valid=rows.filter(r=>String(r.pff_NOPLAY||'').toUpperCase()!=='T'),run=valid.filter(r=>String(r.pff_RUNPASS||'').toUpperCase()==='R'),pass=valid.filter(r=>String(r.pff_RUNPASS||'').toUpperCase()==='P');
+  const yards=valid.reduce((a,r)=>a+n(r.pff_GAINLOSS),0),success=valid.filter(r=>String(r.pff_OFFSUCCESS||'').toUpperCase()==='T').length;
+  const sacks=valid.filter(r=>String(r.pff_PASSRESULT||'').toUpperCase()==='SACK').length,td=valid.filter(r=>String(r.pff_TOUCHDOWN||'').includes('LATC')).length;
+  const int=valid.filter(r=>String(r.pff_PASSRESULT||'').toUpperCase()==='INTERCEPTION').length;
+  const explosive=valid.filter(r=>n(r.pff_GAINLOSS)>=(String(r.pff_RUNPASS||'').toUpperCase()==='R'?10:20)).length;
+  return {plays:valid.length,run:run.length,pass:pass.length,yards,avg:valid.length?yards/valid.length:0,success,successRate:pct(success,valid.length),explosive,explosiveRate:pct(explosive,valid.length),sacks,td,int};
+ }
+ function rowsFor(rows,field,validOnly=true){
+  const src=validOnly?rows.filter(r=>String(r.pff_NOPLAY||'').toUpperCase()!=='T'):rows;
+  return groups(src,field).map(g=>[esc(g.key),g.n,pct(g.n,src.length),g.yards.toFixed(0),g.n?(g.yards/g.n).toFixed(2):'—']);
+ }
+ function title(name,desc){return '<div class="page-title"><h2>'+esc(name)+'</h2><p>'+esc(desc)+'</p></div>'}
+ function cards(items){return '<div class="kpis">'+items.map(x=>'<div class="kpi"><span>'+esc(x[0])+'</span><b>'+esc(x[1])+'</b></div>').join('')+'</div>'}
+ function section(name,desc,body){return '<div class="card"><div class="section-head"><div><h3>'+esc(name)+'</h3><small>'+esc(desc)+'</small></div></div>'+body+'</div>'}
+ function table(headers,rows){return window.table?window.table(headers,rows):'<div class="empty">Table unavailable</div>'}
+ function dash(){
+  const ps=allPlays(),s=summary(ps),games=groups(ps,'pff_DEFTEAM',false),bd=state.data.breakdowns||[];
+  const gameRows=games.map(g=>{const sample=g.items[0]||{};return [esc(g.key),esc(get(sample,['pff_GAMEDATE'])||'—'),g.n,g.yards.toFixed(0),g.n?(g.yards/g.n).toFixed(2):'—',pct(g.items.filter(r=>String(r.pff_OFFSUCCESS||'').toUpperCase()==='T').length,g.n)]});
+  const files=(state.config.breakdownFiles||[]).map(name=>{const b=bd.find(x=>x.name===name),rows=b?b.rows:[];return '<tr><td>'+esc(name)+'</td><td>'+esc(state.status[name]||'Awaiting upload')+'</td><td>'+(b?rows.length:'—')+'</td><td>'+rows.filter(r=>String(r.Formation||'').trim()).length+'</td><td>'+rows.filter(r=>String(get(r,['Run Concept','Pass Concept','Front','Proctection','Protection'])||'').trim()).length+'</td></tr>'}).join('');
+  return title('Louisiana Tech · Week 7','Offensive staff workspace · Week of October 17, 2026 · 2026 season data only')+
+   cards([['Offensive Plays',s.plays],['Yards',s.yards],['Yards per Play',s.avg.toFixed(2)],['Success Rate',s.successRate],['Run / Pass',s.run+' / '+s.pass],['Touchdowns',s.td],['Explosive Plays',s.explosive],['Games in Feed',games.length]])+
+   section('Louisiana Tech Game Log','Offensive production by opponent from the supplied 2026 play feed.',table(['Defense','Date','Plays','Yards','YPP','Success'],gameRows))+
+   section('Supplied Defensive Breakdown Files','Expected uploads are listed by exact name. The supplied files contain down, distance, field position and play identity; concept, formation, front and protection cells are blank pending charting.', '<div class="table-wrap"><table class="data-table"><thead><tr><th>Supplied file</th><th>Load status</th><th>Rows</th><th>Formation tags</th><th>Concept / front / protection tags</th></tr></thead><tbody>'+files+'</tbody></table></div>');
+ }
+ function depthPage(){
+  const by=state.depth?.offense||{},rows=[];
+  for(const [pos,players] of Object.entries(by))for(let i=0;i<Math.max(3,(players||[]).length);i++){const p=(players||[])[i];rows.push([esc(pos),i===0?'1st':i===1?'2nd':'3rd',p?'#'+esc(p[0])+' '+esc(p[1]):'—',p?esc(p[2]||''):'—'])}
+  return title('Louisiana Tech Offensive Depth Chart','Week 7 · October 17, 2026 · Offense only · Source: '+(state.depth?.source||'uploaded depth-chart.json'))+
+   section('Offensive Personnel','Depth order from the Louisiana Tech offense depth chart.',table(['Position','Order','Player','Class'],rows));
+ }
+ function playersPage(){
+  const roster=depthPlayers(),rows=roster.map(p=>{
+   const token=('LATC '+String(p.number).padStart(2,'0')),events=allPlays().filter(r=>[r.pff_PASSER,r.pff_BALLCARRIER,r.pff_PASSRECEIVERTARGET,r.pff_PASSROUTETARGET].some(v=>String(v||'').includes(token)));
+   return [p.number?'#'+esc(p.number):'—',esc(p.name),esc(p.position),esc(p.class),events.length,events.reduce((a,r)=>a+n(r.pff_GAINLOSS),0)];
+  });
+  return title('Louisiana Tech Player Intelligence','Offensive depth-chart players linked to their appearances in the supplied play feed.')+
+   section('Offensive Roster','Play appearances are matched by Louisiana Tech jersey number; yardage is team-play context, not individual player yardage.',table(['No.','Player','Position','Class','Linked plays','Team play yards'],rows));
+ }
+ function leadersPage(){
+  const ps=allPlays(),byNumber=new Map(),getNum=v=>{const m=String(v||'').match(/LATC\s+(\d+)/);return m?m[1]:''};
+  const add=(num,fn)=>{if(!num)return;const o=byNumber.get(num)||{att:0,comp:0,rec:0,tgt:0,run:0,rushY:0,recY:0,td:0};fn(o);byNumber.set(num,o)};
+  for(const r of ps){const passer=getNum(r.pff_PASSER),carrier=getNum(r.pff_BALLCARRIER),target=getNum(r.pff_PASSRECEIVERTARGET),yd=n(r.pff_GAINLOSS),result=String(r.pff_PASSRESULT||'').toUpperCase();
+   if(passer)add(passer,o=>{if(['COMPLETE','INCOMPLETE','BATTED PASS','THROWN AWAY'].includes(result))o.att++;if(result==='COMPLETE')o.comp++});
+   if(carrier&&String(r.pff_RUNPASS||'').toUpperCase()==='R')add(carrier,o=>{o.run++;o.rushY+=yd;if(String(r.pff_TOUCHDOWN||'').includes('LATC'))o.td++});
+   if(target&&['COMPLETE','INCOMPLETE','BATTED PASS','THROWN AWAY'].includes(result))add(target,o=>{o.tgt++;if(result==='COMPLETE'){o.rec++;o.recY+=yd;if(String(r.pff_TOUCHDOWN||'').includes('LATC'))o.td++}});
+  }
+  const names=new Map(depthPlayers().map(p=>[String(p.number).padStart(2,'0'),p.name+' · '+p.position]));
+  const rows=[...byNumber.entries()].map(([num,o])=>[esc(num),esc(names.get(String(num).padStart(2,'0'))||'Louisiana Tech player'),o.att,o.comp,o.run,o.rushY,o.tgt,o.rec,o.recY,o.td]).sort((a,b)=>(Number(b[5])||0)+(Number(b[8])||0)-(Number(a[5])||0)-(Number(a[8])||0));
+  return title('Offensive Leaders','Appearances and events from the supplied 2026 play feed. Player yardage is reported only where the feed ties the event to the ball carrier.')+
+   section('Player Events','Completions, carries and receptions use the PFF play result and player tags.',table(['No.','Player','Pass Att','Comp','Carries','Rush Yds','Targets','Rec','Rec Yds','TDs'],rows));
+ }
+ function overviewBy(field,label,ps=allPlays()){
+  return title(label,'Louisiana Tech offensive play production grouped from the loaded 2026 PFF feed.')+
+   section(label+' Results','Play count, share, total yards and yards per play.',table(['Category','Plays','Usage','Yards','YPP'],rowsFor(ps,field)));
+ }
+ function situ(){
+  const ps=allPlays(),downs=groups(ps.filter(r=>String(r.pff_NOPLAY||'').toUpperCase()!=='T'),'pff_DOWN');
+  const rows=downs.map(g=>[esc(g.key),g.n,g.yards.toFixed(0),(g.yards/g.n).toFixed(2),pct(g.items.filter(r=>String(r.pff_OFFSUCCESS||'').toUpperCase()==='T').length,g.n)]);
+  return title('Situations','Down, distance and field-position performance from Louisiana Tech offensive snaps.')+
+   section('Down Results','Offensive success is the PFF offensive-success flag in the feed.',table(['Down','Plays','Yards','YPP','Success'],rows))+
+   section('Distance to Go','Distribution across supplied distance values.',table(['Distance','Plays','Usage','Yards','YPP'],rowsFor(ps,'pff_DISTANCE')));
+ }
+ function breakdownPage(){
+  const all=(state.data.breakdowns||[]).flatMap(b=>b.rows.map(r=>({...r,__game:b.label})));
+  const filled=(key)=>all.filter(r=>String(get(r,[key])||'').trim());
+  const cols=[['Run Concept','Run Concept'],['Pass Concept','Pass Concept'],['Formation','Formation'],['Front','Defensive Front'],['Proctection','Protection']];
+  const rows=cols.map(([field,label])=>[esc(label),filled(field).length,pct(filled(field).length,all.length)]);
+  const games=(state.config.breakdownFiles||[]).map(name=>{const b=(state.data.breakdowns||[]).find(x=>x.name===name);return [esc(name),b?b.rows.length:'—',esc(state.status[name]||'Awaiting upload'),b?pct(b.rows.filter(r=>String(r['Down']||'').trim()).length,b.rows.length):'—',b?pct(b.rows.filter(r=>String(r['Field Position']||'').trim()).length,b.rows.length):'—']});
+  const sheetRows=all.map(r=>[esc(r.__game),esc(r['#']),esc(r.Down||'—'),esc(r.Distance||'—'),esc(r['Field Position']||'—'),esc(r['R/P']||'—'),esc(r.Formation||'Awaiting chart'),esc(r['Run Concept']||r['Pass Concept']||'Awaiting chart'),esc(r.Front||'Awaiting chart')]);
+  return title('Defensive Game Breakdowns','Five supplied game sheets under their original filenames. Empty chart fields are shown as awaiting charting.')+
+   section('Charting Completion','Completeness checks prevent blank input cells from appearing as zero-value tendencies.',table(['Category','Tagged rows','Share of plays'],rows))+
+   section('Game Sheets','The five uploads are checked independently so each opponent and week is preserved.',table(['Game file','Rows','Load status','Down tagged','Field position tagged'],games))+
+   section('Play-by-Play Sheet Rows','Down, distance and field position are available in the supplied files; missing film labels remain visibly uncharted.',table(['Game','Play','Down','Distance','Field position','R/P','Formation','Concept','Front'],sheetRows));
+ }
+ function page(pageName){
+  const ps=allPlays();
+  if(!ps.length)return title('Louisiana Tech · Week 7','Offensive staff workspace')+'<div class="card notice"><b>Play feed is not loaded.</b><p>Expected '+esc(state.config.playsFile||'play_feed-5.csv')+' in the Offensive Intelligence / Louisiana Tech / Current folder.</p></div>'+statusHTML();
+  if(pageName==='dashboard')return dash();
+  if(pageName==='depthchart')return depthPage();
+  if(pageName==='players')return playersPage();
+  if(pageName==='leaders')return leadersPage();
+  if(pageName==='missedtackles')return overviewBy('pff_MISSEDTACKLE','Missed Tackles Forced');
+  if(pageName==='personnel')return overviewBy('pff_OFFPERSONNEL','Personnel & Fronts')+section('Defensive Fronts Faced','Front tags from each defensive response.',table(['Front','Plays','Usage','Yards','YPP'],rowsFor(ps,'pff_DEFENSIVE_FRONT_NAME')));
+  if(pageName==='run')return overviewBy('pff_RUNCONCEPTPRIMARY','Run Game');
+  if(pageName==='qbrun')return overviewBy('pff_RUNPASS','Quarterback Run Game',ps.filter(r=>String(r.pff_PASSER||'').includes('(QB)')||String(r.pff_BALLCARRIER||'').includes('(QB)')));
+  if(pageName==='pass')return overviewBy('pff_PASSROUTETARGETGROUP','Pass Game');
+  if(pageName==='coverage')return overviewBy('pff_PASS_COVERAGE_BASIC','Coverage Faced');
+  if(pageName==='pressure')return overviewBy('pff_BLITZDOG','Pressure & Blitz');
+  if(pageName==='situations')return situ();
+  if(pageName==='heatmaps')return overviewBy('pff_FIELDPOSITION','Field Position');
+  if(pageName==='formations')return overviewBy('pff_OFFENSIVE_FORMATION_NAME','Offensive Formations');
+  if(pageName==='structures')return overviewBy('pff_OFF_PERSONNEL_GROUP','Offensive Structure');
+  if(pageName==='advantage')return breakdownPage();
+  return dash();
+ }
+ function statusHTML(){return '<div class="card"><b>Louisiana Tech uploads</b><p>'+Object.entries(state.status).map(([k,v])=>esc(k)+': '+esc(v)).join(' · ')+'</p></div>'}
+ return {state,load,depthPlayers,page,statusHTML};
 })();

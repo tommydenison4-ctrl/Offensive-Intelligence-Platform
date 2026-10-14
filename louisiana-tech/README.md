@@ -1,24 +1,11 @@
 # Louisiana Tech · Week 7
 
-October 17, 2026, from the existing Command Center schedule.
+This opponent entry reads the weekly public Supabase files from:
 
-Depth chart: Ourlads posting updated 10/10/2026 9:08 AM ET. `depth-chart.json` is a local snapshot, not a PFF dataset or full official roster.
+Offensive Intelligence/Louisiana Tech/Current/
 
-`upload-manifest.json` specifies proposed public Supabase Storage paths and filenames for the next upload. No folders, tables, files or permissions were created in Supabase. Edit storageBase and files to match the actual uploads; file values can be strings or arrays of candidate names. Reload checks this manifest and then each dataset independently. Missing files stay pending; prior opponents are never used as fallbacks. Play feeds must identify LATU in the appropriate offense/defense field and the 2026 season. The existing project uses LATU in its PFF feeds.
+The play feed is play_feed-5.csv. It is filtered to the 2026 Louisiana Tech offensive team code LATC in pff_OFFTEAM. The five game breakdown files are loaded independently under their exact uploaded names from upload-manifest.json. The app keeps the regular opponent entries and their previous weeks intact; Louisiana Tech is opened from its opponent button or with ?opponent=LT.
 
-Expected uploads:
+The offensive depth chart is loaded from depth-chart.json in that folder, with the checked-in Louisiana Tech depth-chart snapshot as a fallback. Only its offensive unit is shown. The roster file is read when present; player appearances are matched by jersey number.
 
-- plays: `play_feed.csv`
-- internalLanguage: `ALL_GAMES_COMBINED.csv`
-- playerIntel: `player_intelligence.csv`
-- playerRush: `pff-pass-rush.csv`
-- playerRun: `pff-run-defense.csv`
-- playerCoverage: `pff-player-coverage.csv`
-- tackling: `pff-tackling.csv`
-- coverageDistribution: `pff-coverage-distribution.csv`
-- runConcepts: `pff-run-concepts.csv`
-- coverage: `pff-coverage.csv`
-- pressure: `pff-pressure.csv`
-- personnel: `pff-personnel.csv`
-- fronts: `pff-fronts.csv`
-- Roster: `roster.json` (array or {players: [...]})
+The supplied breakdown sheets each contain play identity, down, distance and field position. Their formation, concept, front and protection columns are currently blank, so the app displays those as uncharted and does not invent tendencies. Upload a newly charted file with the same filename to fill those fields.

@@ -64,7 +64,7 @@ const OPPONENTS={
    notesTeam:'Florida Atlantic'
  }
 };
-let activeOpponent=LaTech.initial()?'LT':(new URLSearchParams(location.search).get('opponent')||'SA');
+let activeOpponent=new URLSearchParams(location.search).get('opponent')||localStorage.getItem('ulmOffIntelOpponent')||'SA';
 if(!OPPONENTS[activeOpponent])activeOpponent='MSST';
 function opp(){return OPPONENTS[activeOpponent]}
 function activeOpponentName(){return opp().label}

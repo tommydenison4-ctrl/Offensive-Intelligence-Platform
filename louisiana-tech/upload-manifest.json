@@ -3,24 +3,18 @@
   "season": 2026,
   "week": 7,
   "storageBase": "https://hzrosmevuejjlxigdxmg.supabase.co/storage/v1/object/public/Offensive%20Intelligence/Louisiana%20Tech/Current/",
-  "files": {
-    "plays": "play_feed.csv",
-    "internalLanguage": "ALL_GAMES_COMBINED.csv",
-    "playerIntel": "player_intelligence.csv",
-    "playerRush": "pff-pass-rush.csv",
-    "playerRun": "pff-run-defense.csv",
-    "playerCoverage": "pff-player-coverage.csv",
-    "tackling": "pff-tackling.csv",
-    "coverageDistribution": "pff-coverage-distribution.csv",
-    "runConcepts": "pff-run-concepts.csv",
-    "coverage": "pff-coverage.csv",
-    "pressure": "pff-pressure.csv",
-    "personnel": "pff-personnel.csv",
-    "fronts": "pff-fronts.csv"
-  },
-  "teamField": "pff_DEFTEAM",
-  "teamCodes": [
-    "LATU"
+  "playsFile": "play_feed-5.csv",
+  "breakdownFiles": [
+    "26_01_LA_Tech_D_vs_Northwestern_Louisiana_.csv",
+    "26_02_LA_Tech_D_vs_LSU.csv",
+    "26_03_LA_Tech_D_vs_Baylor.csv",
+    "26_04_LA_Tech_D_vs_Army.csv",
+    "2606_Louisiana_Tech_D_vs_Louisiana-_Lafayette.csv"
   ],
-  "rosterFile": "roster.json"
+  "teamField": "pff_OFFTEAM",
+  "teamCodes": [
+    "LATC"
+  ],
+  "rosterFile": "roster.json",
+  "depthFile": "depth-chart.json"
 }
