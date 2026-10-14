@@ -529,6 +529,7 @@ function leadersPage(){
  }
 
  return `<div class="page-title"><h2>Defensive Leaders</h2><p>Current-roster defenders most involved in pass rush, tackling and coverage.</p></div>
+ ${activeOpponent==='LT'?'<div class="sample-note"><b>Why these leader cards are empty:</b> the five LA Tech defensive game sheets contain team-play rows without LA Tech defender IDs or player grades. The supplied pff-data-14.csv through pff-data-29.csv reports are LA Tech offensive reports. This panel will populate when LA Tech defensive player reports or event-level defensive plays are added.</div>':''}
  <div class="leaders-page-grid">
    ${piLeaderCard('Pass-Rush Leaders',rush,'rush')}
    ${piLeaderCard('Tackle Leaders',tackle,'tackle')}

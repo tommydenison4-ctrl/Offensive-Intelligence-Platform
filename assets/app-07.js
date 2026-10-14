@@ -490,6 +490,7 @@ function heatmapsPage(){
  let depthB=hmBreakdown(rows,cvTargetDepth),sideB=hmBreakdown(rows,cvTargetSide),covB=hmBreakdown(rows,cvFamily);
  let mapped=cells.reduce((n,a)=>n+a.length,0);
  return `<div class="page-title"><h2>Field Heat Maps</h2><p>Offensive-view target map using the same 5-wide × 4-deep spatial structure as D Intel.</p></div>
+ ${activeOpponent==='LT'&&!mapped?'<div class="sample-note"><b>Target-location source gap:</b> the five LA Tech defensive game sheets do not include pass width/depth coordinates. Pass results and game context load, but the 20-zone map needs pff_PASSWIDTH and pff_PASSDEPTH from the opponent offense play feed.</div>':''}
  ${!all.length?`<div class="pf-empty"><b>No charted pass plays are loaded yet.</b><br>The Field Heat Maps workspace is built and will populate from the opponent-defense play feed.</div>`:''}
 
  <div class="hm-toolbar hm-more">
