@@ -166,7 +166,9 @@ function structuresPage(){
 
 
 function render(){
- if(activeOpponent==='LT' && renderLaTechOff())return;
+ document.body.classList.toggle('lt-week7',activeOpponent==='LT');
+ if(activeOpponent!=='LT'&&page==='teamoffense'){page='dashboard';syncNav()}
+ if(activeOpponent==='LT' && ['depthchart','teamoffense'].includes(page) && renderLaTechOff())return;
  let app=$('app');
  if(page==='players')app.innerHTML=playersPage();
  else if(page==='depthchart')app.innerHTML=depthChartPage();
@@ -289,7 +291,7 @@ async function loadRoster(){
 async function setOpponent(key){
  if(!OPPONENTS[key]||key===activeOpponent)return;
  $('oppBtnLT')?.classList.toggle('active',key==='LT');
- activeOpponent=key;
+ activeOpponent=key;if(activeOpponent!=='LT'&&page==='teamoffense')page='dashboard';
  localStorage.setItem('ulmOffIntelOpponent',activeOpponent);
  group='ALL';selected=null;dndFilter='ALL';
  await loadRoster();
@@ -304,13 +306,28 @@ async function loadLaTechOff(){
  document.querySelectorAll('.opponent-toggle button').forEach(b=>b.classList.toggle('active',b.id==='oppBtnLT'));
  $('headerStatus').textContent='Louisiana Tech · Checking uploads…';render();
  const result=await LaTech.load(parseCSV);if(!result||activeOpponent!==selectedOpponent)return;
- datasets=result.data;loadState=Object.fromEntries(Object.entries(result.status).map(([k,v])=>[k,{ok:!!datasets[k]?.length,n:datasets[k]?.length||0,file:v}]));
- depthChartData=result.depth;roster=LaTech.state.roster||LaTech.depthPlayers();
- $('headerStatus').textContent='Louisiana Tech · Week 7 · '+(datasets.plays?.length?datasets.plays.length+' offensive plays loaded':'Awaiting play feed');render();
+ const gameMeta={
+  '26_01_LA_Tech_D_vs_Northwestern_Louisiana_.csv':{code:'LANW',date:'2026-09-05',week:'01'},
+  '26_02_LA_Tech_D_vs_LSU.csv':{code:'LAST',date:'2026-09-12',week:'02'},
+  '26_03_LA_Tech_D_vs_Baylor.csv':{code:'TXBA',date:'2026-09-19',week:'03'},
+  '26_04_LA_Tech_D_vs_Army.csv':{code:'NYWP',date:'2026-10-03',week:'04'},
+  '2606_Louisiana_Tech_D_vs_Louisiana-_Lafayette.csv':{code:'LASW',date:'2026-10-10',week:'06'}
+ };
+ const opponentPlays=(result.data.breakdowns||[]).flatMap((game,index)=>game.rows.map(row=>{
+  const meta=gameMeta[game.name]||{},name=String(row.Name||''),yards=row.pff_GAINLOSS||row.Gain||'';
+  return {...row,pff_GAMEID:'LT-'+(meta.code||index),pff_GAMEDATE:meta.date||'',pff_GAMESEASON:'2026',pff_WEEK:meta.week||String(index+1).padStart(2,'0'),pff_OFFTEAM:meta.code||'',pff_DEFTEAM:'LATC',pff_RUNPASS:row.pff_RUNPASS||row['R/P']||'',pff_GAINLOSS:yards,pff_GAINLOSSNET:yards,pff_DOWN:row.pff_DOWN||row.Down||'',pff_DISTANCE:row.pff_DISTANCE||row.Distance||'',pff_FIELDPOSITION:row.pff_FIELDPOSITION||row['Field Position']||'',pff_HASH:row.pff_HASH||row.pff_HASHDEF||row.Hash||'',pff_OFFPERSONNEL:row.pff_OFFPERSONNEL||row.pff_OFFPERSONNELBASIC||row.Personnel||'',pff_OFFPERSONNELBASIC:row.pff_OFFPERSONNELBASIC||row.Personnel||'',pff_DEFENSIVE_FRONT_NAME:row.pff_DEFENSIVE_FRONT_NAME||row.pff_FRONTTYPE||row.Front||'',pff_OFFFORMATION:row.pff_OFFFORMATION||row.pff_OFFFORMATIONGROUP||row.Formation||'',pff_OFFFORMATIONGROUP:row.pff_OFFFORMATIONGROUP||row.Formation||'',pff_RUNCONCEPTPRIMARY:row.pff_RUNCONCEPTPRIMARY||row['Run Concept']||'',pff_PASSRESULT:row.pff_PASSRESULT||row['Pass Result']||'',pff_PASSER:row.pff_PASSER||row.QB||'',__game:game.label||name};
+ }));
+ datasets={plays:opponentPlays,playerIntel:[],playerRush:[],playerRun:[],playerCoverage:[],coverage:[],pressure:[],fronts:[],personnel:[],tackling:[],internalLanguage:result.data.internalPlays||[],teamOffensePlays:result.data.plays||[],teamOffenseBreakdowns:result.data.internalPlays||[]};
+ loadState={plays:{ok:opponentPlays.length>0,n:opponentPlays.length,file:'five Louisiana Tech defensive game sheets'},playerIntel:{ok:false,n:0,file:'official Louisiana Tech defensive roster and bios'}};
+ for(const [filename,status] of Object.entries(result.status))loadState[filename]={ok:String(status).startsWith('Loaded'),n:0,file:status};
+ depthChartData=result.depth;
+ const enrichment=LaTech.state.enrichment||{};
+ roster=(result.roster||[]).map(p=>({...p,...(enrichment[p.name]||{}),name:p.name,number:String(p.number??''),position:p.position}));
+ $('headerStatus').textContent='Louisiana Tech · Week 7 · '+(datasets.plays?.length?datasets.plays.length+' defensive scouting plays loaded':'Awaiting opponent game data');render();
 }
 function renderLaTechOff(){
- datasets=LaTech.state.data;roster=LaTech.state.roster||LaTech.depthPlayers();depthChartData=LaTech.state.depth;
- $('oppName').textContent='Louisiana Tech';$('sideOpponent').textContent='Louisiana Tech · Week 7';
- $('headerStatus').textContent='Louisiana Tech · Week 7 · '+(LaTech.state.loading?'Checking uploads…':datasets.plays?.length?datasets.plays.length+' offensive plays loaded':'Awaiting play feed');
- $('app').innerHTML=LaTech.page(page);return true;
+ if(page==='depthchart')$('app').innerHTML=LaTech.page('depthchart');
+ else if(page==='teamoffense')$('app').innerHTML=LaTech.page('dashboard');
+ else return false;
+ return true;
 }
