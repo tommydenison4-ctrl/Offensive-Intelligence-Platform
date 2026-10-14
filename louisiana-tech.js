@@ -62,6 +62,13 @@ window.LaTech = (() => {
   }
   return rows;
  }
+ function offensiveRoster(){
+  const roster=new Map(),allowed=new Set(['QB','RB','WR','TE','OL']);
+  for(const [name,x] of Object.entries(state.enrichment||{}))if(allowed.has(String(x.position||'').toUpperCase()))roster.set(name,{...x,name,number:String(x.number||''),position:String(x.position||'')});
+  for(const x of state.roster||[]){const name=String(get(x,['name','Name'])||'').trim(),position=String(get(x,['position','Position'])||'').toUpperCase();if(!name||!allowed.has(position))continue;const old=roster.get(name)||{};roster.set(name,{...old,...x,name,number:String(get(x,['number','jersey','jerseyNumber','#'])||old.number||''),position,image:get(x,['image','imageUrl','image_url','photo','headshot'])||old.image,profile:get(x,['profile','profileUrl','bioUrl','url'])||old.profile||officialProfiles[name]||officialRosterUrl,bio:get(x,['bio','biography','Bio'])||old.bio});}
+  for(const p of depthPlayers()){const old=roster.get(p.name)||{};roster.set(p.name,{...old,...p,class:p.class||old.class});}
+  const order={QB:0,RB:1,WR:2,TE:3,OL:4};return [...roster.values()].sort((a,b)=>(order[a.position]??9)-(order[b.position]??9)||Number(a.number)-Number(b.number)||a.name.localeCompare(b.name));
+ }
  function allPlays(){return state.data.plays||[]}
  function groups(rows,field,label){
   const m=new Map();for(const r of rows){const k=String(get(r,[field])||'Unknown').trim()||'Unknown';if(!m.has(k))m.set(k,[]);m.get(k).push(r)}
@@ -100,7 +107,7 @@ window.LaTech = (() => {
    if(String(r.pff_TOUCHDOWN||'').includes('LATC')){td++;g.td++}games.set(id,g);
   }return {rows,carries,rushY,targets,recs,recY,attempts,comps,passY,td,ints,games:[...games.values()].sort((a,b)=>String(a.date).localeCompare(String(b.date)))};
  }
- function playerCard(p){const s=playerStats(p),img=p.image?'<img src="'+esc(p.image)+'" alt="" onerror="this.remove()">':'<div class="lt-initials">'+esc(String(p.name||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,2))+'</div>';
+ function playerCard(p){const s=playerStats(p),img=p.image?'<img src="'+esc(p.image)+'" alt="'+esc(p.name)+'" onerror="this.remove()">':'<div class="lt-initials">'+esc(String(p.name||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,2))+'</div>';
   let main=String(p.position||'').toUpperCase().includes('QB')?s.passY+' pass yds':(['WR','TE','RB','HB','FB'].some(x=>String(p.position||'').toUpperCase().includes(x))?s.recY+s.rushY+' scrimmage yds':s.rows.length+' linked plays');
   return '<button class="lt-player-card" onclick="LaTech.selectPlayer(decodeURIComponent(\''+encodeURIComponent(p.name)+'\'))"><div class="lt-player-photo">'+img+'<span>#'+esc(p.number)+'</span></div><div class="lt-player-body"><b>'+esc(p.name)+'</b><small>'+esc(p.position)+' · '+esc(p.class)+'</small><div class="lt-player-metrics"><strong>'+s.rows.length+'</strong> linked plays <strong>'+main+'</strong></div></div></button>';
  }
@@ -129,9 +136,9 @@ window.LaTech = (() => {
    section('Offensive Personnel','Depth order from the Louisiana Tech offense depth chart.',table(['Position','Order','Player','Class'],rows));
  }
  function playersPage(){
-  const players=depthPlayers(),selected=players.find(p=>p.name===state.selectedPlayer);
-  return title('Louisiana Tech Player Intelligence','Player profiles, available roster biography and 2026 game-by-game production from the uploaded files.')+
-   (selected?playerProfile(selected):section('Offensive Player Profiles','Select a player to open their roster bio, available headshot and individual production.', '<div class="lt-player-grid">'+players.map(playerCard).join('')+'</div>'));
+  const players=offensiveRoster(),selected=players.find(p=>p.name===state.selectedPlayer);
+  return title('Louisiana Tech Player Intelligence','Full offensive roster · Official LA Tech biographies and portraits · 2026 play-feed production.')+
+   (selected?playerProfile(selected):section('Offensive Player Profiles',players.length+' offensive roster players. Select a player to open their biography, headshot and individual production.', '<div class="lt-player-grid">'+players.map(playerCard).join('')+'</div>'));
  }
  function leadersPage(){
   const ps=allPlays(),byNumber=new Map(),getNum=v=>{const m=String(v||'').match(/LATC\s+(\d+)/);return m?m[1]:''};
