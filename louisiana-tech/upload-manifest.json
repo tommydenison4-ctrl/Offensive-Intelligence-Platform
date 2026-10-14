@@ -17,5 +17,6 @@
     "LATC"
   ],
   "rosterFile": "roster.json",
-  "depthFile": "depth-chart.json"
+  "depthFile": "depth-chart.json",
+  "defensivePlaysFile": "play_feed-6.csv"
 }
