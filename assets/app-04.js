@@ -27,7 +27,7 @@ function uabTackleSummaryRows(){
    return {
      p,
      total:num(r['TOT TKL']),
-     tkl:num(r.TKL),
+     tkl:num(r['TOT TKL']||r.TKL),
      ast:num(r.AST),
      mt:num(r.MT),
      stop:num(r.STOP),
@@ -43,7 +43,7 @@ function selaTackleSummaryRows(){
  return SELA_PFF_54.map(r=>{
    let p=current.get(loosePlayerName(r.Name));
    if(!p)return null;
-   return {p,total:num(r['TOT TKL']),tkl:num(r.TKL),ast:num(r.AST),mt:num(r.MT),stop:num(r.STOP),runMt:num(r['MT.1']),passMt:num(r['MT.2'])};
+   return {p,total:num(r['TOT TKL']),tkl:num(r['TOT TKL']||r.TKL),ast:num(r.AST),mt:num(r.MT),stop:num(r.STOP),runMt:num(r['MT.1']),passMt:num(r['MT.2'])};
  }).filter(Boolean);
 }
 function fauTackleSummaryRows(){
@@ -51,7 +51,7 @@ function fauTackleSummaryRows(){
  let current=new Map(offenseRoster().map(p=>[cleanName(p.name),p]));
  return ((activeOpponent==='SA'||activeOpponent==='LT')?(datasets.tackling||[]):FAU_PFF_80).map(r=>{
    let p=current.get(cleanName(r.Name)); if(!p)return null;
-   return {p,total:num(r['TOT TKL']),tkl:num(r.TKL),ast:num(r.AST),mt:num(r.MT),stop:num(r.STOP),runMt:num(r['MT.1']),passMt:num(r['MT.2'])};
+   return {p,total:num(r['TOT TKL']),tkl:num(r['TOT TKL']||r.TKL),ast:num(r.AST),mt:num(r.MT),stop:num(r.STOP),runMt:num(r['MT.1']),passMt:num(r['MT.2'])};
  }).filter(Boolean);
 }
 function mtRowsForPlayer(p){return dashboardPlayRows().filter(r=>piTagged(r,p,['pff_MISSEDTACKLE']))}
@@ -419,7 +419,7 @@ function piStats(p){
    let matched=!!(def.Name||rush.Name||run.Name||cov.Name||tkl.Name);
    if(!matched)return {rows:0,tackles:0,assists:0,stops:0,sacks:0,pressures:0,targets:0,comp:0,ints:0,td:0,pbu:0,mt:0,verified:false};
    return {
-     rows:num(def.DEF),defGrade:def['DEF GRD']||def.DEF_GRD||'—',tackles:num(tkl.TKL||def.TKL),totalTackles:num(tkl['TOT TKL']),assists:num(tkl.AST||def.AST),
+     rows:num(def.DEF),defGrade:def['DEF GRD']||def.DEF_GRD||'—',tackles:num(tkl['TOT TKL']||tkl.TKL||def.TKL),totalTackles:num(tkl['TOT TKL']),assists:num(tkl.AST||def.AST),
      stops:num(tkl.STOP||run.STOP),sacks:num(rush.SK||tkl.SK||def.SK),pressures:num(rush.TPR||def.TPR),
      targets:num(cov.CTGT||def.CTGT),comp:num(cov['REC ALL']),ints:num(cov.INT||def.INT),td:num(cov.TD),pbu:num(cov.PBU||def.PBU),
      mt:num(tkl.MT||def.MT),runMt:num(tkl['MT.1']),passMt:num(tkl['MT.2']),mtPct:tkl['MT%']||'',
