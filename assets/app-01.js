@@ -19,7 +19,7 @@ function enrichSouthAlabamaLanguage(){
 
 const bundledSources=new Set();
 function isCurrentSeasonOpponent(){return activeOpponent==='LT'||activeOpponent==='SA'||activeOpponent==='FAU'}
-function defenseTeamCode(){return {LT:'LATU',SA:'ALSO',FAU:'FLAT',SELA:'LASE',UAB:'ALBI',MSST:'MSST'}[activeOpponent]}
+function defenseTeamCode(){return {LT:'LATC',SA:'ALSO',FAU:'FLAT',SELA:'LASE',UAB:'ALBI',MSST:'MSST'}[activeOpponent]}
 async function fetchOpponentResource(url,options={}){
  const name=decodeURIComponent(String(url).split('/').pop().split('?')[0]);
  const fallback=activeOpponent==='SA'?SA_BUNDLE[name]:undefined;
@@ -33,7 +33,7 @@ async function fetchOpponentResource(url,options={}){
 
 const SUPABASE_BASE='https://hzrosmevuejjlxigdxmg.supabase.co/storage/v1/object/public';
 const OPPONENTS={
- LT:{label:'Louisiana Tech',notesTeam:'Louisiana Tech'},
+ LT:{label:'Louisiana Tech',pffBase:SUPABASE_BASE+'/Offensive%20Intelligence/Current/Louisiana%20Tech/',roster:SUPABASE_BASE+'/Offensive%20Intelligence/Current/Louisiana%20Tech/roster.json',depth:SUPABASE_BASE+'/Offensive%20Intelligence/Current/Louisiana%20Tech/depth-chart.json',notesTeam:'Louisiana Tech'},
  SA:{label:'South Alabama',pffBase:SUPABASE_BASE+'/Offensive%20Intelligence/South%20Alabama/Current/',roster:SUPABASE_BASE+'/Offensive%20Intelligence/South%20Alabama/Current/roster.json',notesTeam:'South Alabama'},
  MSST:{
    label:'Mississippi State',

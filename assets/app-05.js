@@ -114,6 +114,7 @@ function missedTacklesPage(){
  let gains=mtPlayRows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained']))),expl=gains.filter(x=>x>=15).length;
  let tackleSource='pff-data (49).csv · direct embedded source';
  return `<div class="page-title"><h2>Missed Tackle Report</h2><p>${isCurrentSeasonOpponent()?'2026 tackling sample, with current-player context.':'Full historical tackling sample, with current-player context where available.'}</p></div>
+ ${activeOpponent==='LT'?'<div class="sample-note"><b>Source:</b> Player tackle totals and missed tackles use LA Tech PFF defensive reports pff-data-31.csv, pff-data-33.csv and pff-data-34.csv. Play-result context stays blank where the five game sheets do not identify the defender on each event.</div>':''}
  <div class="kpis">
   <div class="kpi"><span>Missed Tackles</span><b>${total}</b></div>
   <div class="kpi"><span>Tackles</span><b>${tackles}</b></div>
@@ -300,6 +301,8 @@ function runPage(){
      personnelB=rdBreakdown(rows,pfPersonnel),downB=addP10Breakdown(rdBreakdown(rows,pfDown),rows,rdMetrics),fieldB=rdBreakdown(rows,pfFieldZone),combos=rdComboRows(rows);
  let gapView=rdFootballGapBreakdown(rows);let maxGapView=Math.max(...gapView.map(x=>x.n),1);let gapMapped=gapView.reduce((n,x)=>n+x.n,0);
  return `<div class="page-title"><h2>Run Defense</h2><p>How ${activeOpponentName()} is defending the run by front, box count, run concept, point of attack, personnel and situation.</p></div>
+ ${activeOpponent==='LT'&&!gapMapped?'<div class="sample-note"><b>Run gap map source gap:</b> the LA Tech game sheets have run concepts and fronts but no pff_POAACTUAL / point-of-attack lane. Run results and concept tendencies still use the 187 charted run plays; the A/B/C/D map needs point-of-attack tags.</div>':''}
+ ${ltPffRunConceptPanel()}
  ${!all.length?`<div class="pf-empty"><b>No charted run plays are loaded yet.</b><br>The Run Defense explorer is built and will populate from the opponent-defense play feed.</div>`:''}
 
  <div class="rd-toolbar">
@@ -330,7 +333,7 @@ function runPage(){
    <div class="rd-section rd-span-12">
      <h3>Run Gap Map</h3>
      <div class="rd-sub">Football gap language from the offense's perspective. PFF's POAACTUAL lanes are translated into A/B/C/D gaps so the picture matches how the offense talks.</div>
-     <div class="gap-board">
+     ${gapMapped?`<div class="gap-board">
        <div class="gap-divider"></div>
        <div class="gap-los-label"><span>LINE OF SCRIMMAGE</span></div>
        <div class="gap-lanes">
@@ -338,15 +341,14 @@ function runPage(){
            <div class="gap-title">${x.gap}</div>
            <div class="gap-source">PFF ${x.poa}</div>
            <div class="gap-n">${x.n}</div>
-           <div class="gap-share">${gapMapped?pctText(x.n,gapMapped):'—'} of mapped runs</div>
+           <div class="gap-share">${pctText(x.n,gapMapped)} of mapped runs</div>
            <div class="gap-ypp">${x.n?fmt(x.ypp,2):'—'} YPP</div>
            <div class="gap-detail">${x.n?`MED ${fmt(x.med,1)} · EXP ${pctText(x.exp,x.n)}<br>NEG ${pctText(x.neg,x.n)}`:'No sample'}</div>
          </div>`).join('')}
        </div>
        <div class="gap-center"><div class="gap-ol">LT</div><div class="gap-ol">LG</div><div class="gap-ol">C</div><div class="gap-ol">RG</div><div class="gap-ol">RT</div></div>
        <div class="gap-axis"><span>OFFENSE LEFT</span><span>A GAPS MEET AT CENTER</span><span>OFFENSE RIGHT</span></div>
-     </div>
-     <div class="sample-note">Translation used: ML/MR → A gaps, LG/RG → B gaps, LT/RT → C gaps, LE/RE → D gaps. Specialty POA tags such as QB scramble, sneak, jet sweep, reverse and kneel are not forced into a gap.</div>
+     </div><div class="sample-note">Translation used: ML/MR → A gaps, LG/RG → B gaps, LT/RT → C gaps, LE/RE → D gaps. Specialty POA tags such as QB scramble, sneak, jet sweep, reverse and kneel are not forced into a gap.</div>`:`<div class="sample-note"><b>A/B/C/D gap chart unavailable:</b> none of the 187 supplied run plays has a point-of-attack lane tag. The run-concept chart above and run-results charts below are populated from the supplied PFF data. Add a play-level export with <code>pff_POAACTUAL</code> filled in to populate this field map.</div>`}
    </div>
 
    <div class="rd-section rd-span-6">

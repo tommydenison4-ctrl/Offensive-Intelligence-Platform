@@ -49,7 +49,7 @@ function selaTackleSummaryRows(){
 function fauTackleSummaryRows(){
  if(!isCurrentSeasonOpponent())return [];
  let current=new Map(offenseRoster().map(p=>[cleanName(p.name),p]));
- return (activeOpponent==='SA'?(datasets.tackling||[]):FAU_PFF_80).map(r=>{
+ return ((activeOpponent==='SA'||activeOpponent==='LT')?(datasets.tackling||[]):FAU_PFF_80).map(r=>{
    let p=current.get(cleanName(r.Name)); if(!p)return null;
    return {p,total:num(r['TOT TKL']),tkl:num(r.TKL),ast:num(r.AST),mt:num(r.MT),stop:num(r.STOP),runMt:num(r['MT.1']),passMt:num(r['MT.2'])};
  }).filter(Boolean);
@@ -414,7 +414,8 @@ function fauDirectRow(rows,p){
 function piStats(p){
  let summary=piSummaryByVerifiedName(p);
  if(isCurrentSeasonOpponent()){
-   let def=fauDirectRow((activeOpponent==='SA'?(datasets.playerIntel||[]):FAU_PFF_76),p)||{},rush=fauDirectRow((activeOpponent==='SA'?(datasets.playerRush||[]):FAU_PFF_77),p)||{},run=fauDirectRow((activeOpponent==='SA'?(datasets.playerRun||[]):FAU_PFF_78),p)||{},cov=fauDirectRow((activeOpponent==='SA'?(datasets.playerCoverage||[]):FAU_PFF_79),p)||{},tkl=fauDirectRow((activeOpponent==='SA'?(datasets.tackling||[]):FAU_PFF_80),p)||{};
+   let useLoaded=activeOpponent==='SA'||activeOpponent==='LT';
+   let def=fauDirectRow((useLoaded?(datasets.playerIntel||[]):FAU_PFF_76),p)||{},rush=fauDirectRow((useLoaded?(datasets.playerRush||[]):FAU_PFF_77),p)||{},run=fauDirectRow((useLoaded?(datasets.playerRun||[]):FAU_PFF_78),p)||{},cov=fauDirectRow((useLoaded?(datasets.playerCoverage||[]):FAU_PFF_79),p)||{},tkl=fauDirectRow((useLoaded?(datasets.tackling||[]):FAU_PFF_80),p)||{};
    let matched=!!(def.Name||rush.Name||run.Name||cov.Name||tkl.Name);
    if(!matched)return {rows:0,tackles:0,assists:0,stops:0,sacks:0,pressures:0,targets:0,comp:0,ints:0,td:0,pbu:0,mt:0,verified:false};
    return {
@@ -529,6 +530,7 @@ function leadersPage(){
  }
 
  return `<div class="page-title"><h2>Defensive Leaders</h2><p>Current-roster defenders most involved in pass rush, tackling and coverage.</p></div>
+ ${activeOpponent==='LT'?'<div class="sample-note"><b>Source:</b> LA Tech defender rankings use the supplied PFF defensive reports (season totals). The five game sheets remain the source for play-by-play scouting, and are not used to invent individual player events.</div>':''}
  <div class="leaders-page-grid">
    ${piLeaderCard('Pass-Rush Leaders',rush,'rush')}
    ${piLeaderCard('Tackle Leaders',tackle,'tackle')}

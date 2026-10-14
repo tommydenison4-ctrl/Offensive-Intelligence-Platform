@@ -99,6 +99,7 @@ function coveragePage(){
  let shell1=shellB.find(x=>/1 High/i.test(x.k)),shell2=shellB.find(x=>/2 High/i.test(x.k)),shell0=shellB.find(x=>/0 High/i.test(x.k));
  let depthOrder=['Deep 20+','Intermediate 10-19','Short 0-9','Behind LOS'], sideOrder=['Left','Middle','Right'];
  return `<div class="page-title"><h2>Coverage</h2><p>Coverage structure, shell, man/zone and passing results against ${activeOpponentName()}.</p></div>
+ ${ltPffCoveragePanel()}
  ${!all.length?`<div class="pf-empty"><b>No charted pass plays are loaded yet.</b><br>The Coverage workspace is built and will populate from the opponent-defense play feed.</div>`:''}
 
  
@@ -274,6 +275,7 @@ function situationsPage(){
  ];
  let maxZone=Math.max(...fieldB.map(x=>x.n),1);
  return `<div class="page-title"><h2>Situations</h2><p>Down, distance, field position and situational defensive performance for offensive game planning.</p></div>
+ ${ltPffSituationPanel()}
  ${!all.length?`<div class="pf-empty"><b>No charted play data is loaded yet.</b><br>The Situations workspace is built and will populate from the opponent-defense play feed.</div>`:''}
  <div class="st-toolbar">
    <label>Down<select onchange="setST('down',this.value)"><option value="ALL">All Downs</option>${downs.map(v=>`<option ${stDownF===v?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
