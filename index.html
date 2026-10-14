@@ -150,6 +150,24 @@ main{padding:20px 22px 50px;min-width:0}.opponent-banner{background:linear-gradi
 .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.data-table{width:100%;border-collapse:collapse;background:#fff;font-size:11px}.data-table th{position:sticky;top:0;background:#0d2234;color:#fff;text-align:left;padding:9px 8px;white-space:nowrap}.data-table td{padding:8px;border-top:1px solid #edf0f3;white-space:nowrap}.data-table tr:hover td{background:#fffaf0}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:end;margin-bottom:10px}.section-head h3{margin:0}.section-head small{color:var(--muted)}.metric-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.metric{background:#f7f8fa;border:1px solid #e2e6eb;border-radius:10px;padding:10px}.metric span{display:block;font-size:8px;text-transform:uppercase;font-weight:900;color:var(--muted)}.metric b{display:block;font-size:18px;color:var(--maroon);margin-top:3px}.subtle{color:var(--muted);font-size:11px}
 @media(max-width:1000px){.metric-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.metric-grid{grid-template-columns:repeat(2,1fr)}}
 
+/* Louisiana Tech weekly player, run-game and pass-game views */
+.lt-player-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.lt-player-card{display:block;text-align:left;padding:0;overflow:hidden;border:1px solid #293747;border-radius:12px;background:#101821;color:#edf2f7;cursor:pointer}
+.lt-player-card:hover{border-color:#d3a83d;transform:translateY(-1px)}
+.lt-player-photo{height:190px;position:relative;background:linear-gradient(140deg,#182534,#0b1219);display:grid;place-items:center;overflow:hidden}
+.lt-player-photo img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.lt-player-photo>span{position:absolute;left:9px;bottom:9px;border:2px solid #d3a83d;background:#07131ddd;color:#fff;border-radius:7px;padding:4px 7px;font-weight:950}
+.lt-initials{font-size:40px;color:#d3a83d;font-weight:950}
+.lt-player-body{padding:10px}.lt-player-body>b{display:block;font-size:15px;color:#f3f6f9}.lt-player-body small{display:block;color:#9eabba;margin:3px 0 8px}
+.lt-player-metrics{font-size:10px;color:#aebbc8}.lt-player-metrics strong{display:block;color:#f0c34f;font-size:14px;margin-top:3px}
+.lt-data-source{color:#9eabba;font-size:11px;margin:0 0 10px}
+.lt-profile-head{margin-bottom:10px}.lt-profile-bio{margin-top:10px;border:1px solid #2a3949;border-radius:12px;padding:14px;background:#101821;color:#edf2f7}
+.lt-profile-bio>b,.lt-profile-bio div>b{font-size:22px;color:#f4f7fb}.lt-profile-bio p{color:#aebbc8;line-height:1.5}.lt-profile-bio a{color:#f3c750;font-weight:800}
+.lt-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px}
+@media(max-width:1050px){.lt-player-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.lt-player-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lt-two{grid-template-columns:1fr}.lt-player-photo{height:160px}}
+@media(max-width:480px){.lt-player-grid{grid-template-columns:1fr}}
+
 
 .view-toggle{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}.view-toggle button{border:0;border-radius:0;padding:7px 11px;font-size:10px}.view-toggle button.active{background:var(--maroon);color:#fff}
 .freq-cell{font-weight:900}.freq-cell small{display:block;font-weight:700;color:var(--muted);margin-top:2px}.freq-cell .primary-val{font-size:13px;color:var(--ink)}
