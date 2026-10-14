@@ -333,7 +333,7 @@ function runPage(){
    <div class="rd-section rd-span-12">
      <h3>Run Gap Map</h3>
      <div class="rd-sub">Football gap language from the offense's perspective. PFF's POAACTUAL lanes are translated into A/B/C/D gaps so the picture matches how the offense talks.</div>
-     <div class="gap-board">
+     ${gapMapped?`<div class="gap-board">
        <div class="gap-divider"></div>
        <div class="gap-los-label"><span>LINE OF SCRIMMAGE</span></div>
        <div class="gap-lanes">
@@ -341,15 +341,14 @@ function runPage(){
            <div class="gap-title">${x.gap}</div>
            <div class="gap-source">PFF ${x.poa}</div>
            <div class="gap-n">${x.n}</div>
-           <div class="gap-share">${gapMapped?pctText(x.n,gapMapped):'—'} of mapped runs</div>
+           <div class="gap-share">${pctText(x.n,gapMapped)} of mapped runs</div>
            <div class="gap-ypp">${x.n?fmt(x.ypp,2):'—'} YPP</div>
            <div class="gap-detail">${x.n?`MED ${fmt(x.med,1)} · EXP ${pctText(x.exp,x.n)}<br>NEG ${pctText(x.neg,x.n)}`:'No sample'}</div>
          </div>`).join('')}
        </div>
        <div class="gap-center"><div class="gap-ol">LT</div><div class="gap-ol">LG</div><div class="gap-ol">C</div><div class="gap-ol">RG</div><div class="gap-ol">RT</div></div>
        <div class="gap-axis"><span>OFFENSE LEFT</span><span>A GAPS MEET AT CENTER</span><span>OFFENSE RIGHT</span></div>
-     </div>
-     <div class="sample-note">Translation used: ML/MR → A gaps, LG/RG → B gaps, LT/RT → C gaps, LE/RE → D gaps. Specialty POA tags such as QB scramble, sneak, jet sweep, reverse and kneel are not forced into a gap.</div>
+     </div><div class="sample-note">Translation used: ML/MR → A gaps, LG/RG → B gaps, LT/RT → C gaps, LE/RE → D gaps. Specialty POA tags such as QB scramble, sneak, jet sweep, reverse and kneel are not forced into a gap.</div>`:`<div class="sample-note"><b>A/B/C/D gap chart unavailable:</b> none of the 187 supplied run plays has a point-of-attack lane tag. The run-concept chart above and run-results charts below are populated from the supplied PFF data. Add a play-level export with <code>pff_POAACTUAL</code> filled in to populate this field map.</div>`}
    </div>
 
    <div class="rd-section rd-span-6">

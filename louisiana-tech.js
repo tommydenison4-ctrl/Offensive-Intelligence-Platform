@@ -35,7 +35,17 @@ window.LaTech = (() => {
   if(!state.depth){try{const r=await response('./louisiana-tech/depth-chart.json');if(r.ok)state.depth=await r.json()}catch(_){}}
   try{const r=await response('./louisiana-tech/roster-enrichment.json');if(r.ok){const x=await r.json();state.enrichment=x.players||{}}}catch(_){}
   try{const r=await response('./louisiana-tech/pff-player-reports.json');if(r.ok){const x=await r.json();state.pffReports=x.reports||[];state.status.pffReports='Loaded '+state.pffReports.reduce((a,x)=>a+(x.rows||[]).length,0)+' rows from supplied pff-data-14.csv through pff-data-29.csv'}}catch(_){state.pffReports=[]}
-  try{const r=await response('./louisiana-tech/pff-defense-reports.json');if(r.ok){const x=await r.json();state.defensePffReports=x.reports||[];state.status.pffDefenseReports='Loaded '+state.defensePffReports.reduce((a,x)=>a+(x.rows||[]).length,0)+' rows from supplied defensive PFF files pff-data-30.csv through pff-data-46.csv'}}catch(_){state.defensePffReports=[]}
+  let bundledDefenseReports=[];
+  try{const r=await response('./louisiana-tech/pff-defense-reports.json');if(r.ok){const x=await r.json();bundledDefenseReports=x.reports||[]}}catch(_){bundledDefenseReports=[]}
+  const defenseReportFiles=Array.from({length:17},(_,i)=>`pff-data-${i+30}.csv`);
+  state.defensePffReports=await Promise.all(defenseReportFiles.map(async file=>{
+   const fallback=bundledDefenseReports.find(x=>x.file===file)||{file,rows:[],fields:[]};
+   try{const rows=await loadFile(file);return {...fallback,rows,fields:rows.length?Object.keys(rows[0]):fallback.fields,source:'Supabase'}}
+   catch(_){return {...fallback,source:'bundled fallback'}}
+  }));
+  const liveDefenseFileCount=state.defensePffReports.filter(x=>x.source==='Supabase').length;
+  const defenseReportRowCount=state.defensePffReports.reduce((a,x)=>a+(x.rows||[]).length,0);
+  state.status.pffDefenseReports='Loaded '+defenseReportRowCount+' rows from '+liveDefenseFileCount+' of 17 Supabase PFF files; bundled data backs up files that are not uploaded yet';
   let plays=[];
   try{
    plays=await loadFile(cfg.playsFile||'play_feed-5.csv');
