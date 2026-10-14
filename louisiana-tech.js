@@ -14,7 +14,7 @@ window.LaTech = (() => {
   ],
   teamField:'pff_OFFTEAM',teamCodes:['LATC'],rosterFile:'roster.json'
  };
- const state={config:defaultConfig,data:{plays:[],breakdowns:[],internalPlays:[]},status:{},depth:null,roster:null,enrichment:{},pffReports:[],loading:false,version:0,selectedPlayer:''};
+ const state={config:defaultConfig,data:{plays:[],breakdowns:[],internalPlays:[]},status:{},depth:null,roster:null,enrichment:{},pffReports:[],defensePffReports:[],loading:false,version:0,selectedPlayer:''};
  const officialProfiles={
   'Trey Kukuk':'https://latechsports.com/sports/football/roster/trey-kukuk/14612','Blake Baker':'https://latechsports.com/sports/football/roster/blake-baker/14582','Jackson Bradley':'https://latechsports.com/sports/football/roster/jackson-bradley/14587','Jaden Miller':'https://latechsports.com/sports/football/roster/jaden-miller/14673','Dylone Brooks':'https://latechsports.com/sports/football/roster/dylone-brooks/14588',
   'Jay Wilkerson':'https://latechsports.com/sports/football/roster/jay-wilkerson/14643','Marcus Calwise Jr.':'https://latechsports.com/sports/football/roster/marcus-calwise-jr/14664','Carter Harris':'https://latechsports.com/sports/football/roster/carter-harris/14752','Talyn Shettron':'https://latechsports.com/sports/football/roster/talyn-shettron/14681','Luke Watkins':'https://latechsports.com/sports/football/roster/luke-watkins/14639','Jalen Mickens':'https://latechsports.com/sports/football/roster/jalen-mickens/14620','Dedrick Latulas':'https://latechsports.com/sports/football/roster/dedrick-latulas/14613','David Pierro':'https://latechsports.com/sports/football/roster/david-pierro/14626',
@@ -35,6 +35,7 @@ window.LaTech = (() => {
   if(!state.depth){try{const r=await response('./louisiana-tech/depth-chart.json');if(r.ok)state.depth=await r.json()}catch(_){}}
   try{const r=await response('./louisiana-tech/roster-enrichment.json');if(r.ok){const x=await r.json();state.enrichment=x.players||{}}}catch(_){}
   try{const r=await response('./louisiana-tech/pff-player-reports.json');if(r.ok){const x=await r.json();state.pffReports=x.reports||[];state.status.pffReports='Loaded '+state.pffReports.reduce((a,x)=>a+(x.rows||[]).length,0)+' rows from supplied pff-data-14.csv through pff-data-29.csv'}}catch(_){state.pffReports=[]}
+  try{const r=await response('./louisiana-tech/pff-defense-reports.json');if(r.ok){const x=await r.json();state.defensePffReports=x.reports||[];state.status.pffDefenseReports='Loaded '+state.defensePffReports.reduce((a,x)=>a+(x.rows||[]).length,0)+' rows from supplied defensive PFF files pff-data-30.csv through pff-data-46.csv'}}catch(_){state.defensePffReports=[]}
   let plays=[];
   try{
    plays=await loadFile(cfg.playsFile||'play_feed-5.csv');

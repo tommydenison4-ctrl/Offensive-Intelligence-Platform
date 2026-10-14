@@ -114,7 +114,7 @@ function missedTacklesPage(){
  let gains=mtPlayRows.map(r=>num(firstField(r,['pff_GAINLOSSNET','pff_GAINLOSS','GAIN','yards_gained']))),expl=gains.filter(x=>x>=15).length;
  let tackleSource='pff-data (49).csv · direct embedded source';
  return `<div class="page-title"><h2>Missed Tackle Report</h2><p>${isCurrentSeasonOpponent()?'2026 tackling sample, with current-player context.':'Full historical tackling sample, with current-player context where available.'}</p></div>
- ${activeOpponent==='LT'?'<div class="sample-note"><b>Why this report is empty:</b> the LA Tech defensive game sheets do not include tackle or missed-tackle player events. The available 345-play PFF feed is LA Tech on offense and describes its opponents’ defenders, so it is kept separate from LA Tech’s defensive report.</div>':''}
+ ${activeOpponent==='LT'?'<div class="sample-note"><b>Source:</b> Player tackle totals and missed tackles use LA Tech PFF defensive reports pff-data-31.csv, pff-data-33.csv and pff-data-34.csv. Play-result context stays blank where the five game sheets do not identify the defender on each event.</div>':''}
  <div class="kpis">
   <div class="kpi"><span>Missed Tackles</span><b>${total}</b></div>
   <div class="kpi"><span>Tackles</span><b>${tackles}</b></div>
@@ -302,6 +302,7 @@ function runPage(){
  let gapView=rdFootballGapBreakdown(rows);let maxGapView=Math.max(...gapView.map(x=>x.n),1);let gapMapped=gapView.reduce((n,x)=>n+x.n,0);
  return `<div class="page-title"><h2>Run Defense</h2><p>How ${activeOpponentName()} is defending the run by front, box count, run concept, point of attack, personnel and situation.</p></div>
  ${activeOpponent==='LT'&&!gapMapped?'<div class="sample-note"><b>Run gap map source gap:</b> the LA Tech game sheets have run concepts and fronts but no pff_POAACTUAL / point-of-attack lane. Run results and concept tendencies still use the 187 charted run plays; the A/B/C/D map needs point-of-attack tags.</div>':''}
+ ${ltPffRunConceptPanel()}
  ${!all.length?`<div class="pf-empty"><b>No charted run plays are loaded yet.</b><br>The Run Defense explorer is built and will populate from the opponent-defense play feed.</div>`:''}
 
  <div class="rd-toolbar">

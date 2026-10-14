@@ -68,6 +68,7 @@ function pressurePage(){
  let typeB=prBreakdown(rows,prType),rushB=prBreakdown(rows,prRushCount),downB=addP10Breakdown(prBreakdown(rows,pfDown),rows,prMetrics),fieldB=prBreakdown(rows,pfFieldZone),persB=prBreakdown(rows,prPersonnel),combo=prComboRows(rows);
  let maxRush=Math.max(...rushB.map(x=>x.n),1);
  return `<div class="page-title"><h2>Pressure</h2><p>How ${esc(activeOpponentName())} creates pass-game stress by blitz, pressure state and rush count.</p></div>
+ ${ltPffPressurePanel()}
  ${!all.length?`<div class="pf-empty"><b>No charted pass plays are loaded yet.</b><br>The Pressure workspace is built and will populate from the opponent-defense play feed.</div>`:''}
 
  <div class="pr-toolbar">

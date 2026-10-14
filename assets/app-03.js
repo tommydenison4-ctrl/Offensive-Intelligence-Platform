@@ -413,11 +413,12 @@ function piProfilePanel(p,tab){
  if(tab==='notes')return coachNotesFAU(p);
  let pos=normPos(p.position),s=(isCurrentSeasonOpponent()?piStats(p):piSeasonStats(p)),seasonLabel=isCurrentSeasonOpponent()?'2026':(supportsSeasonSplit()?playerIntelSeason:'2025');
  let prod = pos==='DL'
-  ? [detail('Tagged Plays',s.rows),detail('Tackles',s.tackles),detail('Stops',s.stops),detail('Pressures',s.pressures),detail('Sacks',s.sacks),detail('Missed Tkl',s.mt),detail('Run Grade',s.runGrade||'—'),detail('Rush Grade',s.rushGrade||'—')]
+  ? [...(activeOpponent==='LT'?[detail('PFF Def Grade',s.defGrade||'—')]:[]),detail('Tagged Plays',s.rows),detail('Tackles',s.tackles),detail('Stops',s.stops),detail('Pressures',s.pressures),detail('Sacks',s.sacks),detail('Missed Tkl',s.mt),detail('Run Grade',s.runGrade||'—'),detail('Rush Grade',s.rushGrade||'—')]
   : pos==='LB'
-  ? [detail('Tagged Plays',s.rows),detail('Tackles',s.tackles),detail('Assists',s.assists||0),detail('Stops',s.stops),detail('Pressures',s.pressures),detail('INT',s.ints),detail('Missed Tkl',s.mt),detail('Run Grade',s.runGrade||'—'),detail('Cov Grade',s.covGrade||'—')]
-  : [detail('Tagged Plays',s.rows),detail('Coverage Snaps',s.covSnaps||0),detail('Tackles',s.tackles||0),detail('PBU',s.pbu||0),detail('INT',s.ints||0),detail('Missed Tkl',s.mt||0),detail('Targets',s.targets??'—'),detail('Completions',s.comp??'—'),detail('Completion %',s.compPct||'—'),detail('Yds Allowed',s.passYds??'—'),detail('Rating Allowed',s.rating||'—'),detail('Man / Zone',`${s.manPct||'—'} / ${s.zonePct||'—'}`)];
+  ? [...(activeOpponent==='LT'?[detail('PFF Def Grade',s.defGrade||'—')]:[]),detail('Tagged Plays',s.rows),detail('Tackles',s.tackles),detail('Assists',s.assists||0),detail('Stops',s.stops),detail('Pressures',s.pressures),detail('INT',s.ints),detail('Missed Tkl',s.mt),detail('Run Grade',s.runGrade||'—'),detail('Cov Grade',s.covGrade||'—')]
+  : [...(activeOpponent==='LT'?[detail('PFF Def Grade',s.defGrade||'—')]:[]),detail('Tagged Plays',s.rows),detail('Coverage Snaps',s.covSnaps||0),detail('Tackles',s.tackles||0),detail('PBU',s.pbu||0),detail('INT',s.ints||0),detail('Missed Tkl',s.mt||0),detail('Targets',s.targets??'—'),detail('Completions',s.comp??'—'),detail('Completion %',s.compPct||'—'),detail('Yds Allowed',s.passYds??'—'),detail('Rating Allowed',s.rating||'—'),detail('Man / Zone',`${s.manPct||'—'} / ${s.zonePct||'—'}`)];
  return `<div class="card"><h3>${seasonLabel} Defensive Production</h3><div class="detail-grid">${prod.join('')}</div></div>
+ ${ltPffRushAlignmentPanel(p)}
  ${piTopGamesPanel(p)}
  ${supportsSeasonSplit()&&playerIntelSeason==='2026'?'':piSkillPanel(p)}
  <div class="card"><h3>Roster Identity</h3><div class="detail-grid">${detail('Number',p.number)}${detail('Position',p.position)}${detail('Group',pos)}${detail('Height',p.height)}${detail('Weight',p.weight?`${p.weight} lbs`:'')}${detail('Class',p.class)}${detail('Hometown',p.hometown)}${detail('Previous School',p.previousSchool)}</div></div>
