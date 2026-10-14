@@ -14,7 +14,7 @@ window.LaTech = (() => {
   ],
   teamField:'pff_OFFTEAM',teamCodes:['LATC'],rosterFile:'roster.json'
  };
- const state={config:defaultConfig,data:{plays:[],breakdowns:[],internalPlays:[]},status:{},depth:null,roster:null,enrichment:{},pffReports:[],defensePffReports:[],loading:false,version:0,selectedPlayer:''};
+ const state={config:defaultConfig,data:{plays:[],defensivePlays:[],breakdowns:[],internalPlays:[]},status:{},depth:null,roster:null,enrichment:{},pffReports:[],defensePffReports:[],loading:false,version:0,selectedPlayer:''};
  const officialProfiles={
   'Trey Kukuk':'https://latechsports.com/sports/football/roster/trey-kukuk/14612','Blake Baker':'https://latechsports.com/sports/football/roster/blake-baker/14582','Jackson Bradley':'https://latechsports.com/sports/football/roster/jackson-bradley/14587','Jaden Miller':'https://latechsports.com/sports/football/roster/jaden-miller/14673','Dylone Brooks':'https://latechsports.com/sports/football/roster/dylone-brooks/14588',
   'Jay Wilkerson':'https://latechsports.com/sports/football/roster/jay-wilkerson/14643','Marcus Calwise Jr.':'https://latechsports.com/sports/football/roster/marcus-calwise-jr/14664','Carter Harris':'https://latechsports.com/sports/football/roster/carter-harris/14752','Talyn Shettron':'https://latechsports.com/sports/football/roster/talyn-shettron/14681','Luke Watkins':'https://latechsports.com/sports/football/roster/luke-watkins/14639','Jalen Mickens':'https://latechsports.com/sports/football/roster/jalen-mickens/14620','Dedrick Latulas':'https://latechsports.com/sports/football/roster/dedrick-latulas/14613','David Pierro':'https://latechsports.com/sports/football/roster/david-pierro/14626',
@@ -27,7 +27,7 @@ window.LaTech = (() => {
  const fileLabel=f=>f;
  async function response(url){const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),8000);try{return await fetch(url,{cache:'no-store',signal:ctl.signal})}finally{clearTimeout(timer)}}
  async function load(parse){
-  const version=++state.version;state.loading=true;state.data={plays:[],breakdowns:[],internalPlays:[]};state.status={};
+  const version=++state.version;state.loading=true;state.data={plays:[],defensivePlays:[],breakdowns:[],internalPlays:[]};state.status={};
   try{const r=await response('./louisiana-tech/upload-manifest.json');if(r.ok)state.config={...defaultConfig,...await r.json()}}catch(_){}
   const cfg=state.config,base=cfg.storageBase,stamp='?v='+Date.now();
   const loadFile=async name=>{const r=await response(base+encodeURIComponent(name)+stamp);if(!r.ok)throw Error('HTTP '+r.status);return parse(await r.text())};
@@ -52,6 +52,14 @@ window.LaTech = (() => {
    plays=plays.filter(r=>cfg.teamCodes.includes(String(r[cfg.teamField]||'').trim())&&String(r.pff_GAMESEASON||'')==='2026');
    state.status.plays=plays.length?'Loaded '+plays.length+' Louisiana Tech offensive plays':'Rejected: no LATC 2026 offense rows';
   }catch(e){state.status.plays='Awaiting upload ('+String(e.message||'unreachable')+')'}
+  let defensivePlays=[];
+  try{
+   const file=cfg.defensivePlaysFile||'play_feed-6.csv';
+   const rows=await loadFile(file);
+   defensivePlays=rows.filter(r=>String(r.pff_DEFTEAM||'').trim()==='LATC'&&String(r.pff_GAMESEASON||'')==='2026');
+   if(!defensivePlays.length)throw Error('no LATC 2026 defensive rows');
+   state.status.defensivePlays='Loaded '+defensivePlays.length+' Louisiana Tech opponent-offense plays from '+file;
+  }catch(e){state.status.defensivePlays='Awaiting '+(cfg.defensivePlaysFile||'play_feed-6.csv')+' ('+String(e.message||'unreachable')+')'}
   const breakdowns=[];
   for(const name of cfg.breakdownFiles||[]){
    try{const rows=await loadFile(name);breakdowns.push({name,label:fileLabel(name),rows});state.status[name]='Loaded '+rows.length+' rows'}
@@ -63,7 +71,7 @@ window.LaTech = (() => {
   let rosterData=null;
   try{const r=await response(base+encodeURIComponent(cfg.rosterFile||'roster.json')+stamp);if(r.ok){const x=await r.json();rosterData=Array.isArray(x)?x:(x.players||x.roster||x.offense);if(!Array.isArray(rosterData))rosterData=null;state.status.roster=rosterData?'Loaded '+rosterData.length+' roster records':'Roster file has no player list'}}catch(e){state.status.roster='Roster details unavailable ('+String(e.message||'unreachable')+')'}
   if(version!==state.version)return null;
-  state.data={plays,breakdowns,internalPlays};state.roster=rosterData;state.loading=false;return state;
+  state.data={plays,defensivePlays,breakdowns,internalPlays};state.roster=rosterData;state.loading=false;return state;
  }
  function depthPlayers(){
   const rows=[],by=state.depth?.offense||{},meta=state.roster||[];
