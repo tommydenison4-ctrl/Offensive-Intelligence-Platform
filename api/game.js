@@ -1,0 +1,2 @@
+import {espn} from '../lib/espn.js';import {normalize} from '../lib/normalize.js';
+export default async function handler(req,res){res.setHeader('Cache-Control','no-store');if(req.method!=='GET')return res.status(405).json({error:'Method not allowed'});const id=req.query.event;if(!/^\d{1,15}$/.test(id||''))return res.status(400).json({error:'Choose a valid ESPN event'});try{const j=await espn('summary?event='+id);res.status(200).json(normalize(j))}catch(e){console.error('Game fetch failed',e.message);res.status(502).json({error:e.message})}}

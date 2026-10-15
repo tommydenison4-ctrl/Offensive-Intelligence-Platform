@@ -1,0 +1,2 @@
+import {espn} from '../lib/espn.js';
+export default async function handler(req,res){res.setHeader('Cache-Control','no-store');if(req.method!=='GET')return res.status(405).json({error:'Method not allowed'});const d=req.query.date;if(!/^\d{8}$/.test(d||''))return res.status(400).json({error:'Choose a valid game date'});try{const j=await espn('scoreboard?groups=80&limit=1000&dates='+d);res.status(200).json({events:j.events||[]})}catch(e){console.error('Scoreboard fetch failed',e.message);res.status(502).json({error:e.message})}}
