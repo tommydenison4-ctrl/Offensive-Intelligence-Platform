@@ -1,8 +1,8 @@
-import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';
+import fs from 'node:fs';import {gzipSync} from 'node:zlib';import vm from 'node:vm';import assert from 'node:assert/strict';
 const html=fs.readFileSync('index.html','utf8'),els=new Map();
 const el=id=>{if(!els.has(id)){let value='';els.set(id,{get value(){return value},set value(v){value=v},set innerHTML(h){this.html=h;if(['selfMetric','oppMetric','split'].includes(id))value=h.match(/<option[^>]*>(.*?)<\/option>/)?.[1]||value},get innerHTML(){return this.html||''},setAttribute(){},scrollIntoView(){},focus(){},textContent:'',checked:false,classList:{toggle(){}},showModal(){},close(){},files:[]})}return els.get(id)};
 const storage=new Map(),doc={getElementById:el,querySelectorAll:()=>[],hidden:false,createElement:()=>({click(){}})};
-const c=vm.createContext({document:doc,localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},location:{search:'',protocol:'https:'},history:{replaceState(){}},window:{addEventListener(){}},URLSearchParams,Date,Intl,structuredClone,console,setInterval(){},confirm:()=>true,crypto:{randomUUID:()=>Math.random().toString(36).slice(2)},performance:{now:()=>0},Blob,URL,fetch:()=>{throw Error('Unexpected network in test')}});
+const c=vm.createContext({document:doc,localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},location:{search:'',protocol:'https:'},history:{replaceState(){}},window:{addEventListener(){}},URLSearchParams,Date,Intl,structuredClone,console,setInterval(){},confirm:()=>true,crypto:{randomUUID:()=>Math.random().toString(36).slice(2)},performance:{now:()=>0},Blob,URL,Response,DecompressionStream,Uint8Array,atob,fetch:()=>{throw Error('Unexpected network in test')}});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1],c);
 for(const name of ['reports.js','calls.js','reconcile.js'])vm.runInContext(fs.readFileSync(name,'utf8'),c);
 const run=s=>vm.runInContext(s,c);run('async function askConfirm(){return true}');run('reportSideOptions(); renderCalls()');
@@ -24,3 +24,5 @@ run("$('liveCall').value='Test audible';$('liveMotion').value='R-Zip';$('liveFor
 run("$('liveMotion').value='None'");await run('applyOffScript(false)');assert.equal(run('draft.Motion'),'None');assert.equal(run('draft.Call'),'Test audible');
 await run('applyCall(0)');assert.equal(run('offScriptOpen'),false);assert.equal(run('draft.Motion'),undefined);
 console.log('PASS: duplicate sections merged, distinct motions retained, hidden combination controls, off-script new and existing snaps, reusable custom calls, original call preserved and no tag leakage.');
+
+const seed=[{Call:'Seed call',Formation:'Trio RT',Motion:'R-Zip',Section:'Openers'}];const encoded=gzipSync(JSON.stringify(seed)).toString('base64url');run('location.hash='+JSON.stringify('#offense-sheet='+encoded));await run('preloadPrivateCalls()');assert.equal(run("readCalls().some(r=>r.Call==='Seed call')"),true);assert.equal(run('view'),'calls');const count=run('readCalls().length');run('location.hash='+JSON.stringify('#offense-sheet='+encoded));await run('preloadPrivateCalls()');assert.equal(run('readCalls().length'),count);console.log('PASS: private preload imports and opens call tiles, preserves existing library and does not duplicate on repeat.');
