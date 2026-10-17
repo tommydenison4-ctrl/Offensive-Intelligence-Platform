@@ -41,5 +41,3 @@ function callEntryType(c){if(c['Entry type']==='Tempo')return 'Tempo';if(c['Entr
 
 async function chooseCompleteCall(){if(!state.event)return notice('Connect a game first.');if(!plays.some(p=>p.id===selected)){await newSnap();return}updateChartContext();tab('calls')}
 
-let defenseStartCategory='';
-function renderDefenseBuilder(){const defense=mode==='defense';$('defenseBuilder').classList.toggle('hidden',!defense);$('callLibrary').classList.toggle('hidden',defense);if(!defense)return;$('defenseStartTiles').innerHTML=['Fronts','Blitzes','Tempo','Short Yardage'].map(name=>'<button data-defense-start="'+name+'" aria-pressed="'+(defenseStartCategory===name)+'" class="'+(defenseStartCategory===name?'active':'')+'">'+name+'</button>').join('');$('defenseStartTiles').onclick=e=>{const button=e.target.closest('[data-defense-start]');if(button){defenseStartCategory=button.dataset.defenseStart;renderDefenseBuilder()}};$('defenseBuilderStep').classList.toggle('hidden',!defenseStartCategory);$('defenseBuilderStep').innerHTML=defenseStartCategory?'<h3>'+esc(defenseStartCategory)+'</h3><p class="muted">No options loaded yet.</p>':'';}
