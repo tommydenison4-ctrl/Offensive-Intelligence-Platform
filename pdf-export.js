@@ -42,13 +42,22 @@ function buildHalftimePDF(side,kind='coach'){
  }
  doc.setFontSize(7);doc.text(doc.splitTextToSize(notes,w-20),10,h-10);
  doc.addPage();header('PASS TARGET SCATTER');
- const left=85,top=34,fw=109,fh=145,px=x=>left+(x+26.7)/53.4*fw,py=y=>top+fh-(y+10)/70*fh;
- doc.setFillColor(23,75,62);doc.rect(left,top,fw,fh,'F');doc.setFontSize(8);
- for(const depth of [-10,0,10,20,30,40,50,60]){doc.setDrawColor(depth===0?240:140,depth===0?200:175,depth===0?80:160);doc.line(left,py(depth),left+fw,py(depth));doc.setTextColor(28,48,66);doc.text(depth===0?'LOS':String(depth),left-10,py(depth)+1)}
- const colors={Complete:[53,201,111],Incomplete:[255,152,47],TD:[88,166,255],INT:[255,69,69],Unknown:[206,215,223]},located=rows.filter(p=>knownNumber(p.tags?.['Throw lateral'])&&knownNumber(p.tags?.['Air yards']));
- for(const p of located){const type=throwOutcome(p),x=px(Number(p.tags['Throw lateral'])),y=py(Number(p.tags['Air yards'])),color=colors[type];doc.setFillColor(...color);doc.setDrawColor(...color);if(type==='Incomplete'){doc.line(x-1.5,y-1.5,x+1.5,y+1.5);doc.line(x-1.5,y+1.5,x+1.5,y-1.5)}else{doc.circle(x,y,1.8,'F');if(type==='TD'||type==='INT'){doc.setTextColor(...color);doc.text(type,x+3,y+1)}}const number=receiverNumber(p);if(number){doc.setTextColor(255,255,255);doc.text(number,x,y-3,{align:'center'})}}
- doc.setTextColor(28,48,66);doc.text('OFFENSE LEFT',left,top+fh+6);doc.text('OFFENSE RIGHT',left+fw-27,top+fh+6);doc.text(located.length+' located plays / '+(rows.length-located.length)+' without target coordinates',10,28);
- let legendY=45;for(const [key,color] of Object.entries(colors)){doc.setTextColor(...color);doc.text(key,210,legendY);legendY+=8}doc.setTextColor(28,48,66);doc.text(doc.splitTextToSize(notes,w-20),10,h-12);
+
+ const model=sprayChartModel(rows),fx=7,fy=33,sw=194/720,sh=155/480,X=x=>fx+x*sw,Y=y=>fy+y*sh,f=model.field;
+ doc.setFillColor(247,246,242);doc.roundedRect(fx,fy,194,155,2,2,'F');doc.setFillColor(232,239,233);doc.rect(X(f.left),Y(f.top),(f.right-f.left)*sw,(f.bottom-f.top)*sh,'F');
+ doc.setFontSize(7);doc.setTextColor(123,33,61);doc.setFont('helvetica','bold');doc.text(model.defensive?'OFFENSE RIGHT':'OFFENSE LEFT',X(f.left),Y(23));doc.text(model.defensive?'OFFENSE LEFT':'OFFENSE RIGHT',X(f.right),Y(23),{align:'right'});doc.setFont('helvetica','normal');
+ for(const depth of [-10,0,10,20,30,40,50,60]){doc.setDrawColor(...(depth===0?[136,42,71]:[255,255,255]));doc.setLineWidth(depth===0?.45:.25);doc.line(X(f.left),Y(model.py(depth)),X(f.right),Y(model.py(depth)));doc.setTextColor(83,100,116);doc.text(depth===0?'LOS':String(depth),X(35),Y(model.py(depth))+1,{align:'right'})}
+ doc.setDrawColor(255,255,255);doc.setLineWidth(.2);for(const hash of [-6.7,6.7])for(let depth=-10;depth<=60;depth+=2)doc.line(X(model.px(hash)-3),Y(model.py(depth)),X(model.px(hash)+3),Y(model.py(depth)));
+ const rgb=hex=>hex.match(/[a-f0-9]{2}/gi).map(v=>parseInt(v,16)),poly=(pts,style)=>doc.lines(pts.slice(1).map((point,i)=>[X(point[0])-X(pts[i][0]),Y(point[1])-Y(pts[i][1])]),X(pts[0][0]),Y(pts[0][1]),[1,1],style,true);
+ for(const point of sprayDrawOrder(model.points)){const {p,x,y,type,number,label}=point,color=rgb(sprayColors[type]);doc.setDrawColor(...color);doc.setFillColor(...color);doc.setLineWidth(.45);if(label){doc.setLineWidth(.18);doc.line(X(x),Y(y),X(label.x),Y(label.y-6));doc.setLineWidth(.45)}if(type==='Incomplete'){doc.line(X(x-4),Y(y-4),X(x+4),Y(y+4));doc.line(X(x-4),Y(y+4),X(x+4),Y(y-4))}else if(type==='TD')poly(sprayStar(x,y),'F');else if(type==='INT')poly([[x,y-6],[x+6,y],[x,y+6],[x-6,y]],'S');else doc.circle(X(x),Y(y),1.25,type==='Unknown'?'S':'F');if(label){doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(...color);const text='#'+number,tw=doc.getTextWidth(text);doc.setFillColor(247,246,242);doc.rect(X(label.x)-tw/2-.3,Y(label.y)-2.4,tw+.6,3,'F');doc.text(text,X(label.x),Y(label.y),{align:'center'});doc.setFont('helvetica','normal')}}
+ doc.setTextColor(83,100,116);doc.setFontSize(7);doc.text((model.defensive?'DEFENSIVE VIEW / OFFENSE ATTACKS DOWN':'OFFENSIVE VIEW / OFFENSE ATTACKS UP')+' / AIR YARDS FROM LOS',X(360),Y(462),{align:'center'});
+ doc.setTextColor(28,48,66);doc.setFontSize(9);doc.text(model.located.length+' located targets / '+model.unlocated.length+' unlocated',10,30);
+ let legendY=38;for(const [key,color] of Object.entries(sprayColors)){if(key==='Unknown'&&!model.points.some(p=>p.type==='Unknown'))continue;doc.setTextColor(...rgb(color));doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(key,210,legendY);legendY+=7}doc.setFont('helvetica','normal');
+ const targets=groupBy(model.eligible,p=>receiverNumber(p)?'#'+receiverNumber(p):p.target||'Unknown target').sort((a,b)=>b[1].length-a[1].length),targetRows=targets.slice(0,10).map(([name,r])=>{const a=r.filter(p=>['Complete','Incomplete','INT'].includes(throwOutcome(p))||throwOutcome(p)==='TD'),c=a.filter(p=>['Complete','TD'].includes(throwOutcome(p))).length;return [name,a.length?c+'/'+a.length:'-',a.length?fmt(100*c/a.length,0)+'%':'-']});
+ table('TARGET RESULTS',['Receiver','C/A','Comp %'],targetRows,208,legendY+7,w-218,true);
+ doc.setFontSize(7);doc.setTextColor(83,100,116);const detail='Receiver numbers come from ESPN when available. Labels may move; leader lines retain exact target positions. Staff-charted air yards only. Unlocated attempts remain in target totals. No location is guessed.'+(targets.length>10?' Top 10 targets shown.':'');doc.text(doc.splitTextToSize(detail,w-220),208,Math.min(166,doc.lastAutoTable.finalY+7));
+ doc.setTextColor(28,48,66);doc.setFontSize(7);doc.text(doc.splitTextToSize(notes,w-20),10,h-12);
+
  }
  const pages=doc.getNumberOfPages();for(let n=1;n<=pages;n++){doc.setPage(n);doc.setDrawColor(117,39,60);doc.line(10,h-7,w-10,h-7);doc.setFontSize(7);doc.setTextColor(90,90,90);doc.text('ULM FOOTBALL / STAFF GAME INTELLIGENCE',10,h-3);doc.text('Page '+n+' of '+pages,w-10,h-3,{align:'right'})}
  return doc;
